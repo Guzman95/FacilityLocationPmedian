@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\santi\\Desktop\\Monografia\\Monografia\\Monografia.csproj",
+      "projectUniqueName": "C:\\Users\\santi\\Desktop\\FacilityLocationPmedian\\Monografia\\Monografia\\Monografia.csproj",
       "projectName": "Monografia",
-      "projectPath": "C:\\Users\\santi\\Desktop\\Monografia\\Monografia\\Monografia.csproj",
+      "projectPath": "C:\\Users\\santi\\Desktop\\FacilityLocationPmedian\\Monografia\\Monografia\\Monografia.csproj",
       "packagesPath": "C:\\Users\\santi\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\santi\\Desktop\\Monografia\\Monografia\\obj\\",
+      "outputPath": "C:\\Users\\santi\\Desktop\\FacilityLocationPmedian\\Monografia\\Monografia\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\santi\\AppData\\Roaming\\NuGet\\NuGet.Config",
