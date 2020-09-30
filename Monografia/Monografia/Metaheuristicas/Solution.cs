@@ -6,20 +6,20 @@ using Monografia.Funciones;
 namespace Monografia.Metaheuristicas
 {
     public class Solution
-    {
+    { /*
         public Algorithm MyAlgorithm;
-        public Knapsack MyProblem;
+        public p_mediana MyProblem;
         protected readonly int[] Objects; // {0, 1}
         protected double Weight;
         public double _fitness;
 
         public double Fitness => _fitness;
 
-        public Solution(Knapsack theProblem, Algorithm theAlgorithm)
+        public Solution(p_mediana theProblem, Algorithm theAlgorithm)
         {
             MyProblem = theProblem;
             MyAlgorithm = theAlgorithm;
-            Objects = new int[MyProblem.TotalItems];
+            Objects = new int[MyProblem.totalAristas];
             Weight = 0;
             _fitness = 0;
         }
@@ -243,5 +243,7 @@ namespace Monografia.Metaheuristicas
         {
             return Math.Abs(Fitness - MyProblem.OptimalKnown) < 1e-10;
         }
+         */
     }
+       
 }

@@ -9,6 +9,6 @@ namespace Monografia.Metaheuristicas
         public int EFOs;
         public Solution BestSolution;
 
-        public abstract void Ejecutar(Knapsack theProblem, Random myRandom);
+        public abstract void Ejecutar(p_mediana theProblem, Random myRandom);
     }
 }

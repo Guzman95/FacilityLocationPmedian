@@ -2,3 +2,16 @@ C:\Users\santi\Desktop\Monografia\Monografia\obj\Debug\netcoreapp3.1\Monografia.
 C:\Users\santi\Desktop\Monografia\Monografia\obj\Debug\netcoreapp3.1\Monografia.AssemblyInfoInputs.cache
 C:\Users\santi\Desktop\Monografia\Monografia\obj\Debug\netcoreapp3.1\Monografia.AssemblyInfo.cs
 C:\Users\santi\Desktop\Monografia\Monografia\obj\Debug\netcoreapp3.1\Monografia.csproj.CoreCompileInputs.cache
+F:\UNIVERSIDAD\TESIS\FacilityLocationPmedian\Monografia\Monografia\obj\Debug\netcoreapp3.1\Monografia.csprojAssemblyReference.cache
+F:\UNIVERSIDAD\TESIS\FacilityLocationPmedian\Monografia\Monografia\obj\Debug\netcoreapp3.1\Monografia.AssemblyInfoInputs.cache
+F:\UNIVERSIDAD\TESIS\FacilityLocationPmedian\Monografia\Monografia\obj\Debug\netcoreapp3.1\Monografia.AssemblyInfo.cs
+F:\UNIVERSIDAD\TESIS\FacilityLocationPmedian\Monografia\Monografia\obj\Debug\netcoreapp3.1\Monografia.csproj.CoreCompileInputs.cache
+F:\UNIVERSIDAD\TESIS\FacilityLocationPmedian\Monografia\Monografia\bin\Debug\netcoreapp3.1\Monografia.exe
+F:\UNIVERSIDAD\TESIS\FacilityLocationPmedian\Monografia\Monografia\bin\Debug\netcoreapp3.1\Monografia.deps.json
+F:\UNIVERSIDAD\TESIS\FacilityLocationPmedian\Monografia\Monografia\bin\Debug\netcoreapp3.1\Monografia.runtimeconfig.json
+F:\UNIVERSIDAD\TESIS\FacilityLocationPmedian\Monografia\Monografia\bin\Debug\netcoreapp3.1\Monografia.runtimeconfig.dev.json
+F:\UNIVERSIDAD\TESIS\FacilityLocationPmedian\Monografia\Monografia\bin\Debug\netcoreapp3.1\Monografia.dll
+F:\UNIVERSIDAD\TESIS\FacilityLocationPmedian\Monografia\Monografia\bin\Debug\netcoreapp3.1\Monografia.pdb
+F:\UNIVERSIDAD\TESIS\FacilityLocationPmedian\Monografia\Monografia\obj\Debug\netcoreapp3.1\Monografia.dll
+F:\UNIVERSIDAD\TESIS\FacilityLocationPmedian\Monografia\Monografia\obj\Debug\netcoreapp3.1\Monografia.pdb
+F:\UNIVERSIDAD\TESIS\FacilityLocationPmedian\Monografia\Monografia\obj\Debug\netcoreapp3.1\Monografia.genruntimeconfig.cache
