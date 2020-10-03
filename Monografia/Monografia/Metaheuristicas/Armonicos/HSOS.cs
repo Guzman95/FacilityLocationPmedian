@@ -6,85 +6,22 @@ using System.Text;
 namespace Monografia.Metaheuristicas.Armonicos
 {
 
-    //ALGORITMO PRINCIPAL
     class HSOS : Algorithm
-    {
-        Random randon = new Random(255);
-        private double HMCR = 0.657;
-        private double PAR = 0.365;
-        public int n = 10;
-        private int tamPoblacion = 5;
-        int[][] poblacion;
-        int[][] distancias;
-        public void HibridoOrganismosSimbioticos(p_mediana theProblem){
-             distancias =  theProblem.floyd();
-
-            int[] mejor = new int[n];
-            int iter = 0;
-            int itermax = 1;
-            poblacion = new int[tamPoblacion][];
-            for (int i = 0; i < tamPoblacion; i++){
-                poblacion[i] = new int[n];
-            }
-            for (int i = 0; i < tamPoblacion; i++){
-                for (int j = 0; j < n; j++){
-                    if (randon.NextDouble() < 0.5){
-                        poblacion[i][j] = 0;
-                    }
-                    else{
-                        poblacion[i][j] = 1;
-                    }
-                }     
-            }
-            Console.WriteLine(" ");
-            Console.WriteLine(" poblacion inicial");
-            imprimirpoblacion();
-            Console.WriteLine(" ");
-
-            while (iter < itermax){
-                int[] xi = new int[n];
-                int[] xj = new int[n];
-                mejor = mejorOrganismo(poblacion);
-                int j;
-                for (int i = 0; i < tamPoblacion; i++){  
-                    xi = poblacion[i];
-                    /*
-                    j = posicionAleatoria(i);
-                    xj = poblacion[j];
-                    faseMutualismo(xi, xj, mejor, i);
-                    faseMutualismo(xj, xi, mejor, j);
-                    
-                    j = posicionAleatoria(i);
-                    xj = poblacion[j];
-                    faceComensalismo(xi, xj, mejor, i);
-                    
-                    j = posicionAleatoria(i);
-                    xj = poblacion[j];
-                    faceParasitismo(xi, xj, j);
-                    */
-                    faceArmonia(xi, i);
-                    Console.WriteLine(" ");
-                    Console.WriteLine("organismo: " + i);
-                    imprimirpoblacion();
-                    Console.WriteLine(" ");
-
-
-
-                }
-                iter = iter + 1;
-            }
-        }
-
-        //FUNCIONES
+    {     
+      
+        public int tamPoblacion;
+        public int[][] poblacion;
+        int dimensionOrganismo;
+        Solution solution;
 
         //FASE DE MUTUALISMO
         private void faseMutualismo(int[] Xi, int[] Xj, int[] mejor, int indiceXi){
-            int[] mutualvector = new int[n];
-            int[] a = new int[n];
-            int[] b = new int[n];
+            int[] mutualvector = new int[dimensionOrganismo];
+            int[] a = new int[dimensionOrganismo];
+            int[] b = new int[dimensionOrganismo];
             Random randon = new Random();
 
-            for (int k = 0; k < n; k++){
+            for (int k = 0; k < dimensionOrganismo; k++){
                 if (randon.NextDouble() > 0.5){
                     mutualvector[k] = Xi[k];
                 }
@@ -93,20 +30,20 @@ namespace Monografia.Metaheuristicas.Armonicos
                 }
 
             }
-            a = organismoAleatorio();
-            for (int k = 0; k < n; k++){
+            a = solution.generarOrganismoAleatorio(dimensionOrganismo);
+            for (int k = 0; k < dimensionOrganismo; k++){
                 if (mutualvector[k] == mejor[k]){
                     a[k] = mejor[k];
                 }
             }
-            b = organismoAleatorio();
-            for (int k = 0; k < n; k++){
+            b = solution.generarOrganismoAleatorio(dimensionOrganismo);
+            for (int k = 0; k < dimensionOrganismo; k++){
                 if (a[k] == Xi[k]){
                     a[k] = Xi[k];
                 }
             }
-            a = reparar(a);
-            if (evaluarSolucion(a) < evaluarSolucion(Xi)){
+            a = solution.repararSolucion(a, dimensionOrganismo);
+            if (solution.evaluarSolucion(a) <solution.evaluarSolucion(Xi)){
                 poblacion[indiceXi] = a;
             }
         }
@@ -114,20 +51,20 @@ namespace Monografia.Metaheuristicas.Armonicos
         //FASE DE COMENSALISMO
         private void faceComensalismo(int[] Xi, int[] Xj, int[] Xmejor,int indiceXi) {
             int[] c; int[] d;
-            c = organismoAleatorio();
-            for (int k = 0; k < n; k++) {
+            c = solution.generarOrganismoAleatorio(dimensionOrganismo);
+            for (int k = 0; k < dimensionOrganismo; k++) {
                 if (Xj[k] == Xmejor[k]) {
                     c[k] = Xmejor[k];
                 }
             }
-            d = organismoAleatorio();
-            for (int k = 0; k < n; k++) {
+            d = solution.generarOrganismoAleatorio(dimensionOrganismo);
+            for (int k = 0; k < dimensionOrganismo; k++) {
                 if (c[k] == Xi[k]) {
                     d[k] = Xi[k];
                 }
             }
-            d = reparar(d);
-            if (evaluarSolucion(d) < evaluarSolucion(Xi)) {
+            d = solution.repararSolucion(d, dimensionOrganismo);
+            if (solution.evaluarSolucion(d) <solution.evaluarSolucion(Xi)) {
                 poblacion[indiceXi] = d;
             }
         }
@@ -146,20 +83,24 @@ namespace Monografia.Metaheuristicas.Armonicos
                     vectorParasito[pos] = 1;
                 }
             }
-            vectorParasito = reparar(vectorParasito);
-            if (evaluarSolucion(vectorParasito) < evaluarSolucion(Xj)) {
+            vectorParasito = solution.repararSolucion(vectorParasito, dimensionOrganismo);
+            if (solution.evaluarSolucion(vectorParasito) <solution.evaluarSolucion(Xj)) {
                 poblacion[indiceXj] = vectorParasito;
             }
         }
         //FASE DE ARMONIA
         private void faceArmonia(int[] Xi, int indiceXi) {
             Random randon = new Random();
-            int[] neko = new int[n];
+            double HMCR = 0.657;
+            double PAR = 0.365;
+        int[] neko = new int[dimensionOrganismo];
             int posPeor;
+            int posAleatoria;
 
-            for (int k = 0; k < n; k++) {
+            for (int k = 0; k < dimensionOrganismo; k++) {
                 if (randon.NextDouble() <= HMCR){
-                    neko[k] = poblacion[posicionAleatoria(indiceXi)][k];
+                    posAleatoria = solution.posicionAleatoria(indiceXi, tamPoblacion);
+                    neko[k] = poblacion[posAleatoria][k];
                     if (randon.NextDouble() <= PAR){
                         if (randon.NextDouble() > 0.5){
                             neko[k] = 0;
@@ -170,154 +111,83 @@ namespace Monografia.Metaheuristicas.Armonicos
                     }
                 }
                 else {
-                    neko[k] = valorAleatorio();
+                    neko[k] = solution.valorAleatorio();
                 }
             }
-            neko = reparar(neko);
-            posPeor = posPeorOrganismo(poblacion);
-            if (evaluarSolucion(neko) < evaluarSolucion(poblacion[posPeor])) {
+            neko = solution.repararSolucion(neko, dimensionOrganismo);
+            posPeor = solution.posPeorOrganismo(poblacion);
+            if (solution.evaluarSolucion(neko) < solution.evaluarSolucion(poblacion[posPeor])) {
                 poblacion[posPeor] = neko;
             }
-            if (evaluarSolucion(neko) < evaluarSolucion(Xi)) {
+            if (solution.evaluarSolucion(neko) <solution.evaluarSolucion(Xi)) {
                 poblacion[indiceXi] = neko;
             }
         }
 
-        //METODOS PRINCIPALES
-        public int[] mejorOrganismo(int[][] poblacion)
-        {
-            int[] mejor = new int[n];
-            int[] organismo = new int[n];
-            double mejorEvaluacion = evaluarSolucion(poblacion[0]);
-            for (int i = 1; i < poblacion.Length; i++)
-            {
-                organismo = poblacion[i];
-                double evaluacion = evaluarSolucion(organismo);
-                if (evaluacion < mejorEvaluacion)
-                {
-                    mejor = organismo;
-                }
-            }
-            return mejor;
-        }
-        private int[] reparar(int[] X){
-            int[] Xnew = new int[n];
-            Xnew = X;
-            return Xnew;
-        }
-        public double evaluarSolucion(int[] X)
-        {
-            double[] pesos = new double[] { 2.4, 4.6, 5.3, 5, 1.5, 2.4, 4, 3.2, 1, 0.5 };
-            double evaluacion = 0;
-            for (int i = 0; i < n; i++)
-            {
-                evaluacion = evaluacion + X[i] * pesos[i];
-            }
-            return evaluacion;
-        }
-
-
-        //METODOS SECUNDARIOS
-        public int[] organismoAleatorio(){
-            
-            int[] organismo = new int[n];
-            for (int i = 0; i < n; i++){
-                organismo[i] = valorAleatorio();
-            }
-            return organismo;
-        }
-
-        private int valorAleatorio() {
-            int valor;
-            Random randon = new Random();
-            double alea = randon.NextDouble();
-            if ( alea < 0.5)
-            {
-                valor = 0;
-            }
-            else
-            {
-                valor = 1;
-            }
-            return valor;
-
-        }
-        public int posPeorOrganismo(int[][] poblacion)
-        {
-            int[] organismo;
-            int posPeor =0;
-            double peorEvaluacion = evaluarSolucion(poblacion[0]);
-            for (int i = 1; i < poblacion.Length; i++)
-            {
-                organismo = poblacion[i];
-                double evaluacion = evaluarSolucion(organismo);
-                if (evaluacion > peorEvaluacion)
-                {
-                    posPeor = i;
-                }
-            }
-            return posPeor;
-        }
-
-        private int posicionAleatoria(int pos){
-            Random randon = new Random();
-            int maxvalue = tamPoblacion; int minvalue = 0;
-            int aleatorio ;
-            do{
-                aleatorio = randon.Next(minvalue, maxvalue);
-            } while (aleatorio.Equals(pos));
-            return aleatorio;
-        }
-        private int[] dimesionesAleatoria() {
+        private int[] dimesionesAleatoria() { 
 
             Random randon = new Random();
-            int maxvalue = n; int minvalue = 1;
+            int maxvalue = dimensionOrganismo; int minvalue = 1;
             int numerodimencionesN = randon.Next(minvalue, maxvalue);
-            Console.WriteLine("numeroDim: " + numerodimencionesN);
             int[] dimencionesN = new int[numerodimencionesN];
             int valor;
 
             for (int i = 0; i < numerodimencionesN; i++)
             {
                 valor = randon.Next(minvalue, maxvalue);
-                Console.WriteLine(i + "pos: " + valor);
                 dimencionesN[i] = valor - 1;
 
             }
             return dimencionesN;
         }
 
-        private void imprimirpoblacion() {
-            Console.WriteLine("Poblacion");
-            for (int i = 0; i < tamPoblacion; i++) {
-                for (int j = 0; j < n; j++){
-                    Console.Write(" ");
-                    Console.Write(poblacion[i][j]);
-                }
-                Console.WriteLine(" ");
-
-            }
-        }
-
-        private void imprimirdistancias(){
-            Console.WriteLine("Distancias");
-            for (int i = 0; i < distancias.Length; i++){
-                for (int j = 0; j < distancias.Length; j++){
-                    Console.Write(" ");
-                    Console.Write(distancias[i][j]);
-                }
-                Console.WriteLine(" ");
-            }
-        }
-
-        private void imprimirOrganismo(int [] organismo) {
-            for (int i = 0; i < n; i++) {
-                Console.Write(" " + organismo[i]);
-            }
-        }
-
+     
         public override void Ejecutar(p_mediana theProblem, Random myRandom){
-            HibridoOrganismosSimbioticos(theProblem);   
+
+            solution = new Solution(theProblem, this);
+            //dimensionOrganismo = theProblem.numVertices;
+            dimensionOrganismo = 10;
+            tamPoblacion = 5;
+            int[] mejor = new int[dimensionOrganismo];
+            int iter = 0;
+            int itermax = 1;
+
+            poblacion = solution.inicializarPoblacion (tamPoblacion, dimensionOrganismo);
+            Console.WriteLine(" ");
+            Console.WriteLine(" poblacion inicial");
+            solution.imprimirpoblacion(poblacion, dimensionOrganismo);
+            Console.WriteLine(" ");
+
+            while (iter < itermax)
+            {
+                int[] xi = new int[dimensionOrganismo];
+                int[] xj = new int[dimensionOrganismo];
+                mejor = solution.mejorOrganismo(poblacion, dimensionOrganismo);
+                int j;
+                for (int i = 0; i < tamPoblacion; i++)
+                {
+                    xi = poblacion[i];
+
+                    j = solution.posicionAleatoria(i, tamPoblacion);
+                    xj = poblacion[j];
+                    faseMutualismo(xi, xj, mejor, i);
+                    faseMutualismo(xj, xi, mejor, j);
+
+                    j = solution.posicionAleatoria(i, tamPoblacion);
+                    xj = poblacion[j];
+                    faceComensalismo(xi, xj, mejor, i);
+
+                    j = solution.posicionAleatoria(i, tamPoblacion);
+                    xj = poblacion[j];
+                    faceParasitismo(xi, xj, j);
+                    faceArmonia(xi, i);
+                    Console.WriteLine(" ");
+                    Console.WriteLine("organismo: " + i);
+                    solution.imprimirpoblacion(poblacion, dimensionOrganismo);
+                    Console.WriteLine(" ");
+                }
+                iter = iter + 1;
+            }
         }
     }
 

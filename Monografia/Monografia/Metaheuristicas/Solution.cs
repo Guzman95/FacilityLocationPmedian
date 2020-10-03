@@ -6,7 +6,7 @@ using Monografia.Funciones;
 namespace Monografia.Metaheuristicas
 {
     public class Solution
-    { /*
+    {
         public Algorithm MyAlgorithm;
         public p_mediana MyProblem;
         protected readonly int[] Objects; // {0, 1}
@@ -19,231 +19,203 @@ namespace Monografia.Metaheuristicas
         {
             MyProblem = theProblem;
             MyAlgorithm = theAlgorithm;
+            int tam = theProblem.numVertices;
             Objects = new int[MyProblem.totalAristas];
             Weight = 0;
             _fitness = 0;
         }
 
-        public void Modify(int value)
-        {
-            var binary = Convert.ToString(value, 2);
-            Weight = 0;
-            var j = 0;
-            for (var i = binary.Length - 1; i >= 0; i--)
+        //METODOS PRINCIPALES
+        public int[][] inicializarPoblacion(int tamPoblacion, int n)
+        {    // mover a solucion
+            int[][] poblacion;
+            Random randon = new Random(255);
+            poblacion = new int[tamPoblacion][];
+            //int n = MyProblem.numVertices;
+            for (int i = 0; i < tamPoblacion; i++)
             {
-                Objects[j] = (int)char.GetNumericValue(binary[i]);
-                if (Objects[j] == 1)
-                    Weight += MyProblem.Weight(j);
-                j++;
+                poblacion[i] = new int[n];
             }
-            Evaluate();
-        }
-
-        public Solution(Solution original)
-        {
-            MyAlgorithm = original.MyAlgorithm;
-            MyProblem = original.MyProblem;
-            Objects = new int[MyProblem.TotalItems];
-            for(var i = 0; i < MyProblem.TotalItems; i++)
-                Objects[i] = original.Objects[i];
-            Weight = original.Weight;
-            _fitness = original._fitness;
-        }
-
-        private void SelectObject(int index)
-        {
-            Objects[index] = 1;
-            Weight += MyProblem.Weight(index);
-        }
-
-        private void UnSelectObject(int index)
-        {
-            Objects[index] = 0;
-            Weight -= MyProblem.Weight(index);
-        }
-
-        public void RandomInitialization(Random myRandom)
-        {
-            Weight = 0;
-            var opciones = MyProblem.GetVariables();
-
-            while (Weight <= MyProblem.Capacity)
+            for (int i = 0; i < tamPoblacion; i++)
             {
-                var p = myRandom.Next(opciones.Count);
-                SelectObject(opciones[p].Position);
-                opciones.RemoveAt(p);
-
-                var availableWeight = MyProblem.Capacity - Weight;
-                opciones.RemoveAll(x => x.Weight > availableWeight);
-                if (opciones.Count == 0) break;
-            }
-            Evaluate();
-        }
-
-        public virtual void Tweak(Random myRandom)
-        {
-            var tweakProbabilities = new[] {1}; //{0.65, 0.85, 0.95, 1};
-            var probability = myRandom.NextDouble();
-            for (var neighboorhood = 0; neighboorhood < tweakProbabilities.Length; neighboorhood++)
-                if (probability < tweakProbabilities[neighboorhood])
-                    Tweak2(myRandom, neighboorhood + 1);
-        }
-
-        /// <summary>
-        /// This tweak operator turn off a numberOff randomly selected objects
-        /// then complete the solution (try to randomly include other objects
-        /// while available weight exits) - do not complete with elements previously
-        /// extracted
-        /// </summary>
-        /// <param name="myRandom"></param>
-        /// <param name="numberOff"></param>
-        public void Tweak2(Random myRandom, int numberOff)
-        {
-            var selectedObjets = new List<KeyValuePair<int, double>>();
-            for (var i = 0; i < MyProblem.TotalItems; i++)
-                if (Objects[i] == 1)
-                    selectedObjets.Add(new KeyValuePair<int, double>(i, MyProblem.Weight(i)));
-
-            // It should remain at least one element
-            if (selectedObjets.Count - numberOff <= 0)
-                numberOff = selectedObjets.Count - 1;
-
-            var exceptionList = new List<int>();
-
-            for (var i = 0; i < numberOff; i++)
-            {
-                var p = myRandom.Next(selectedObjets.Count);
-                UnSelectObject(selectedObjets[p].Key);
-                exceptionList.Add(selectedObjets[p].Key);
-                selectedObjets.RemoveAt(p);
-            }
-
-            Complete(myRandom, exceptionList);
-            Evaluate();
-        }
-
-        public void Complete(Random aleatorio, List<int> exceptionList)
-        {
-            // create a list of unselected objects that fit into the knapsack 
-            var availableWeight = MyProblem.Capacity - Weight;
-            var unselectedItemsThatFit = new List<KeyValuePair<int, double>>();
-            for (var i = 0; i < MyProblem.TotalItems; i++)
-            {
-                if (Objects[i] == 0 && MyProblem.Weight(i) <= availableWeight)
-                    if (!exceptionList.Contains(i))
-                        unselectedItemsThatFit.Add(new KeyValuePair<int, double>(i, MyProblem.Weight(i)));
-            }
-
-            // while exits objects in the list of unselected object that fit into de knapsack
-            while (unselectedItemsThatFit.Count != 0)
-            {
-                // randomly select a position of the list, include the object
-                // into the knapsack and update the weight
-                var t = aleatorio.Next(unselectedItemsThatFit.Count);
-                Objects[unselectedItemsThatFit[t].Key] = 1;
-                Weight += unselectedItemsThatFit[t].Value;
-
-                // remove the unselected objects with higher weight than the available
-                // weight in the knapsack
-                availableWeight = MyProblem.Capacity - Weight;
-                unselectedItemsThatFit.RemoveAt(t);
-                for (var i = unselectedItemsThatFit.Count - 1; i >= 0; i--)
+                for (int j = 0; j < n; j++)
                 {
-                    if (unselectedItemsThatFit[i].Value > availableWeight)
-                        unselectedItemsThatFit.RemoveAt(i);
+                    if (randon.NextDouble() < 0.5)
+                    {
+                        poblacion[i][j] = 0;
+                    }
+                    else
+                    {
+                        poblacion[i][j] = 1;
+                    }
                 }
             }
+            return poblacion;
         }
 
-        public void CruceIntercalado(Solution p1, Solution p2)
-        {
-            Weight = 0;
-            for (var i = 0; i < MyProblem.TotalItems; i++)
-            {
-                if (i % 2 == 0) Objects[i] = p1.Objects[i];
-                else Objects[i] = p2.Objects[i];
-                if (Objects[i] == 1)
-                    Weight += MyProblem.Weight(i);
-            }
+        public int[] repararSolucion(int[] X, int n)
+        { // mover a solucion
+            int[] Xnew = new int[n];
+            Xnew = X;
+            return Xnew;
         }
 
-        public void OneBitMutation(Random myRandom)
+        public double evaluarSolucion(int[] X)    // mover a solucion
         {
-            var p = myRandom.Next(MyProblem.TotalItems);
-            if (Objects[p] == 1)
+            double[] pesos = generarPesos(X.Length);
+            double evaluacion = 0;
+            for (int i = 0; i < X.Length; i++)
             {
-                Objects[p] = 0;
-                Weight -= MyProblem.Weight(p);
+                evaluacion = evaluacion + X[i] * pesos[i];
             }
-            else {
-                Objects[p] = 1;
-                Weight += MyProblem.Weight(p);
-            }
+            return evaluacion;
         }
 
-        public void Repare(Random myRandom)
+        public int[] mejorOrganismo(int[][] poblacion, int n) // mover a solucion
         {
-            if (Weight <= MyProblem.Capacity) return;
-
-            var inKnapsack = new List<int>();
-            for (var i = 0; i < MyProblem.TotalItems; i++)
-                if (Objects[i] == 1)
-                    inKnapsack.Add(i);
-
-            while (Weight > MyProblem.Capacity)
+            int[] mejor = new int[n];
+            int[] organismo = new int[n];
+            double mejorEvaluacion = evaluarSolucion(poblacion[0]);
+            for (int i = 1; i < poblacion.Length; i++)
             {
-                var p = myRandom.Next(inKnapsack.Count);
-                var Id = inKnapsack[p];
-                Objects[Id] = 0;
-                Weight -= MyProblem.Weight(Id);
-                inKnapsack.RemoveAt(p);
-            }
-        }
-
-        public void Improvisation(List<Solution> hm, double hmcr, double par, Random myRandom)
-        {
-            Weight = 0;
-            for (var i = 0; i < MyProblem.TotalItems; i++)
-            {
-                if (myRandom.NextDouble() < hmcr)
+                organismo = poblacion[i];
+                double evaluacion = evaluarSolucion(organismo);
+                if (evaluacion < mejorEvaluacion)
                 {
-                    // Sale de la memoria
-                    var p = myRandom.Next(hm.Count);
-                    Objects[i] = hm[p].Objects[i];
-
-                    if (myRandom.NextDouble() < par) // tomelo de la mejor = 0 (best)
-                        Objects[i] = hm[0].Objects[i];
+                    mejor = organismo;
                 }
-                else
-                {
-                    // aleatorio
-                    Objects[i] = myRandom.Next(2);
-                }
-
-                if (Objects[i] == 1) Weight += MyProblem.Weight(i);
             }
+            return mejor;
+        }
+
+        public int posPeorOrganismo(int[][] poblacion) // mover a solucion
+        {
+            int[] organismo;
+            int posPeor = 0;
+            double peorEvaluacion = evaluarSolucion(poblacion[0]);
+            for (int i = 1; i < poblacion.Length; i++)
+            {
+                organismo = poblacion[i];
+                double evaluacion = evaluarSolucion(organismo);
+                if (evaluacion > peorEvaluacion)
+                {
+                    posPeor = i;
+                }
+            }
+            return posPeor;
+        }
+      
+        public int posicionAleatoria(int pos, int tamPoblacion)
+        {  // mover a solucion
+            Random randon = new Random();
+            int maxvalue = tamPoblacion; int minvalue = 0;
+            int aleatorio;
+            do
+            {
+                aleatorio = randon.Next(minvalue, maxvalue);
+            } while (aleatorio.Equals(pos));
+            return aleatorio;
+        }
+
+        public void imprimirOrganismo(int[] organismo,int n)
+        {    //moversolucion
+            for (int i = 0; i < n; i++)
+            {
+                Console.Write(" " + organismo[i]);
+            }
+        }
+
+        public int[] generarOrganismoAleatorio(int n)
+        {          //mover a solucion
+
+            int[] organismo = new int[n];
+            for (int i = 0; i < n; i++)
+            {
+                organismo[i] = valorAleatorio();
+            }
+            return organismo;
+        }
+
+        public int valorAleatorio()
+        {  // mover a solucion
+            int valor;
+            Random randon = new Random();
+            double alea = randon.NextDouble();
+            if (alea < 0.5)
+            {
+                valor = 0;
+            }
+            else
+            {
+                valor = 1;
+            }
+            return valor;
+
+        }
+
+        public void imprimirpoblacion(int[][] poblacion, int  n)
+        {   //mover a solucion
+            Console.WriteLine("Poblacion");
+            for (int i = 0; i < poblacion.Length; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    Console.Write(" ");
+                    Console.Write(poblacion[i][j]);
+                }
+                Console.WriteLine(" ");
+
+            }
+        }
+
+        public void imprimirdistancias()
+        {
+            int [][] distancias = MyProblem.floyd();
+            Console.WriteLine("Distancias");
+            for (int i = 0; i < distancias.Length; i++)
+            {
+                for (int j = 0; j < distancias.Length; j++)
+                {
+                    Console.Write(" ");
+                    Console.Write(distancias[i][j]);
+                }
+                Console.WriteLine(" ");
+            }
+        }
+
+        private double[] generarPesos(int n)
+        {
+            double[] pesos = new double[n];
+            Random randon = new Random();
+            for (int i = 0; i < n; i++)
+            {
+                pesos[i] = randon.NextDouble();
+            }
+            return pesos;
         }
 
         public void Evaluate()
         {
-            _fitness = Weight <= MyProblem.Capacity ? MyProblem.Evaluate(Objects) : double.NegativeInfinity;
+            _fitness = Weight <= MyProblem.p_medianas ? MyProblem.Evaluate(Objects) : double.NegativeInfinity;
             MyAlgorithm.EFOs++;
         }
 
         public override string ToString()
         {
             var result = "";
-            for (var i = 0; i < MyProblem.TotalItems; i++)
+            for (var i = 0; i < MyProblem.totalAristas; i++)
                 result = result + (Objects[i] + " ");
             result = result + " f = " + _fitness +  " w = " + Weight;
             return result;
         }
 
+   
+
         public bool IsOptimalKnown()
         {
-            return Math.Abs(Fitness - MyProblem.OptimalKnown) < 1e-10;
+            return Math.Abs(Fitness - MyProblem.OptimalLocation) < 1e-10;
         }
-         */
+        
     }
        
 }
