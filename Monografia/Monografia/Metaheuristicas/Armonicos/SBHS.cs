@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Monografia.Funciones;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Monografia.Metaheuristicas.Armonicos
 {
-    class SBHS
+    class SBHS : Algorithm
     {
         public static int[][] InicializarMemoria()
         {
@@ -30,21 +31,21 @@ namespace Monografia.Metaheuristicas.Armonicos
             return HarmonyMemory;
         }
 
-        private static void reparar(int[] vs)
+        private static void reparar(p_mediana Problema, int[] vs)
         {
             double Vt = 0.0;
             if (!esFactible(vs))
             {
-                Vt = volumenArmonia(vs);
+                Vt = volumenArmonia(Problema, vs);
             }
         }
 
-        private static double volumenArmonia(int[] vs)
+        private static double volumenArmonia(p_mediana Problema, int[] vs)
         {
             double sumar = 0.0;
             for (int i = 0; i < vs.Length; i++)
             {
-                sumar += vs[i];
+                sumar += Problema.ar;
             }
             return sumar;
         }
@@ -52,6 +53,11 @@ namespace Monografia.Metaheuristicas.Armonicos
         private static bool esFactible(int[] vs)
         {
             return false;
+        }
+
+        public override void Ejecutar(p_mediana theProblem, Random myRandom)
+        {
+            int[][] HM = 
         }
     }
 }
