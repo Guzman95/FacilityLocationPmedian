@@ -30,19 +30,19 @@ namespace Monografia.Metaheuristicas.Armonicos
                 }
 
             }
-            a = solution.generarOrganismoAleatorio(dimensionOrganismo);
+            a = solution.generarSolucionAleatorio(dimensionOrganismo);
             for (int k = 0; k < dimensionOrganismo; k++){
                 if (mutualvector[k] == mejor[k]){
                     a[k] = mejor[k];
                 }
             }
-            b = solution.generarOrganismoAleatorio(dimensionOrganismo);
+            b = solution.generarSolucionAleatorio(dimensionOrganismo);
             for (int k = 0; k < dimensionOrganismo; k++){
                 if (a[k] == Xi[k]){
                     a[k] = Xi[k];
                 }
             }
-            a = solution.repararSolucion(a, dimensionOrganismo);
+            a = solution.repararSolucion(a);
             if (solution.evaluarSolucion(a) <solution.evaluarSolucion(Xi)){
                 poblacion[indiceXi] = a;
             }
@@ -51,19 +51,19 @@ namespace Monografia.Metaheuristicas.Armonicos
         //FASE DE COMENSALISMO
         private void faceComensalismo(int[] Xi, int[] Xj, int[] Xmejor,int indiceXi) {
             int[] c; int[] d;
-            c = solution.generarOrganismoAleatorio(dimensionOrganismo);
+            c = solution.generarSolucionAleatorio(dimensionOrganismo);
             for (int k = 0; k < dimensionOrganismo; k++) {
                 if (Xj[k] == Xmejor[k]) {
                     c[k] = Xmejor[k];
                 }
             }
-            d = solution.generarOrganismoAleatorio(dimensionOrganismo);
+            d = solution.generarSolucionAleatorio(dimensionOrganismo);
             for (int k = 0; k < dimensionOrganismo; k++) {
                 if (c[k] == Xi[k]) {
                     d[k] = Xi[k];
                 }
             }
-            d = solution.repararSolucion(d, dimensionOrganismo);
+            d = solution.repararSolucion(d);
             if (solution.evaluarSolucion(d) <solution.evaluarSolucion(Xi)) {
                 poblacion[indiceXi] = d;
             }
@@ -83,7 +83,7 @@ namespace Monografia.Metaheuristicas.Armonicos
                     vectorParasito[pos] = 1;
                 }
             }
-            vectorParasito = solution.repararSolucion(vectorParasito, dimensionOrganismo);
+            vectorParasito = solution.repararSolucion(vectorParasito);
             if (solution.evaluarSolucion(vectorParasito) <solution.evaluarSolucion(Xj)) {
                 poblacion[indiceXj] = vectorParasito;
             }
@@ -99,7 +99,7 @@ namespace Monografia.Metaheuristicas.Armonicos
 
             for (int k = 0; k < dimensionOrganismo; k++) {
                 if (randon.NextDouble() <= HMCR){
-                    posAleatoria = solution.posicionAleatoria(indiceXi, tamPoblacion);
+                    posAleatoria = solution.posSolucionAleatoria(indiceXi, tamPoblacion);
                     neko[k] = poblacion[posAleatoria][k];
                     if (randon.NextDouble() <= PAR){
                         if (randon.NextDouble() > 0.5){
@@ -114,8 +114,8 @@ namespace Monografia.Metaheuristicas.Armonicos
                     neko[k] = solution.valorAleatorio();
                 }
             }
-            neko = solution.repararSolucion(neko, dimensionOrganismo);
-            posPeor = solution.posPeorOrganismo(poblacion);
+            neko = solution.repararSolucion(neko);
+            posPeor = solution.posPeorSolucion(poblacion);
             if (solution.evaluarSolucion(neko) < solution.evaluarSolucion(poblacion[posPeor])) {
                 poblacion[posPeor] = neko;
             }
@@ -145,14 +145,13 @@ namespace Monografia.Metaheuristicas.Armonicos
         public override void Ejecutar(p_mediana theProblem, Random myRandom){
 
             solution = new Solution(theProblem, this);
-            //dimensionOrganismo = theProblem.numVertices;
-            dimensionOrganismo = 10;
+            dimensionOrganismo = theProblem.numVertices;
             tamPoblacion = 5;
             int[] mejor = new int[dimensionOrganismo];
             int iter = 0;
             int itermax = 1;
 
-            poblacion = solution.inicializarPoblacion (tamPoblacion, dimensionOrganismo);
+            poblacion = solution.inicializarPoblacion (tamPoblacion);
             Console.WriteLine(" ");
             Console.WriteLine(" poblacion inicial");
             solution.imprimirpoblacion(poblacion, dimensionOrganismo);
@@ -162,22 +161,22 @@ namespace Monografia.Metaheuristicas.Armonicos
             {
                 int[] xi = new int[dimensionOrganismo];
                 int[] xj = new int[dimensionOrganismo];
-                mejor = solution.mejorOrganismo(poblacion, dimensionOrganismo);
+                mejor = solution.mejorSolucion(poblacion);
                 int j;
                 for (int i = 0; i < tamPoblacion; i++)
                 {
                     xi = poblacion[i];
 
-                    j = solution.posicionAleatoria(i, tamPoblacion);
+                    j = solution.posSolucionAleatoria(i, tamPoblacion);
                     xj = poblacion[j];
                     faseMutualismo(xi, xj, mejor, i);
                     faseMutualismo(xj, xi, mejor, j);
 
-                    j = solution.posicionAleatoria(i, tamPoblacion);
+                    j = solution.posSolucionAleatoria(i, tamPoblacion);
                     xj = poblacion[j];
                     faceComensalismo(xi, xj, mejor, i);
 
-                    j = solution.posicionAleatoria(i, tamPoblacion);
+                    j = solution.posSolucionAleatoria(i, tamPoblacion);
                     xj = poblacion[j];
                     faceParasitismo(xi, xj, j);
                     faceArmonia(xi, i);
