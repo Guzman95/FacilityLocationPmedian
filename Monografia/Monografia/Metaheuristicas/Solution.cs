@@ -23,21 +23,7 @@ namespace Monografia.Metaheuristicas
             Weight = 0;
             _fitness = 0;
         }
-
-        //METODOS PRINCIPALES
-        public int[][] inicializarPoblacion(int tamPoblacion, Random myRandom)
-        {    // mover a solucion
-            int[][] poblacion;
-            int dimensionSolucion = MyProblem.numVertices;
-            poblacion = new int[tamPoblacion][];
-            //int n = MyProblem.numVertices;
-            for (int i = 0; i < tamPoblacion; i++)
-            {
-                poblacion[i] = generarSolucionAleatorio(dimensionSolucion, myRandom);
-            }
-            return poblacion;
-        }
-
+     
         public int[] repararSolucion(int[] X)
         { // mover a solucion
             int[] Xnew = new int[X.Length];

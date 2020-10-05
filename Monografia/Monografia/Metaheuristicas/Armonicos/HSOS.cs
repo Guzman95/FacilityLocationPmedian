@@ -142,18 +142,23 @@ namespace Monografia.Metaheuristicas.Armonicos
             return dimencionesN;
         }
 
-     
-        public override void Ejecutar(p_mediana theProblem, Random myRandom){
+        public override void Ejecutar(p_mediana theProblem, Random myRandom) {
 
             solution = new Solution(theProblem, this);
             myRamdonL = myRandom;
             dimensionOrganismo = theProblem.numVertices;
             tamPoblacion = 5;
-            int[] mejor = new int[dimensionOrganismo];
             int iter = 0;
             int itermax = 1;
-
-            poblacion = solution.inicializarPoblacion (tamPoblacion, myRamdonL);
+            int j;
+            poblacion = new int[tamPoblacion][];
+            int[] xi;
+            int[] xj;
+            int[] mejor;
+            for (int i = 0; i < tamPoblacion; i++)
+            {
+                poblacion[i] = solution.generarSolucionAleatorio(dimensionOrganismo, myRandom);
+            }
             Console.WriteLine(" ");
             Console.WriteLine(" poblacion inicial");
             solution.imprimirpoblacion(poblacion, dimensionOrganismo);
@@ -161,10 +166,7 @@ namespace Monografia.Metaheuristicas.Armonicos
 
             while (iter < itermax)
             {
-                int[] xi = new int[dimensionOrganismo];
-                int[] xj = new int[dimensionOrganismo];
                 mejor = solution.mejorSolucion(poblacion);
-                int j;
                 for (int i = 0; i < tamPoblacion; i++)
                 {
                     xi = poblacion[i];
@@ -187,7 +189,7 @@ namespace Monografia.Metaheuristicas.Armonicos
                     solution.imprimirpoblacion(poblacion, dimensionOrganismo);
                     Console.WriteLine(" ");
                 }
-                iter = iter + 1;
+                iter++;
             }
         }
     }
