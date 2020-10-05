@@ -15,8 +15,9 @@ namespace Monografia
                 new p_mediana("pmed1.txt"),
                 };
                 var maxEFOS = 5000;
-                var myAlgorithms = new List<Algorithm>{
+            var myAlgorithms = new List<Algorithm>{
                 new HSOS(),
+                new SBHS(),
                 };
                 const int maxRep = 1;
 
