@@ -13,6 +13,7 @@ namespace Monografia.Metaheuristicas.Armonicos
         public int[][] poblacion;
         int dimensionOrganismo;
         Solution solution;
+        Random myRamdonL;
 
         //FASE DE MUTUALISMO
         private void faseMutualismo(int[] Xi, int[] Xj, int[] mejor, int indiceXi){
@@ -30,13 +31,13 @@ namespace Monografia.Metaheuristicas.Armonicos
                 }
 
             }
-            a = solution.generarSolucionAleatorio(dimensionOrganismo);
+            a = solution.generarSolucionAleatorio(dimensionOrganismo, myRamdonL);
             for (int k = 0; k < dimensionOrganismo; k++){
                 if (mutualvector[k] == mejor[k]){
                     a[k] = mejor[k];
                 }
             }
-            b = solution.generarSolucionAleatorio(dimensionOrganismo);
+            b = solution.generarSolucionAleatorio(dimensionOrganismo, myRamdonL);
             for (int k = 0; k < dimensionOrganismo; k++){
                 if (a[k] == Xi[k]){
                     a[k] = Xi[k];
@@ -51,13 +52,13 @@ namespace Monografia.Metaheuristicas.Armonicos
         //FASE DE COMENSALISMO
         private void faceComensalismo(int[] Xi, int[] Xj, int[] Xmejor,int indiceXi) {
             int[] c; int[] d;
-            c = solution.generarSolucionAleatorio(dimensionOrganismo);
+            c = solution.generarSolucionAleatorio(dimensionOrganismo, myRamdonL);
             for (int k = 0; k < dimensionOrganismo; k++) {
                 if (Xj[k] == Xmejor[k]) {
                     c[k] = Xmejor[k];
                 }
             }
-            d = solution.generarSolucionAleatorio(dimensionOrganismo);
+            d = solution.generarSolucionAleatorio(dimensionOrganismo, myRamdonL);
             for (int k = 0; k < dimensionOrganismo; k++) {
                 if (c[k] == Xi[k]) {
                     d[k] = Xi[k];
@@ -99,7 +100,7 @@ namespace Monografia.Metaheuristicas.Armonicos
 
             for (int k = 0; k < dimensionOrganismo; k++) {
                 if (randon.NextDouble() <= HMCR){
-                    posAleatoria = solution.posSolucionAleatoria(indiceXi, tamPoblacion);
+                    posAleatoria = solution.posSolucionAleatoria(indiceXi, tamPoblacion, myRamdonL);
                     neko[k] = poblacion[posAleatoria][k];
                     if (randon.NextDouble() <= PAR){
                         if (randon.NextDouble() > 0.5){
@@ -111,7 +112,7 @@ namespace Monografia.Metaheuristicas.Armonicos
                     }
                 }
                 else {
-                    neko[k] = solution.valorAleatorio();
+                    neko[k] = solution.valorAleatorio(myRamdonL);
                 }
             }
             neko = solution.repararSolucion(neko);
@@ -145,13 +146,14 @@ namespace Monografia.Metaheuristicas.Armonicos
         public override void Ejecutar(p_mediana theProblem, Random myRandom){
 
             solution = new Solution(theProblem, this);
+            myRamdonL = myRandom;
             dimensionOrganismo = theProblem.numVertices;
             tamPoblacion = 5;
             int[] mejor = new int[dimensionOrganismo];
             int iter = 0;
             int itermax = 1;
 
-            poblacion = solution.inicializarPoblacion (tamPoblacion);
+            poblacion = solution.inicializarPoblacion (tamPoblacion, myRamdonL);
             Console.WriteLine(" ");
             Console.WriteLine(" poblacion inicial");
             solution.imprimirpoblacion(poblacion, dimensionOrganismo);
@@ -167,16 +169,16 @@ namespace Monografia.Metaheuristicas.Armonicos
                 {
                     xi = poblacion[i];
 
-                    j = solution.posSolucionAleatoria(i, tamPoblacion);
+                    j = solution.posSolucionAleatoria(i, tamPoblacion, myRamdonL);
                     xj = poblacion[j];
                     faseMutualismo(xi, xj, mejor, i);
                     faseMutualismo(xj, xi, mejor, j);
 
-                    j = solution.posSolucionAleatoria(i, tamPoblacion);
+                    j = solution.posSolucionAleatoria(i, tamPoblacion, myRamdonL);
                     xj = poblacion[j];
                     faceComensalismo(xi, xj, mejor, i);
 
-                    j = solution.posSolucionAleatoria(i, tamPoblacion);
+                    j = solution.posSolucionAleatoria(i, tamPoblacion, myRamdonL);
                     xj = poblacion[j];
                     faceParasitismo(xi, xj, j);
                     faceArmonia(xi, i);

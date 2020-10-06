@@ -25,7 +25,7 @@ namespace Monografia.Metaheuristicas
         }
 
         //METODOS PRINCIPALES
-        public int[][] inicializarPoblacion(int tamPoblacion)
+        public int[][] inicializarPoblacion(int tamPoblacion, Random myRandom)
         {    // mover a solucion
             int[][] poblacion;
             int dimensionSolucion = MyProblem.numVertices;
@@ -33,7 +33,7 @@ namespace Monografia.Metaheuristicas
             //int n = MyProblem.numVertices;
             for (int i = 0; i < tamPoblacion; i++)
             {
-                poblacion[i] = generarSolucionAleatorio(dimensionSolucion);
+                poblacion[i] = generarSolucionAleatorio(dimensionSolucion, myRandom);
             }
             return poblacion;
         }
@@ -90,14 +90,13 @@ namespace Monografia.Metaheuristicas
             return posPeor;
         }
       
-        public int posSolucionAleatoria(int pos, int tamPoblacion)
+        public int posSolucionAleatoria(int pos, int tamPoblacion , Random myRandon)
         {  // mover a solucion
-            Random randon = new Random();
             int maxvalue = tamPoblacion; int minvalue = 0;
             int aleatorio;
             do
             {
-                aleatorio = randon.Next(minvalue, maxvalue);
+                aleatorio = myRandon.Next(minvalue, maxvalue);
             } while (aleatorio.Equals(pos));
             return aleatorio;
         }
@@ -108,18 +107,19 @@ namespace Monografia.Metaheuristicas
             }
         }
 
-        public int[] generarSolucionAleatorio(int n){          //mover a solucion
+        public int[] generarSolucionAleatorio(int n, Random myRandom)
+        {          //mover a solucion
             int[] solucion = new int[n];
             for (int i = 0; i < n; i++){
-                solucion[i] = valorAleatorio();
+                solucion[i] =valorAleatorio(myRandom);
             }
             return solucion;
         }
 
-        public int valorAleatorio(){  // mover a solucion
+        public int valorAleatorio(Random myRandom){  // mover a solucion
             int valor;
-            Random randon = new Random();
-            double alea = randon.NextDouble();
+   
+            double alea = myRandom.NextDouble();
             if (alea < 0.5){
                 valor = 0;
             }

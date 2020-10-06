@@ -7,7 +7,8 @@ namespace Monografia.Funciones
 {
     public class p_mediana
     {
-
+        
+        //private const string RootDirectory = "F://UNIVERSIDAD//TESIS//FacilityLocationPmedian//Monografia//Monografia//problemas//";
         private const string RootDirectory = "C://Users//santi//Desktop//FacilityLocationPmedian//Monografia//Monografia//problemas//";
         public int numVertices;
         public int totalAristas;
