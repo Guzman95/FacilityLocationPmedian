@@ -167,6 +167,7 @@ namespace Monografia.Metaheuristicas.Armonicos
             while (iter < itermax)
             {
                 mejor = solution.mejorSolucion(poblacion);
+                /*
                 for (int i = 0; i < tamPoblacion; i++)
                 {
                     xi = poblacion[i];
@@ -189,8 +190,19 @@ namespace Monografia.Metaheuristicas.Armonicos
                     solution.imprimirpoblacion(poblacion, dimensionOrganismo);
                     Console.WriteLine(" ");
                 }
+                */
                 iter++;
+                Console.WriteLine("mejor");
+                solution.imprimirSolucion(mejor);
+                solution.Evaluate(mejor);
+                Console.WriteLine("mejor repadado");
+                int [] solucionreparada = solution.repararSolucion(mejor);
+                solution.Evaluate(solucionreparada);
+
+                
             }
+            
+                
         }
     }
 

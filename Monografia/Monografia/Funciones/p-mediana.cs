@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -8,22 +9,22 @@ namespace Monografia.Funciones
     public class p_mediana
     {
         
-        //private const string RootDirectory = "F://UNIVERSIDAD//TESIS//FacilityLocationPmedian//Monografia//Monografia//problemas//";
-        private const string RootDirectory = "C://Users//santi//Desktop//FacilityLocationPmedian//Monografia//Monografia//problemas//";
+        private const string RootDirectory = "F://UNIVERSIDAD//TESIS//FacilityLocationPmedian//Monografia//Monografia//problemas//";
+        //private const string RootDirectory = "C://Users//santi//Desktop//FacilityLocationPmedian//Monografia//Monografia//problemas//";
         public int numVertices;
         public int totalAristas;
         public int OptimalLocation;
         public int p_medianas;
         private readonly List<Arista> aristas = new List<Arista>(); //Always should be sort by position
         public string FileName;
+        public int[][] distanciasFloyd;
         public const int cst = 9999;
 
         public p_mediana(string fileName)
         {
             FileName = fileName; 
             ReadFile(RootDirectory + fileName);
-            
-           
+            MatrisDistancias();
         }
 
         public void ReadFile(string fullFileName)
@@ -35,6 +36,7 @@ namespace Monografia.Funciones
              totalAristas = int.Parse(firstline[1]);
              p_medianas = int.Parse(firstline[2]);
              OptimalLocation = int.Parse(firstline[3]);
+
 
 
             var positionLine = 1;
@@ -50,25 +52,40 @@ namespace Monografia.Funciones
             }
         }
 
-        public double Evaluate(int[] dim)
+        public double Evaluate(List<int> pInstalaciones)
         {
-            var summ = 0.0;
-            for (var i = 0; i < totalAristas; i++)
-                summ += dim[i] * aristas[i].distanciaArista;
-
+            double summ = 0.0; 
+            int i;
+            for (i = 0; i < numVertices; i++) {               
+                summ = summ + distanciaMenorPuntoDemanda(i, pInstalaciones);
+            }
             return summ;
         }
-        public int[][] floyd() {
+        public double distanciaMenorPuntoDemanda(int puntoDemanda, List<int> pInstalaciones ) {
+            double distanciaMenor = 0;
+            double distancia = 0;
+            distanciaMenor = distanciasFloyd[puntoDemanda][pInstalaciones[0]];
+            for (int t = 1; t < pInstalaciones.Count; t ++)
+            {
+                distancia = distanciasFloyd[puntoDemanda][pInstalaciones[t]];
+                if (distancia < distanciaMenor)
+                {
+                    distanciaMenor = distancia;
+                }
+            }
+            return distanciaMenor;
+        }
+        public void MatrisDistancias() {
              
-            int[][] matrizFloyd = new int[numVertices][];
+            distanciasFloyd = new int[numVertices][];
             for (int i = 0; i < numVertices; i++) {
-                matrizFloyd[i] = new int[numVertices];
+                distanciasFloyd[i] = new int[numVertices];
                 for (int j = 0; j < numVertices; j++) {
                     if (i == j) {
-                        matrizFloyd[i][j] = 0;
+                        distanciasFloyd[i][j] = 0;
                     }
                     else {
-                        matrizFloyd[i][j]= cst;
+                        distanciasFloyd[i][j]= cst;
                     }
                     
                 }
@@ -76,7 +93,7 @@ namespace Monografia.Funciones
 
             for (int i = 0; i < aristas.Count; i++) {
                 Arista  art = aristas[i];
-                matrizFloyd[art.verticeInicial - 1][art.verticeFinal - 1] = art.distanciaArista;
+                distanciasFloyd[art.verticeInicial - 1][art.verticeFinal - 1] = art.distanciaArista;
             }
             for(int k = 0; k < numVertices; ++k)
             {
@@ -84,19 +101,18 @@ namespace Monografia.Funciones
                 {
                     for (int j = 0; j < numVertices; ++j)
                     {
-                        if (matrizFloyd[i][k] + matrizFloyd[k][j] < matrizFloyd[i][j])
-                            matrizFloyd[i][j] = matrizFloyd[i][k] + matrizFloyd[k][j];
+                        if (distanciasFloyd[i][k] + distanciasFloyd[k][j] < distanciasFloyd[i][j])
+                            distanciasFloyd[i][j] = distanciasFloyd[i][k] + distanciasFloyd[k][j];
                     }
                 }
-            }
-            return matrizFloyd;
+            }      
 
         }
 
         
-        public double distanciaArista(int index)
+        public double distanciaFloydArista(int demanda, int instalacion)
         {
-            return aristas[index].distanciaArista;
+            return distanciasFloyd[demanda][instalacion];
         }
         public List<Arista> GetVariables()
         {

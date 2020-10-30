@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Monografia.Funciones;
@@ -20,26 +21,141 @@ namespace Monografia.Metaheuristicas
             MyProblem = theProblem;
             MyAlgorithm = theAlgorithm;       
             Objects = new int[MyProblem.totalAristas];
-            Weight = 0;
+            Weight = 0; 
             _fitness = 0;
         }
-     
-        public int[] repararSolucion(int[] X)
-        { // mover a solucion
-            int[] Xnew = new int[X.Length];
-            Xnew = X;
-            return Xnew;
+
+        public int[] repararSolucion(int[] solucionX)
+        {
+            Console.WriteLine("-------");
+            imprimirSolucion(solucionX);
+            Console.WriteLine("-------");
+            int poskX;
+            int pMedianas = MyProblem.p_medianas;
+            List<int> pInstalaciones = posicionesPinstalaciones(solucionX);
+            Console.WriteLine("pinsta2:" + pInstalaciones.Count);
+            double[] menoresDistancias = determinarMenoresDistanciasX(solucionX, pInstalaciones);
+            while (pInstalaciones.Count< pMedianas) {
+                poskX = determinarArgMax(solucionX, menoresDistancias);
+                solucionX[poskX] = 1;
+                pInstalaciones.Add(poskX);
+                menoresDistancias = determinarMenoresDistanciasX(solucionX, pInstalaciones);
+            }
+            while (pInstalaciones.Count > pMedianas) {
+                
+                poskX = determinarArgMin(pInstalaciones, menoresDistancias);
+                solucionX[poskX] = 0;
+                pInstalaciones.Remove(poskX);
+                menoresDistancias = determinarMenoresDistanciasX(solucionX, pInstalaciones);
+            }
+            Console.WriteLine("-------");
+            imprimirSolucion(solucionX);
+            Console.WriteLine("-------");
+
+            return solucionX;
         }
+
+        private double[] determinarMenoresDistanciasX(int [] solucionX, List<int> pInstalaciones) {
+            double[] menoresDistancias = new double[solucionX.Length];
+            for (int i = 0; i < solucionX.Length; i++){
+                menoresDistancias[i] = MyProblem.distanciaMenorPuntoDemanda(i, pInstalaciones);
+            }
+            return menoresDistancias;
+        }
+        private  int determinarArgMax (int [] solucionX, double[] menoresDistancias) {
+            int poskX = 0;
+            double argMin = 0;
+            double[] sumasPerdidasJX = adicionPerdida(solucionX, menoresDistancias);
+            for (int j = 0; j < sumasPerdidasJX.Length; j++) {
+                double sumaperdidaJX = sumasPerdidasJX[j];
+                if (sumaperdidaJX < argMin) {
+                    argMin = sumaperdidaJX;
+                    poskX =j;
+                }
+            }
+            return poskX; 
+        }
+
+        private double[] adicionPerdida(int [] solucionX,double[] menoresDistancias) {
+            double[] sumaperdidaJX = new double[solucionX.Length];
+            double sumaMin = 0;
+            for (int j = 0; j < solucionX.Length; j++){
+                if (solucionX[j] == 0) {
+                    for (int i = 0; i < menoresDistancias.Length; i++){
+                        double distanciaIJ = MyProblem.distanciaFloydArista(i,j);
+                        double dif =  distanciaIJ - menoresDistancias[i];
+                        if (dif < 0){
+                            sumaMin = sumaMin + dif;
+                        }
+                    }
+                    sumaperdidaJX[j] = sumaMin;
+                }
+                sumaperdidaJX[j] = 0;
+            }
+        return sumaperdidaJX;
+        }
+
+        private int determinarArgMin(List<int> pInstalaciones, double[] menoresDistancias)
+        {
+            int poskX = 0;
+            double argMax = 1000000;
+            List<double> sumasGanaciasJSX = eliminarGanacia(pInstalaciones, menoresDistancias);
+            for (int j = 0; j < sumasGanaciasJSX.Count; j++)
+            {
+                double sumagananciaJX = sumasGanaciasJSX[j];
+                if (sumagananciaJX < argMax)
+                {
+                    argMax = sumagananciaJX;
+                    poskX = pInstalaciones[j];;
+                }
+            }
+            return poskX;
+
+
+        }
+        private List<double> eliminarGanacia(List<int> pInstalaciones, double[] menoresDistancias)
+        {
+            double sumaMin = 0;
+            List<double> sumasGanaciaJX= new List<double>();        
+            for (int j = 0; j < pInstalaciones.Count; j++) {
+                List<int> copiapInstalaciones = new List<int>(pInstalaciones);
+                copiapInstalaciones.RemoveAt(j);
+                /*
+                Console.WriteLine(j);
+                for (int a = 0; a < pInstalaciones.Count; a++) {
+                    Console.Write(pInstalaciones[a] + ",");
+                }
+                Console.WriteLine("original");
+                for (int a = 0; a < copiapInstalaciones.Count; a++)
+                {
+                    Console.Write(copiapInstalaciones[a] + ",");
+                }
+                Console.WriteLine("copia");
+                */
+                for (int i = 0; i < menoresDistancias.Length; i++) {
+                    double menordistanciaIT = MyProblem.distanciaMenorPuntoDemanda(i, copiapInstalaciones);
+                    double dif = menordistanciaIT - menoresDistancias[i];
+                    sumaMin = sumaMin + dif;
+                }
+                sumasGanaciaJX.Add(sumaMin);
+            }
+
+            return sumasGanaciaJX;
+        }
+
+
 
         public double evaluarSolucion(int[] X)    // mover a solucion
         {
-            double[] pesos = generarPesos(X.Length);
-            double evaluacion = 0;
-            for (int i = 0; i < X.Length; i++)
-            {
-                evaluacion = evaluacion + X[i] * pesos[i];
+            double evaluacion=0;
+            List<int> pinstalaciones = posicionesPinstalaciones(X);
+            evaluacion = MyProblem.Evaluate(pinstalaciones);
+            return evaluacion;   
+        }
+        private void imprimirPinstalaciones (List<int> pInstalaciones) {
+            for (int i = 0; i < pInstalaciones.Count; i++) {
+                Console.Write(pInstalaciones[i]+"-");
             }
-            return evaluacion;
         }
 
         public int[] mejorSolucion(int[][] poblacion) // mover a solucion
@@ -47,12 +163,14 @@ namespace Monografia.Metaheuristicas
             int[] mejor = new int[poblacion[0].Length];
             int[] solucion ;
             double mejorEvaluacion = evaluarSolucion(poblacion[0]);
+            mejor = poblacion[0];
             for (int i = 1; i < poblacion.Length; i++)
             {
                 solucion = poblacion[i];
                 double evaluacion = evaluarSolucion(solucion);
                 if (evaluacion < mejorEvaluacion)
                 {
+
                     mejor = solucion;
                 }
             }
@@ -106,7 +224,7 @@ namespace Monografia.Metaheuristicas
             int valor;
    
             double alea = myRandom.NextDouble();
-            if (alea < 0.5){
+            if (alea < 0.9){
                 valor = 0;
             }
             else{
@@ -128,10 +246,22 @@ namespace Monografia.Metaheuristicas
 
             }
         }
+        private List<int> posicionesPinstalaciones(int [] X) {
+            List<int> pinstalaciones = new List<int>();
+            for (int j = 0; j < X.Length; j++)
+            {
+                if (X[j] == 1)
+                {
+                    pinstalaciones.Add(j);
+                }
+            }
+            return pinstalaciones;
+
+        }
 
         public void imprimirdistancias()
         {
-            int [][] distancias = MyProblem.floyd();
+            int [][] distancias = MyProblem.distanciasFloyd;
             Console.WriteLine("Distancias");
             for (int i = 0; i < distancias.Length; i++)
             {
@@ -144,20 +274,10 @@ namespace Monografia.Metaheuristicas
             }
         }
 
-        private double[] generarPesos(int n)
+        public void Evaluate(int [] solucion)
         {
-            double[] pesos = new double[n];
-            Random randon = new Random();
-            for (int i = 0; i < n; i++)
-            {
-                pesos[i] = randon.NextDouble();
-            }
-            return pesos;
-        }
-
-        public void Evaluate()
-        {
-            _fitness = Weight <= MyProblem.p_medianas ? MyProblem.Evaluate(Objects) : double.NegativeInfinity;
+            _fitness = evaluarSolucion(solucion);
+            Console.WriteLine("\n Mejor Fitness:"+_fitness);
             MyAlgorithm.EFOs++;
         }
 

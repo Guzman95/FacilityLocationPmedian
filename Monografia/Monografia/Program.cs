@@ -17,7 +17,7 @@ namespace Monografia
                 var maxEFOS = 5000;
             var myAlgorithms = new List<Algorithm>{
                 new HSOS(),
-                new SBHS(),
+                //new SBHS(),
                 };
                 const int maxRep = 1;
 
