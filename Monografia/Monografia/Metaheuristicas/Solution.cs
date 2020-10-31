@@ -27,13 +27,9 @@ namespace Monografia.Metaheuristicas
 
         public int[] repararSolucion(int[] solucionX)
         {
-            Console.WriteLine("-------");
-            imprimirSolucion(solucionX);
-            Console.WriteLine("-------");
             int poskX;
             int pMedianas = MyProblem.p_medianas;
             List<int> pInstalaciones = posicionesPinstalaciones(solucionX);
-            Console.WriteLine("pinsta2:" + pInstalaciones.Count);
             double[] menoresDistancias = determinarMenoresDistanciasX(solucionX, pInstalaciones);
             while (pInstalaciones.Count< pMedianas) {
                 poskX = determinarArgMax(solucionX, menoresDistancias);
@@ -48,10 +44,6 @@ namespace Monografia.Metaheuristicas
                 pInstalaciones.Remove(poskX);
                 menoresDistancias = determinarMenoresDistanciasX(solucionX, pInstalaciones);
             }
-            Console.WriteLine("-------");
-            imprimirSolucion(solucionX);
-            Console.WriteLine("-------");
-
             return solucionX;
         }
 
@@ -78,8 +70,8 @@ namespace Monografia.Metaheuristicas
 
         private double[] adicionPerdida(int [] solucionX,double[] menoresDistancias) {
             double[] sumaperdidaJX = new double[solucionX.Length];
-            double sumaMin = 0;
             for (int j = 0; j < solucionX.Length; j++){
+                double sumaMin = 0;
                 if (solucionX[j] == 0) {
                     for (int i = 0; i < menoresDistancias.Length; i++){
                         double distanciaIJ = MyProblem.distanciaFloydArista(i,j);
@@ -115,23 +107,12 @@ namespace Monografia.Metaheuristicas
         }
         private List<double> eliminarGanacia(List<int> pInstalaciones, double[] menoresDistancias)
         {
-            double sumaMin = 0;
+
             List<double> sumasGanaciaJX= new List<double>();        
             for (int j = 0; j < pInstalaciones.Count; j++) {
+                double sumaMin = 0;
                 List<int> copiapInstalaciones = new List<int>(pInstalaciones);
-                copiapInstalaciones.RemoveAt(j);
-                /*
-                Console.WriteLine(j);
-                for (int a = 0; a < pInstalaciones.Count; a++) {
-                    Console.Write(pInstalaciones[a] + ",");
-                }
-                Console.WriteLine("original");
-                for (int a = 0; a < copiapInstalaciones.Count; a++)
-                {
-                    Console.Write(copiapInstalaciones[a] + ",");
-                }
-                Console.WriteLine("copia");
-                */
+                copiapInstalaciones.RemoveAt(j);                
                 for (int i = 0; i < menoresDistancias.Length; i++) {
                     double menordistanciaIT = MyProblem.distanciaMenorPuntoDemanda(i, copiapInstalaciones);
                     double dif = menordistanciaIT - menoresDistancias[i];
@@ -139,7 +120,6 @@ namespace Monografia.Metaheuristicas
                 }
                 sumasGanaciaJX.Add(sumaMin);
             }
-
             return sumasGanaciaJX;
         }
 

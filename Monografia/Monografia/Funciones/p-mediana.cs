@@ -62,10 +62,10 @@ namespace Monografia.Funciones
             return summ;
         }
         public double distanciaMenorPuntoDemanda(int puntoDemanda, List<int> pInstalaciones ) {
-            double distanciaMenor = 0;
-            double distancia = 0;
+            double distanciaMenor;
+            double distancia;
             distanciaMenor = distanciasFloyd[puntoDemanda][pInstalaciones[0]];
-            for (int t = 1; t < pInstalaciones.Count; t ++)
+            for (int t = 1; t < pInstalaciones.Count; t++)
             {
                 distancia = distanciasFloyd[puntoDemanda][pInstalaciones[t]];
                 if (distancia < distanciaMenor)
@@ -93,7 +93,7 @@ namespace Monografia.Funciones
 
             for (int i = 0; i < aristas.Count; i++) {
                 Arista  art = aristas[i];
-                distanciasFloyd[art.verticeInicial - 1][art.verticeFinal - 1] = art.distanciaArista;
+                distanciasFloyd[art.verticeFinal - 1][art.verticeInicial - 1] = art.distanciaArista;
             }
             for(int k = 0; k < numVertices; ++k)
             {
@@ -101,8 +101,9 @@ namespace Monografia.Funciones
                 {
                     for (int j = 0; j < numVertices; ++j)
                     {
-                        if (distanciasFloyd[i][k] + distanciasFloyd[k][j] < distanciasFloyd[i][j])
-                            distanciasFloyd[i][j] = distanciasFloyd[i][k] + distanciasFloyd[k][j];
+                        int suma_ik_kj = distanciasFloyd[i][k] + distanciasFloyd[k][j];
+                        if (distanciasFloyd[j][i] > suma_ik_kj)
+                            distanciasFloyd[j][i] = suma_ik_kj;
                     }
                 }
             }      
@@ -127,6 +128,20 @@ namespace Monografia.Funciones
             for (var i = 0; i < totalAristas; i++)
                 result += aristas[i] + "\n";
             return result;
+        }
+
+        public void ImprimirMatriz()
+        {
+            for (int i = 0; i < this.distanciasFloyd.Length; i++)
+            {
+                for (int j = 0; j < this.distanciasFloyd.Length; j++)
+                {
+
+                    Console.Write("-" + distanciasFloyd[i][j]);
+                }
+                Console.WriteLine("\n");
+
+            }
         }
     }
 }
