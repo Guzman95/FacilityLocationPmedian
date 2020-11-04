@@ -12,12 +12,12 @@ namespace Monografia
         static void Main(string[] args)
         {
                 var myProblems = new List<p_mediana>{
-                new p_mediana("pmed1.txt"),
+                new p_mediana("pmed3.txt"),
                 };
                 var maxEFOS = 5000;
             var myAlgorithms = new List<Algorithm>{
-                new HSOS(),
-                //new SBHS(),
+                //new HSOS(),
+                new SBHS(),
                 };
                 const int maxRep = 1;
 

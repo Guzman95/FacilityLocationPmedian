@@ -9,8 +9,8 @@ namespace Monografia.Funciones
     public class p_mediana
     {
         
-        private const string RootDirectory = "F://UNIVERSIDAD//TESIS//FacilityLocationPmedian//Monografia//Monografia//problemas//";
-        //private const string RootDirectory = "C://Users//santi//Desktop//FacilityLocationPmedian//Monografia//Monografia//problemas//";
+        //private const string RootDirectory = "F://UNIVERSIDAD//TESIS//FacilityLocationPmedian//Monografia//Monografia//problemas//";
+        private const string RootDirectory = "C://Users//santi//Desktop//FacilityLocationPmedian//Monografia//Monografia//problemas//";
         public int numVertices;
         public int totalAristas;
         public int OptimalLocation;
@@ -31,21 +31,21 @@ namespace Monografia.Funciones
         {
             //read the problem
             var lines = File.ReadAllLines(fullFileName);
-            var firstline = lines[0].Split(';');
-             numVertices = int.Parse(firstline[0]);
-             totalAristas = int.Parse(firstline[1]);
-             p_medianas = int.Parse(firstline[2]);
-             OptimalLocation = int.Parse(firstline[3]);
+            var firstline = lines[0].Split(' ');
+             numVertices = int.Parse(firstline[1]);
+             totalAristas = int.Parse(firstline[2]);
+             p_medianas = int.Parse(firstline[3]);
+             OptimalLocation = int.Parse(firstline[4]);
 
 
 
             var positionLine = 1;
             for (var i = 0; i < totalAristas; i++)
             {
-                var line = lines[positionLine++].Split(';');
-                var verticeInicial = int.Parse(line[0]);
-                var verticeFinal = int.Parse(line[1]);
-                var distanciaArista = int.Parse(line[2]);
+                var line = lines[positionLine++].Split(' ');
+                var verticeInicial = int.Parse(line[1]);
+                var verticeFinal = int.Parse(line[2]);
+                var distanciaArista = int.Parse(line[3]);
                 var newAriasta = new Arista(i, verticeInicial, verticeFinal, distanciaArista);
                 aristas.Add(newAriasta);
 
