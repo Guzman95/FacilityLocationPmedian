@@ -17,7 +17,7 @@ namespace Monografia.Metaheuristicas.Armonicos
             Solution solucion = new Solution(theProblem, this);
             int n = theProblem.numVertices;
             double HMCR = 1 - (10 / n);
-            int HMS = 5;
+            int HMS = 30;
             int[][] HM = new int[HMS][];
             int NI= 100; //numero de iteraciones
             int posPeor;
@@ -65,7 +65,8 @@ namespace Monografia.Metaheuristicas.Armonicos
                 }
                 k++;
             }
-            solucion.imprimirpoblacion(HM, n);
+            solucion.Evaluate(solucion.mejorSolucion(HM));
+            //solucion.imprimirpoblacion(HM, n);
         }
 
     }
