@@ -44,8 +44,8 @@ namespace Monografia.Metaheuristicas.Armonicos
                 }
             }
             b = solution.repararSolucion(b);
-            if (solution.evaluarSolucion(b) <solution.evaluarSolucion(Xi)){
-                poblacion[indiceXi] = b;
+            if (solution.evaluarSolucion(b) < solution.evaluarSolucion(Xi)){
+                this.poblacion[indiceXi] = b;
             }
         }
 
@@ -66,7 +66,7 @@ namespace Monografia.Metaheuristicas.Armonicos
             }
             d = solution.repararSolucion(d);
             if (solution.evaluarSolucion(d) < solution.evaluarSolucion(Xi)) {
-                poblacion[indiceXi] = d;
+                this.poblacion[indiceXi] = d;
             }
         }
         //FASE DE PARASITISMO
@@ -86,7 +86,7 @@ namespace Monografia.Metaheuristicas.Armonicos
             }
             vectorParasito = solution.repararSolucion(vectorParasito);
             if (solution.evaluarSolucion(vectorParasito) < solution.evaluarSolucion(Xj)) {
-                poblacion[indiceXj] = vectorParasito;
+                this.poblacion[indiceXj] = vectorParasito;
             }
         }
         //FASE DE ARMONIA
@@ -101,7 +101,7 @@ namespace Monografia.Metaheuristicas.Armonicos
             for (int k = 0; k < dimensionOrganismo; k++) {
                 if (randon.NextDouble() <= HMCR){
                     posAleatoria = solution.posSolucionAleatoria(indiceXi, tamPoblacion, myRamdonL);
-                    neko[k] = poblacion[posAleatoria][k];
+                    neko[k] = this.poblacion[posAleatoria][k];
                     if (randon.NextDouble() <= PAR){
                         if (randon.NextDouble() > 0.5){
                             neko[k] = 0;
@@ -116,13 +116,13 @@ namespace Monografia.Metaheuristicas.Armonicos
                 }
             }
             neko = solution.repararSolucion(neko);
-            posPeor = solution.posPeorSolucion(poblacion);
+            posPeor = solution.posPeorSolucion(this.poblacion);
             double evaluacionNeko = solution.evaluarSolucion(neko);
-            if (evaluacionNeko < solution.evaluarSolucion(poblacion[posPeor])) {
-                poblacion[posPeor] = neko;
+            if (evaluacionNeko < solution.evaluarSolucion(this.poblacion[posPeor])) {
+                this.poblacion[posPeor] = neko;
             }
             if (evaluacionNeko < solution.evaluarSolucion(Xi)) {
-                poblacion[indiceXi] = neko;
+                this.poblacion[indiceXi] = neko;
             }
         }
 
@@ -159,11 +159,10 @@ namespace Monografia.Metaheuristicas.Armonicos
             {
                 poblacion[i] = solution.generarSolucionAleatorio(dimensionOrganismo, myRandom);
             }
-
             Console.WriteLine("\nPoblacion Inicial");
-            solution.imprimirpoblacion(poblacion, dimensionOrganismo);
+            solution.imprimirpoblacion(this.poblacion, dimensionOrganismo);
             Console.WriteLine(" ");
-            mejor = solution.mejorSolucion(poblacion);
+            mejor = solution.mejorSolucion(this.poblacion);
             Console.WriteLine("\nMejor Inicial");
             solution.imprimirSolucion(mejor);
             solution.Evaluate(mejor);
@@ -190,17 +189,14 @@ namespace Monografia.Metaheuristicas.Armonicos
                     faceArmonia(xi, i);
 
                     Console.WriteLine("poblacion local organismo: " + i);
-                    solution.imprimirpoblacion(poblacion, dimensionOrganismo);
+                    solution.imprimirpoblacion(this.poblacion, dimensionOrganismo);
                     Console.WriteLine(" ");
-                    mejor = solution.mejorSolucion(poblacion);
+                    mejor = solution.mejorSolucion(this.poblacion);
                     Console.WriteLine("\nMejor Local");
                     solution.imprimirSolucion(mejor);
                     solution.Evaluate(mejor);
                 }
                 iter++;
-                Console.WriteLine("\nPoblacicon Global iteracion:"+ iter);
-                solution.imprimirpoblacion(poblacion, dimensionOrganismo);
-                Console.WriteLine(" ");
                 Console.WriteLine("\nMejor Global");
                 solution.imprimirSolucion(mejor);
                 solution.Evaluate(mejor);
