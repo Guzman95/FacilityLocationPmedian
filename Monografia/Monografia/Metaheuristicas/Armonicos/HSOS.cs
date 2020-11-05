@@ -18,8 +18,8 @@ namespace Monografia.Metaheuristicas.Armonicos
         //FASE DE MUTUALISMO
         private void faseMutualismo(int[] Xi, int[] Xj, int[] mejor, int indiceXi){
             int[] mutualvector = new int[dimensionOrganismo];
-            int[] a = new int[dimensionOrganismo];
-            int[] b = new int[dimensionOrganismo];
+            int[] a;
+            int[] b;
             Random randon = new Random();
 
             for (int k = 0; k < dimensionOrganismo; k++){
@@ -40,12 +40,12 @@ namespace Monografia.Metaheuristicas.Armonicos
             b = solution.generarSolucionAleatorio(dimensionOrganismo, myRamdonL);
             for (int k = 0; k < dimensionOrganismo; k++){
                 if (a[k] == Xi[k]){
-                    a[k] = Xi[k];
+                    b[k] = Xi[k];
                 }
             }
-            a = solution.repararSolucion(a);
-            if (solution.evaluarSolucion(a) <solution.evaluarSolucion(Xi)){
-                poblacion[indiceXi] = a;
+            b = solution.repararSolucion(b);
+            if (solution.evaluarSolucion(b) <solution.evaluarSolucion(Xi)){
+                poblacion[indiceXi] = b;
             }
         }
 
@@ -65,18 +65,18 @@ namespace Monografia.Metaheuristicas.Armonicos
                 }
             }
             d = solution.repararSolucion(d);
-            if (solution.evaluarSolucion(d) <solution.evaluarSolucion(Xi)) {
+            if (solution.evaluarSolucion(d) < solution.evaluarSolucion(Xi)) {
                 poblacion[indiceXi] = d;
             }
         }
         //FASE DE PARASITISMO
-        private void faceParasitismo(int []Xj, int []Xi, int indiceXj) {
-            int[] vectorParasito= Xi;
+        private void faceParasitismo(int []Xi, int []Xj, int indiceXj) {
+            int[] vectorParasito = Xi;
             int[] nDimenciones = dimesionesAleatoria();
             int pos;
             for (int k = 0; k < nDimenciones.Length; k++) 
             {
-                pos= nDimenciones[k];
+                pos = nDimenciones[k];
                 if (vectorParasito[pos] == 1) {
                     vectorParasito[pos] = 0;
                 }
@@ -85,7 +85,7 @@ namespace Monografia.Metaheuristicas.Armonicos
                 }
             }
             vectorParasito = solution.repararSolucion(vectorParasito);
-            if (solution.evaluarSolucion(vectorParasito) <solution.evaluarSolucion(Xj)) {
+            if (solution.evaluarSolucion(vectorParasito) < solution.evaluarSolucion(Xj)) {
                 poblacion[indiceXj] = vectorParasito;
             }
         }
@@ -94,7 +94,7 @@ namespace Monografia.Metaheuristicas.Armonicos
             Random randon = new Random();
             double HMCR = 0.657;
             double PAR = 0.365;
-        int[] neko = new int[dimensionOrganismo];
+            int[] neko = new int[dimensionOrganismo];
             int posPeor;
             int posAleatoria;
 
@@ -117,10 +117,11 @@ namespace Monografia.Metaheuristicas.Armonicos
             }
             neko = solution.repararSolucion(neko);
             posPeor = solution.posPeorSolucion(poblacion);
-            if (solution.evaluarSolucion(neko) < solution.evaluarSolucion(poblacion[posPeor])) {
+            double evaluacionNeko = solution.evaluarSolucion(neko);
+            if (evaluacionNeko < solution.evaluarSolucion(poblacion[posPeor])) {
                 poblacion[posPeor] = neko;
             }
-            if (solution.evaluarSolucion(neko) <solution.evaluarSolucion(Xi)) {
+            if (evaluacionNeko < solution.evaluarSolucion(Xi)) {
                 poblacion[indiceXi] = neko;
             }
         }
@@ -148,7 +149,7 @@ namespace Monografia.Metaheuristicas.Armonicos
             dimensionOrganismo = theProblem.numVertices;
             tamPoblacion = 5;
             int iter = 0;
-            int itermax = 1;
+            int itermax = 10;
             int j;
             poblacion = new int[tamPoblacion][];
             int[] xi;
@@ -159,14 +160,17 @@ namespace Monografia.Metaheuristicas.Armonicos
                 poblacion[i] = solution.generarSolucionAleatorio(dimensionOrganismo, myRandom);
             }
 
-            Console.WriteLine(" ");
-            Console.WriteLine(" poblacion inicial");
+            Console.WriteLine("\nPoblacion Inicial");
             solution.imprimirpoblacion(poblacion, dimensionOrganismo);
             Console.WriteLine(" ");
+            mejor = solution.mejorSolucion(poblacion);
+            Console.WriteLine("\nMejor Inicial");
+            solution.imprimirSolucion(mejor);
+            solution.Evaluate(mejor);
 
             while (iter < itermax)
             {
-                mejor = solution.mejorSolucion(poblacion);
+                Console.WriteLine("Iteracion" + iter);
                 for (int i = 0; i < tamPoblacion; i++)
                 {
                     xi = poblacion[i];
@@ -184,15 +188,22 @@ namespace Monografia.Metaheuristicas.Armonicos
                     xj = poblacion[j];
                     faceParasitismo(xi, xj, j);
                     faceArmonia(xi, i);
-                    Console.WriteLine(" ");
-                    Console.WriteLine("organismo: " + i);
+
+                    Console.WriteLine("poblacion local organismo: " + i);
                     solution.imprimirpoblacion(poblacion, dimensionOrganismo);
                     Console.WriteLine(" ");
-                }                
+                    mejor = solution.mejorSolucion(poblacion);
+                    Console.WriteLine("\nMejor Local");
+                    solution.imprimirSolucion(mejor);
+                    solution.Evaluate(mejor);
+                }
                 iter++;
-                Console.WriteLine("Mejor");
+                Console.WriteLine("\nPoblacicon Global iteracion:"+ iter);
+                solution.imprimirpoblacion(poblacion, dimensionOrganismo);
+                Console.WriteLine(" ");
+                Console.WriteLine("\nMejor Global");
                 solution.imprimirSolucion(mejor);
-                solution.Evaluate(mejor);         
+                solution.Evaluate(mejor);
             }
         }
     }

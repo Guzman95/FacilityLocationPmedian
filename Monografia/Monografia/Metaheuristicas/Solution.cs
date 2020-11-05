@@ -127,11 +127,17 @@ namespace Monografia.Metaheuristicas
 
         public double evaluarSolucion(int[] X)    // mover a solucion
         {
-            double evaluacion=0;
+            double evaluacion;
             List<int> pinstalaciones = posicionesPinstalaciones(X);
-            evaluacion = MyProblem.Evaluate(pinstalaciones);
+            if (pinstalaciones.Count == 0){
+                evaluacion = 0;
+            }
+            else{
+                evaluacion = MyProblem.Evaluate(pinstalaciones);
+            }
             return evaluacion;   
         }
+
         private void imprimirPinstalaciones (List<int> pInstalaciones) {
             for (int i = 0; i < pInstalaciones.Count; i++) {
                 Console.Write(pInstalaciones[i]+"-");
@@ -140,18 +146,13 @@ namespace Monografia.Metaheuristicas
 
         public int[] mejorSolucion(int[][] poblacion) // mover a solucion
         {
-            int[] mejor = new int[poblacion[0].Length];
-            int[] solucion ;
+            int[] mejor;
             double mejorEvaluacion = evaluarSolucion(poblacion[0]);
             mejor = poblacion[0];
-            for (int i = 1; i < poblacion.Length; i++)
-            {
-                solucion = poblacion[i];
-                double evaluacion = evaluarSolucion(solucion);
-                if (evaluacion < mejorEvaluacion)
-                {
-
-                    mejor = solucion;
+            for (int i = 1; i < poblacion.Length; i++){
+                double evaluacion = evaluarSolucion(poblacion[i]);
+                if (evaluacion < mejorEvaluacion){
+                    mejor = poblacion[i];
                 }
             }
             return mejor;
@@ -159,13 +160,10 @@ namespace Monografia.Metaheuristicas
 
         public int posPeorSolucion(int[][] poblacion) // mover a solucion
         {
-            int[] solucion;
             int posPeor = 0;
             double peorEvaluacion = evaluarSolucion(poblacion[0]);
-            for (int i = 1; i < poblacion.Length; i++)
-            {
-                solucion = poblacion[i];
-                double evaluacion = evaluarSolucion(solucion);
+            for (int i = 1; i < poblacion.Length; i++){
+                double evaluacion = evaluarSolucion(poblacion[i]);
                 if (evaluacion > peorEvaluacion)
                 {
                     posPeor = i;
@@ -204,7 +202,7 @@ namespace Monografia.Metaheuristicas
             int valor;
    
             double alea = myRandom.NextDouble();
-            if (alea < 0.9){
+            if (alea < 0.65){
                 valor = 0;
             }
             else{

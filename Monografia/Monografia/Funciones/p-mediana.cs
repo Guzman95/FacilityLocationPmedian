@@ -55,8 +55,7 @@ namespace Monografia.Funciones
         public double Evaluate(List<int> pInstalaciones)
         {
             double summ = 0.0; 
-            int i;
-            for (i = 0; i < numVertices; i++) {               
+            for (int i = 0; i < numVertices; i++) {               
                 summ = summ + distanciaMenorPuntoDemanda(i, pInstalaciones);
             }
             return summ;
