@@ -8,9 +8,10 @@ namespace Monografia.Funciones
 {
     public class p_mediana
     {
-        
+        //Lee la direccion donde esta el problema
         //private const string RootDirectory = "F://UNIVERSIDAD//TESIS//FacilityLocationPmedian//Monografia//Monografia//problemas//";
         private const string RootDirectory = "C://Users//santi//Desktop//FacilityLocationPmedian//Monografia//Monografia//problemas//";
+        //atributos para el dataset
         public int numVertices;
         public int totalAristas;
         public int OptimalLocation;
@@ -19,19 +20,19 @@ namespace Monografia.Funciones
         public string FileName;
         public int[][] distanciasFloyd;
         public const int cst = 9999;
-
+        //Constructor para leer y generar la matriz de distancias
         public p_mediana(string fileName)
         {
             FileName = fileName; 
             ReadFile(RootDirectory + fileName);
             MatrisDistancias();
         }
-
+        //lee cada dataset para generar las aristas
         public void ReadFile(string fullFileName)
         {
             //read the problem
             var lines = File.ReadAllLines(fullFileName);
-            var firstline = lines[0].Split(' ');
+            var firstline = lines[0].Split(';');
              numVertices = int.Parse(firstline[1]);
              totalAristas = int.Parse(firstline[2]);
              p_medianas = int.Parse(firstline[3]);
@@ -42,7 +43,7 @@ namespace Monografia.Funciones
             var positionLine = 1;
             for (var i = 0; i < totalAristas; i++)
             {
-                var line = lines[positionLine++].Split(' ');
+                var line = lines[positionLine++].Split(';');
                 var verticeInicial = int.Parse(line[1]);
                 var verticeFinal = int.Parse(line[2]);
                 var distanciaArista = int.Parse(line[3]);
@@ -51,7 +52,7 @@ namespace Monografia.Funciones
 
             }
         }
-
+        //Evalua la solucion de ir a un punto de demanda i
         public double Evaluate(List<int> pInstalaciones)
         {
             double summ = 0.0; 
@@ -60,6 +61,7 @@ namespace Monografia.Funciones
             }
             return summ;
         }
+        //obtiene la menor distancia de un punto de demanda a los demas nodos
         public double distanciaMenorPuntoDemanda(int puntoDemanda, List<int> pInstalaciones ) {
             double distanciaMenor;
             double distancia;
@@ -74,6 +76,7 @@ namespace Monografia.Funciones
             }
             return distanciaMenor;
         }
+        //genera la matriz de distancias
         public void MatrisDistancias() {
              
             distanciasFloyd = new int[numVertices][];
@@ -109,7 +112,7 @@ namespace Monografia.Funciones
 
         }
 
-        
+        //retorna la distancia que hay de un punto de demanda a su instalacion
         public double distanciaFloydArista(int demanda, int instalacion)
         {
             return distanciasFloyd[demanda][instalacion];
@@ -128,7 +131,7 @@ namespace Monografia.Funciones
                 result += aristas[i] + "\n";
             return result;
         }
-
+        //Imprime la matriz de distancias
         public void ImprimirMatriz()
         {
             for (int i = 0; i < this.distanciasFloyd.Length; i++)

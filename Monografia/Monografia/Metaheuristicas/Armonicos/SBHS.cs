@@ -64,6 +64,7 @@ namespace Monografia.Metaheuristicas.Armonicos
                     
                 }
                 k++;
+                
             }
             solucion.Evaluate(solucion.mejorSolucion(HM));
             //solucion.imprimirpoblacion(HM, n);
