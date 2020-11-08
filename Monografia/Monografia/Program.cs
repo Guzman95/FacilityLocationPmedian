@@ -12,8 +12,8 @@ namespace Monografia
         static void Main(string[] args)
         {
                 var myProblems = new List<p_mediana>{
-                new p_mediana("pmed2.txt"),
-                new p_mediana("pmed3.txt"),
+                    new p_mediana("pmed2.txt"),
+                    new p_mediana("pmed3.txt"),
                 };
                 var maxEFOS = 5000;
             var myAlgorithms = new List<Algorithm>{

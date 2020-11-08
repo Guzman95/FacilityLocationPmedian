@@ -181,7 +181,7 @@ namespace Monografia.Metaheuristicas{
         public int valorAleatorio(Random myRandom){  // mover a solucion
             int valor;
             double alea = myRandom.NextDouble();
-            if (alea < 0.65){
+            if (alea < 0.6){
                 valor = 0;
             }
             else{
@@ -191,13 +191,13 @@ namespace Monografia.Metaheuristicas{
         }
 
         public void imprimirpoblacion(int[][] poblacion, int  n){   //mover a solucion
-            Console.WriteLine("Poblacion");
             for (int i = 0; i < poblacion.Length; i++){
                 for (int j = 0; j < n; j++){
-                    Console.Write(" ");
+                    Console.Write("-");
                     Console.Write(poblacion[i][j]);
                 }
-                Console.WriteLine(" ");
+                this.Evaluate(poblacion[i]);
+                Console.WriteLine("  ");
             }
         }
         private List<int> posicionesPinstalaciones(int [] X) {
