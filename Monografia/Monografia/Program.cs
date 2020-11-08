@@ -20,13 +20,25 @@ namespace Monografia
                 new p_mediana("pmed6.txt"),
                 new p_mediana("pmed7.txt"),
                 new p_mediana("pmed8.txt"),
+                new p_mediana("pmed9.txt"),
+                new p_mediana("pmed10.txt"),
+                new p_mediana("pmed11.txt"),
+                new p_mediana("pmed12.txt"),
+                new p_mediana("pmed13.txt"),
+                new p_mediana("pmed14.txt"),
+                new p_mediana("pmed15.txt"),
+                new p_mediana("pmed16.txt"),
+                new p_mediana("pmed17.txt"),
+                new p_mediana("pmed18.txt"),
+                new p_mediana("pmed19.txt"),
+                new p_mediana("pmed20.txt"),
                 };
                 var maxEFOS = 5000;
             var myAlgorithms = new List<Algorithm>{
                 //new HSOS(),
                 new SBHS(),
                 };
-                const int maxRep = 1;
+                const int maxRep = 100;
 
                 foreach (var theAlgorithm in myAlgorithms)
                 {

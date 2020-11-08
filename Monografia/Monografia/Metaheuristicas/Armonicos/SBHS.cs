@@ -9,8 +9,16 @@ namespace Monografia.Metaheuristicas.Armonicos
     {
 
 
-        
-      
+        public int posSolucionAleatoria(int tamPoblacion, Random myRandon)
+        {  // mover a solucion
+            int maxvalue = tamPoblacion; int minvalue = 0;
+            int aleatorio;
+            
+            aleatorio = myRandon.Next(minvalue, maxvalue);
+            //Console.WriteLine(aleatorio);
+            return aleatorio;
+        }
+
         public override void Ejecutar(p_mediana theProblem, Random myRandom)
         {
             //Hereda los metodos que se comparten con diferentes algoritmos implementados
@@ -25,6 +33,8 @@ namespace Monografia.Metaheuristicas.Armonicos
             int[] r1 = new int[n];
             int[] r2 = new int[n];
             int[] mejor = new int[n];
+            int posr1;
+            int posr2;
             //Inicializar por metodo de probabilidad
             for (int i = 0; i < HMS; i++)
             {
@@ -33,7 +43,7 @@ namespace Monografia.Metaheuristicas.Armonicos
                 HM[i] = solucion.repararSolucion(HM[i]);
             }
             int k = 0;
-            while(k < NI)
+            while(k < NI || solucion.evaluarSolucion(solucion.mejorSolucion(HM)) == theProblem.OptimalLocation)
             {
                 //Se crea la nueva armonia de tamaño n
                 for (int i = 0; i < n; i++)
@@ -41,8 +51,10 @@ namespace Monografia.Metaheuristicas.Armonicos
                     if(myRandom.NextDouble() <= HMCR)
                     {
                         //Console.Write("r1->"+r3);
-                        r1 = HM[solucion.posSolucionAleatoria(0,HMS -1,myRandom)];
-                        r2 = HM[solucion.posSolucionAleatoria(0, HMS -1, myRandom)];
+                        posr1 = posSolucionAleatoria(HMS, myRandom);
+                        posr2 = solucion.posSolucionAleatoria(posr1, HMS, myRandom);
+                        r1 = HM[posr1];
+                        r2 = HM[posr2];
                         mejor = solucion.mejorSolucion(HM);
                         //Simplifican la tasa de consideracion de memoria y el pitch adjusment por medio de la formula
                         Xnew[i] = (int)(r1[i] + Math.Pow((-1),(r1[i])) * Math.Abs(mejor[i] - r2[i]));
@@ -64,7 +76,7 @@ namespace Monografia.Metaheuristicas.Armonicos
                     
                 }
                 k++;
-                
+                //solucion.Evaluate(solucion.mejorSolucion(HM));
             }
             solucion.Evaluate(solucion.mejorSolucion(HM));
             //solucion.imprimirpoblacion(HM, n);
