@@ -11,7 +11,6 @@ namespace Monografia.Metaheuristicas{
         protected readonly int[] Objects; // {0, 1}
         protected double Weight;
         public double _fitness;
-
         public double Fitness => _fitness;
         public Solution(p_mediana theProblem, Algorithm theAlgorithm){
             MyProblem = theProblem;
@@ -224,7 +223,7 @@ namespace Monografia.Metaheuristicas{
 
         public void Evaluate(int [] solucion){
             _fitness = evaluarSolucion(solucion);
-            Console.WriteLine("\n Mejor Fitness:"+_fitness);
+            //Console.WriteLine("\n Mejor Fitness:"+_fitness);
             MyAlgorithm.EFOs++;
         }
 

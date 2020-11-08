@@ -32,13 +32,33 @@ namespace Monografia
                 new p_mediana("pmed18.txt"),
                 new p_mediana("pmed19.txt"),
                 new p_mediana("pmed20.txt"),
+                new p_mediana("pmed21.txt"),
+                new p_mediana("pmed22.txt"),
+                new p_mediana("pmed23.txt"),
+                new p_mediana("pmed24.txt"),
+                new p_mediana("pmed25.txt"),
+                new p_mediana("pmed26.txt"),
+                new p_mediana("pmed27.txt"),
+                new p_mediana("pmed28.txt"),
+                new p_mediana("pmed29.txt"),
+                new p_mediana("pmed30.txt"),
+                new p_mediana("pmed31.txt"),
+                new p_mediana("pmed32.txt"),
+                new p_mediana("pmed33.txt"),
+                new p_mediana("pmed34.txt"),
+                new p_mediana("pmed35.txt"),
+                new p_mediana("pmed36.txt"),
+                new p_mediana("pmed37.txt"),
+                new p_mediana("pmed38.txt"),
+                new p_mediana("pmed39.txt"),
+                new p_mediana("pmed40.txt"),
                 };
                 var maxEFOS = 5000;
             var myAlgorithms = new List<Algorithm>{
                 //new HSOS(),
                 new SBHS(),
                 };
-                const int maxRep = 100;
+                const int maxRep = 30;
 
                 foreach (var theAlgorithm in myAlgorithms)
                 {
@@ -59,15 +79,15 @@ namespace Monografia
                             var myRandom = new Random(rep);
                             var timeBegin = DateTime.Now;
                             theAlgorithm.Ejecutar(theProblem, myRandom);
-                            /*
+                            
                             times.Add((DateTime.Now - timeBegin).TotalSeconds);
                             mediaF.Add(theAlgorithm.BestSolution.Fitness);
                             efos.Add(theAlgorithm.EFOs);
                             if (Math.Abs(theAlgorithm.BestSolution.Fitness - theProblem.OptimalLocation) < 1e-10)
                                succesRate++;
-                            */
+                            
                         }
-                        /*
+                        
                         var avg = mediaF.Average();
                         Console.Write($"{avg,15:0.000} ");
                         var deviation = mediaF.Sum(d => (d - avg) * (d - avg));
@@ -76,7 +96,7 @@ namespace Monografia
                         Console.Write($"{efos.Average(),15:0.000} ");
                         Console.Write($"{succesRate * 100.0 / maxRep,15:0.00}% ");
                         Console.WriteLine($"{times.Average(),15:0.000000} ");
-                        */
+                        
                     }
                 }
 
