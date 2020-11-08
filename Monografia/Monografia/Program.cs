@@ -12,10 +12,6 @@ namespace Monografia
         static void Main(string[] args)
         {
                 var myProblems = new List<p_mediana>{
-<<<<<<< HEAD
-                    new p_mediana("pmed2.txt"),
-                    new p_mediana("pmed3.txt"),
-=======
                 new p_mediana("pmed1.txt"),
                 new p_mediana("pmed2.txt"),
                 new p_mediana("pmed3.txt"),
@@ -56,7 +52,6 @@ namespace Monografia
                 new p_mediana("pmed38.txt"),
                 new p_mediana("pmed39.txt"),
                 new p_mediana("pmed40.txt"),
->>>>>>> 99325214d22eb306af7f8797bffdca898ebd64a8
                 };
                 var maxEFOS = 5000;
             var myAlgorithms = new List<Algorithm>{
