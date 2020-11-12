@@ -7,7 +7,7 @@ namespace Monografia.Metaheuristicas.Armonicos
 {
     class SBHS : Algorithm
     {
-
+        public double[] evalPoblacion { get; private set; }
 
         public int posSolucionAleatoria(int tamPoblacion, Random myRandon)
         {  // mover a solucion
@@ -36,6 +36,7 @@ namespace Monografia.Metaheuristicas.Armonicos
             int[] mejor = new int[n];
             int posr1;
             int posr2;
+            int posmejor;
             //Inicializar por metodo de probabilidad
             for (int i = 0; i < HMS; i++)
             {
@@ -43,6 +44,8 @@ namespace Monografia.Metaheuristicas.Armonicos
 
                 HM[i] = BestSolution.repararSolucion(HM[i]);
             }
+
+            evalPoblacion = BestSolution.evaluacionPoblacion(HM);
             int k = 0;
             while(k < NI)
             {
@@ -56,7 +59,8 @@ namespace Monografia.Metaheuristicas.Armonicos
                         posr2 = BestSolution.posSolucionAleatoria(posr1, HMS, myRandom);
                         r1 = HM[posr1];
                         r2 = HM[posr2];
-                        mejor = BestSolution.mejorSolucion(HM);
+                        posmejor = BestSolution.posMejorSolucion(evalPoblacion);
+                        mejor = HM[posmejor];
                         //Simplifican la tasa de consideracion de memoria y el pitch adjusment por medio de la formula
                         Xnew[i] = (int)(r1[i] + Math.Pow((-1),(r1[i])) * Math.Abs(mejor[i] - r2[i]));
                     }
@@ -70,16 +74,18 @@ namespace Monografia.Metaheuristicas.Armonicos
                 //Se debe reparar la solución ya que puede existir una nueva armonia no factible
                 Xnew = BestSolution.repararSolucion(Xnew);
                 //Evalua la nueva armonia con la peor solucion almacenada en la memoria armonica
-                if(BestSolution.evaluarSolucion(Xnew) < BestSolution.evaluarSolucion(HM[BestSolution.posPeorSolucion(HM)]))
+                if (BestSolution.evaluarSolucion(Xnew) < BestSolution.evaluarSolucion(HM[BestSolution.posPeorSolucion(evalPoblacion)]))
                 {
-                    posPeor = BestSolution.posPeorSolucion(HM);
+                    posPeor = BestSolution.posPeorSolucion(evalPoblacion);
                     HM[posPeor] = Xnew;
                     
                 }
                 k++;
                 //solucion.Evaluate(solucion.mejorSolucion(HM));
             }
-            BestSolution.Evaluate(BestSolution.mejorSolucion(HM));
+            posmejor = BestSolution.posMejorSolucion(evalPoblacion);
+            mejor = HM[posmejor];
+            BestSolution.Evaluate(mejor);
             //solucion.imprimirpoblacion(HM, n);
         }
 
