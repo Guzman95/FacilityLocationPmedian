@@ -3,74 +3,106 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Monografia.Metaheuristicas.Armonicos
-{
-
-    class HSOS : Algorithm
-    {     
-      
+namespace Monografia.Metaheuristicas.Armonicos{
+    class HSOS : Algorithm{
         public int tamPoblacion;
         public int[][] poblacion;
+        double [] evalPoblacion;
         int dimensionOrganismo;
-        Solution solution;
         Random myRamdonL;
+                        /*FASE DE MOVIMIMIENTO DEL ALGORITMO*/
 
-        //FASE DE MUTUALISMO
-        private void faseMutualismo(int[] Xi, int[] Xj, int[] mejor, int indiceXi){
+        //Fase de mutualimo para xi
+        private void faseMutualismoXi(int[] Xi, int[] Xj, int[] mejor, int posXi){
             int[] mutualvector = new int[dimensionOrganismo];
-            int[] a;
-            int[] b;
+            int[] a; int[] b;
             Random randon = new Random();
-
             for (int k = 0; k < dimensionOrganismo; k++){
                 if (randon.NextDouble() > 0.5){
                     mutualvector[k] = Xi[k];
                 }
-                else {
+                else{
                     mutualvector[k] = Xj[k];
                 }
             }
-            a = solution.generarSolucionAleatorio(dimensionOrganismo, myRamdonL);
+            a = BestSolution.generarSolucionAleatorio(dimensionOrganismo, myRamdonL);
             for (int k = 0; k < dimensionOrganismo; k++){
                 if (mutualvector[k] == mejor[k]){
                     a[k] = mejor[k];
                 }
             }
-            b = solution.generarSolucionAleatorio(dimensionOrganismo, myRamdonL);
+            b = BestSolution.generarSolucionAleatorio(dimensionOrganismo, myRamdonL);
             for (int k = 0; k < dimensionOrganismo; k++){
                 if (a[k] == Xi[k]){
                     b[k] = Xi[k];
                 }
             }
-            b = solution.repararSolucion(b);
-            if (solution.evaluarSolucion(b) < solution.evaluarSolucion(Xi))
-            {
-                this.poblacion[indiceXi] = b;
+            b = BestSolution.repararSolucion(b);
+            double evaluacionB = BestSolution.evaluarSolucion(b);
+            if (evaluacionB < evalPoblacion[posXi]){
+                poblacion[posXi] = b;
+                evalPoblacion[posXi] = evaluacionB;
             }
         }
 
-        //FASE DE COMENSALISMO
-        private void faceComensalismo(int[] Xi, int[] Xj, int[] Xmejor,int indiceXi) {
+        //Fase de Mutulismo para xj
+        private void faseMutualismoXj(int[] Xj, int[] Xi, int[] mejor, int posXj){
+            int[] mutualvector = new int[dimensionOrganismo];
+            int[] a; int[] b;
+            Random randon = new Random();
+            for (int k = 0; k < dimensionOrganismo; k++){
+                if (randon.NextDouble() > 0.5){
+                    mutualvector[k] = Xj[k];
+                }
+                else{
+                    mutualvector[k] = Xi[k];
+                }
+            }
+            a = BestSolution.generarSolucionAleatorio(dimensionOrganismo, myRamdonL);
+            for (int k = 0; k < dimensionOrganismo; k++){
+                if (mutualvector[k] == mejor[k]){
+                    a[k] = mejor[k];
+                }
+            }
+            b = BestSolution.generarSolucionAleatorio(dimensionOrganismo, myRamdonL);
+            for (int k = 0; k < dimensionOrganismo; k++){
+                if (a[k] == Xj[k]){
+                    b[k] = Xj[k];
+                }
+            }
+            b = BestSolution.repararSolucion(b);
+            double evaluacionB = BestSolution.evaluarSolucion(b);
+            if (evaluacionB < evalPoblacion[posXj]){
+                poblacion[posXj] = b;
+                evalPoblacion[posXj] = evaluacionB;
+            }
+        }
+
+        //Fase de comensalismo
+        private void faceComensalismo(int[] Xi, int[] Xj, int[] Xmejor,int posXi) {
             int[] c; int[] d;
-            c = solution.generarSolucionAleatorio(dimensionOrganismo, myRamdonL);
+            c = BestSolution.generarSolucionAleatorio(dimensionOrganismo, myRamdonL);
             for (int k = 0; k < dimensionOrganismo; k++) {
                 if (Xj[k] == Xmejor[k]) {
                     c[k] = Xmejor[k];
                 }
             }
-            d = solution.generarSolucionAleatorio(dimensionOrganismo, myRamdonL);
+            d = BestSolution.generarSolucionAleatorio(dimensionOrganismo, myRamdonL);
             for (int k = 0; k < dimensionOrganismo; k++) {
                 if (c[k] == Xi[k]) {
                     d[k] = Xi[k];
                 }
             }
-            d = solution.repararSolucion(d);
-            if (solution.evaluarSolucion(d) < solution.evaluarSolucion(Xi)) {
-                this.poblacion[indiceXi] = d;
+            d = BestSolution.repararSolucion(d);
+            double evaluacionD = BestSolution.evaluarSolucion(d);
+            if (evaluacionD < evalPoblacion[posXi]) {
+                poblacion[posXi] = d;
+                evalPoblacion[posXi] = evaluacionD;
             }
         }
-        //FASE DE PARASITISMO
-        private void faceParasitismo(int []Xi, int []Xj, int indiceXj) {
+
+        //Fase de parasitismo
+        private void faceParasitismo(int []Xi, int []Xj, int PosXj) {
             int[] vectorParasito = new int[Xi.Length];
             for (int i = 0; i < Xi.Length; i++) {
                 vectorParasito[i] = Xi[i];
@@ -85,13 +117,16 @@ namespace Monografia.Metaheuristicas.Armonicos
                     vectorParasito[pos] = 1;
                 }
             }
-            vectorParasito = solution.repararSolucion(vectorParasito);
-            if (solution.evaluarSolucion(vectorParasito) < solution.evaluarSolucion(Xj)) {
-                this.poblacion[indiceXj] = vectorParasito;
+            vectorParasito = BestSolution.repararSolucion(vectorParasito);
+            double evaluacionParasito = BestSolution.evaluarSolucion(vectorParasito);
+            if (evaluacionParasito < evalPoblacion[PosXj]) {
+                poblacion[PosXj] = vectorParasito;
+                evalPoblacion[PosXj] = evaluacionParasito;
             }
         }
-        //FASE DE ARMONIA
-        private void faceArmonia(int[] Xi, int indiceXi) {
+
+        //Fase de armonia
+        private void faceArmonia(int [] Xi, int posXi) {
             Random randon = new Random();
             double HMCR = 1-(10/dimensionOrganismo);
             double PAR = 0.365;
@@ -100,8 +135,8 @@ namespace Monografia.Metaheuristicas.Armonicos
             int posAleatoria;
             for (int k = 0; k < dimensionOrganismo; k++) {
                 if (randon.NextDouble() <= HMCR){
-                    posAleatoria = solution.posSolucionAleatoria(indiceXi, tamPoblacion, myRamdonL);
-                    neko[k] = this.poblacion[posAleatoria][k];
+                    posAleatoria = BestSolution.posSolucionAleatoria(posXi, tamPoblacion, myRamdonL);
+                    neko[k] = poblacion[posAleatoria][k];
                     if (randon.NextDouble() <= PAR){
                         if (randon.NextDouble() > 0.5){
                             neko[k] = 0;
@@ -112,96 +147,93 @@ namespace Monografia.Metaheuristicas.Armonicos
                     }
                 }
                 else {
-                    neko[k] = solution.valorAleatorio(myRamdonL);
+                    neko[k] = BestSolution.valorAleatorio(myRamdonL);
                 }
             }
-            neko = solution.repararSolucion(neko);
-            posPeor = solution.posPeorSolucion(this.poblacion);
-            double evaluacionNeko = solution.evaluarSolucion(neko);
-            if (evaluacionNeko < solution.evaluarSolucion(this.poblacion[posPeor])) {
-                this.poblacion[posPeor] = neko;
+            neko = BestSolution.repararSolucion(neko);
+            posPeor = BestSolution.posPeorSolucion(evalPoblacion);
+            double evaluacionXi = evalPoblacion[posXi];
+            double evaluacionPeor = evalPoblacion[posPeor];
+            double evaluacionNeko = BestSolution.evaluarSolucion(neko);
+            if (evaluacionNeko < evaluacionPeor) {
+                poblacion[posPeor] = neko;
+                evalPoblacion[posPeor] = evaluacionNeko;
             }
-            if (evaluacionNeko < solution.evaluarSolucion(Xi)) {
-                this.poblacion[indiceXi] = neko;
+            if (evaluacionNeko < evaluacionXi) {
+                poblacion[posXi] = neko;
+                evalPoblacion[posXi] = evaluacionXi;
             }
         }
 
+        //Obtiena una conjunto de posiones aleatorias de acuerdo a la solucion
         private int[] dimesionesAleatoria() { 
 
             Random randon = new Random();
-            int maxvalue = dimensionOrganismo; int minvalue = 1;
+            int maxvalue = dimensionOrganismo; int minvalue = 0;
             int numerodimencionesN = randon.Next(minvalue, maxvalue);
             int[] dimencionesN = new int[numerodimencionesN];
             int valor;
-
-            for (int i = 0; i < numerodimencionesN; i++)
-            {
+            for (int i = 0; i < numerodimencionesN; i++){
                 valor = randon.Next(minvalue, maxvalue);
-                dimencionesN[i] = valor - 1;
+                dimencionesN[i] = valor;
 
             }
             return dimencionesN;
         }
 
+                            /*ALGORITMO PRINCIPAL*/
         public override void Ejecutar(p_mediana theProblem, Random myRandom) {
-            solution = new Solution(theProblem, this);
+            //Declaracion de variables 
+            BestSolution = new Solution(theProblem, this);
             myRamdonL = myRandom;
             dimensionOrganismo = theProblem.numVertices;
             tamPoblacion = 5;
             int iter = 0;
             int itermax = 100;
-            int j;
-            poblacion = new int[tamPoblacion][];
-            int[] xi;
-            int[] xj;
-            int[] mejor;
-            for (int i = 0; i < tamPoblacion; i++)
-            {
-                int[] organismo = solution.generarSolucionAleatorio(dimensionOrganismo, myRandom);
-                poblacion[i] = solution.repararSolucion(organismo);
-            }            
-            mejor = solution.mejorSolucion(this.poblacion);
-            /*
-            Console.WriteLine("\nMejor Inicial");
-            solution.imprimirSolucion(mejor);
-            solution.Evaluate(mejor); */
-
+            //Inicializar la poblacion
+            poblacion = BestSolution.inicializarPoblacionReparada(tamPoblacion, myRandom);
+            evalPoblacion = BestSolution.evaluacionPoblacion(poblacion);
+            //Obtencion del mejor organismo
+            int posMejor = BestSolution.posMejorSolucion(evalPoblacion);
+            int[] mejor = poblacion[posMejor]; 
+            //Iteracion del algoritmo
             while (iter < itermax)
             {
                 //Console.WriteLine("\n-------------ITERACION" + iter);
+                int j; int[] xi; int[] xj; 
+
+                //Recorrido de la poblacon
                 for (int i = 0; i < tamPoblacion; i++)
                 {
+                    //Organismo Actual
                     xi = poblacion[i];
-
-                    j = solution.posSolucionAleatoria(i, tamPoblacion, myRamdonL);
+                    //Mutualismo
+                    j = BestSolution.posSolucionAleatoria(i, tamPoblacion, myRamdonL);
                     xj = poblacion[j];
-                    faseMutualismo(xi, xj, mejor, i);
-                    faseMutualismo(xj, xi, mejor, j);
-
-                    j = solution.posSolucionAleatoria(i, tamPoblacion, myRamdonL);
+                    faseMutualismoXi(xi, xj, mejor, i);
+                    faseMutualismoXj(xj, xi, mejor, j);
+                    //Comensalimo
+                    j = BestSolution.posSolucionAleatoria(i, tamPoblacion, myRamdonL);
                     xj = poblacion[j];
                     faceComensalismo(xi, xj, mejor, i);
-
-                    j = solution.posSolucionAleatoria(i, tamPoblacion, myRamdonL);
+                    //Parasitimo
+                    j = BestSolution.posSolucionAleatoria(i, tamPoblacion, myRamdonL);
                     xj = poblacion[j];
                     faceParasitismo(xi, xj, j);
+                    //Armonia
                     faceArmonia(xi, i);
-                    /*
-                    mejor = solution.mejorSolucion(this.poblacion);
-                    Console.WriteLine("Mejor Local");
-                    solution.imprimirSolucion(mejor);
-                    solution.Evaluate(mejor);
-                    Console.WriteLine("\n");*/
+
+                    posMejor = BestSolution.posMejorSolucion(evalPoblacion);
+                    mejor = poblacion[posMejor];
+
                 }
                 iter++;
-                /*
-                mejor = solution.mejorSolucion(this.poblacion);
-                Console.WriteLine("Mejor Global");
-                solution.imprimirSolucion(mejor);
-                solution.Evaluate(mejor);
-                Console.WriteLine("\n");
-                */
+                            
+                Console.WriteLine("\n EvalMejor"+evalPoblacion[posMejor]);
             }
+            //Evalucion de la mejor solucion
+            BestSolution.Evaluate(mejor);
+
         }
     }
 

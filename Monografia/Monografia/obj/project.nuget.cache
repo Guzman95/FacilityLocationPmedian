@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "BsseV74Y2xVUIDucHhENtqmQ+PAF4NdhcLpAoNtKbB5+mV1iNtjaDhL6Mgo6fnkXcy8vZ3WLRhBAJMqDSF9lBw==",
+  "dgSpecHash": "L2PYwh08Dos0vZ5X8APFsi/eLIx409WpSihc9hULYEhtMYuEk3gn6IMmoyn7STiQLGajR/u3E05ohq4tlT0D/A==",
   "success": true,
-  "projectFilePath": "C:\\Users\\santi\\Desktop\\FacilityLocationPmedian\\Monografia\\Monografia\\Monografia.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "F:\\UNIVERSIDAD\\TESIS\\FacilityLocationPmedian\\Monografia\\Monografia\\Monografia.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\DUGA\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.2\\microsoft.aspnetcore.app.ref.3.1.2.nupkg.sha512"
+  ],
   "logs": []
 }
