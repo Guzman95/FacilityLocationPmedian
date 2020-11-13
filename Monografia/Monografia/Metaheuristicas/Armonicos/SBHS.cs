@@ -34,21 +34,22 @@ namespace Monografia.Metaheuristicas.Armonicos
             int[] r1 = new int[n];
             int[] r2 = new int[n];
             int[] mejor = new int[n];
+            int[] peor = new int[n];
             int posr1;
             int posr2;
             int posmejor;
-            //Inicializar por metodo de probabilidad
-            for (int i = 0; i < HMS; i++)
-            {
-                HM[i] = BestSolution.generarSolucionAleatorio(n, myRandom);
-
-                HM[i] = BestSolution.repararSolucion(HM[i]);
-            }
+            //Inicializar poblacion
+            HM = BestSolution.inicializarPoblacionReparada(HMS, myRandom);
 
             evalPoblacion = BestSolution.evaluacionPoblacion(HM);
             int k = 0;
             while(k < NI)
             {
+                //Mejor
+                posmejor = BestSolution.posMejorSolucion(evalPoblacion);
+                mejor = HM[posmejor];
+                posPeor = BestSolution.posPeorSolucion(evalPoblacion);
+                peor = HM[posPeor];
                 //Se crea la nueva armonia de tamaño n
                 for (int i = 0; i < n; i++)
                 {
@@ -59,8 +60,6 @@ namespace Monografia.Metaheuristicas.Armonicos
                         posr2 = BestSolution.posSolucionAleatoria(posr1, HMS, myRandom);
                         r1 = HM[posr1];
                         r2 = HM[posr2];
-                        posmejor = BestSolution.posMejorSolucion(evalPoblacion);
-                        mejor = HM[posmejor];
                         //Simplifican la tasa de consideracion de memoria y el pitch adjusment por medio de la formula
                         Xnew[i] = (int)(r1[i] + Math.Pow((-1),(r1[i])) * Math.Abs(mejor[i] - r2[i]));
                     }
@@ -71,18 +70,19 @@ namespace Monografia.Metaheuristicas.Armonicos
                     }
 
                 }
+                Console.WriteLine(k);
                 //Se debe reparar la solución ya que puede existir una nueva armonia no factible
                 Xnew = BestSolution.repararSolucion(Xnew);
                 //Evalua la nueva armonia con la peor solucion almacenada en la memoria armonica
-                if (BestSolution.evaluarSolucion(Xnew) < BestSolution.evaluarSolucion(HM[BestSolution.posPeorSolucion(evalPoblacion)]))
+                if (BestSolution.evaluarSolucion(Xnew) < BestSolution.evaluarSolucion(peor))
                 {
-                    posPeor = BestSolution.posPeorSolucion(evalPoblacion);
-                    HM[posPeor] = Xnew;
-                    
+                    HM[posPeor] = Xnew;    
                 }
+                evalPoblacion = BestSolution.evaluacionPoblacion(HM);
                 k++;
                 //solucion.Evaluate(solucion.mejorSolucion(HM));
             }
+            //Mejor
             posmejor = BestSolution.posMejorSolucion(evalPoblacion);
             mejor = HM[posmejor];
             BestSolution.Evaluate(mejor);
