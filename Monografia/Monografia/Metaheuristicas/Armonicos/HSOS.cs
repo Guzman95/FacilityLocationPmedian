@@ -197,14 +197,11 @@ namespace Monografia.Metaheuristicas.Armonicos{
             int posMejor = BestSolution.posMejorSolucion(evalPoblacion);
             int[] mejor = poblacion[posMejor]; 
             //Iteracion del algoritmo
-            while (iter < itermax)
-            {
+            while (iter < itermax){
                 //Console.WriteLine("\n-------------ITERACION" + iter);
                 int j; int[] xi; int[] xj; 
-
                 //Recorrido de la poblacon
-                for (int i = 0; i < tamPoblacion; i++)
-                {
+                for (int i = 0; i < tamPoblacion; i++){
                     //Organismo Actual
                     xi = poblacion[i];
                     //Mutualismo
@@ -225,15 +222,12 @@ namespace Monografia.Metaheuristicas.Armonicos{
 
                     posMejor = BestSolution.posMejorSolucion(evalPoblacion);
                     mejor = poblacion[posMejor];
-
                 }
-                iter++;
-                            
-                Console.WriteLine("\n EvalMejor"+evalPoblacion[posMejor]);
+                iter++;                            
+                //Console.WriteLine("\n EvalMejor"+evalPoblacion[posMejor]);
             }
             //Evalucion de la mejor solucion
             BestSolution.Evaluate(mejor);
-
         }
     }
 

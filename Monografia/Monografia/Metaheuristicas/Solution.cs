@@ -244,11 +244,7 @@ namespace Monografia.Metaheuristicas{
         public double evaluarSolucion(int[] X){
             double evaluacion;
             List<int> pinstalaciones = posicionesPinstalaciones(X);
-            if (pinstalaciones.Count == 0){
-                evaluacion = 0;
-            }else{
-                evaluacion = MyProblem.Evaluate(pinstalaciones);
-            }
+            evaluacion = MyProblem.Evaluate(pinstalaciones);
             return evaluacion;   
         }
 
@@ -303,7 +299,7 @@ namespace Monografia.Metaheuristicas{
         public int valorAleatorio(Random myRandom){  // mover a solucion
             int valor;
             double alea = myRandom.NextDouble();
-            if (alea < 0.6){
+            if (alea < 0.5){
                 valor = 0;
             }
             else{
@@ -357,6 +353,7 @@ namespace Monografia.Metaheuristicas{
         //Retorna el valor de elvaluacion de la mejor solucion
         public void Evaluate(int [] solucion){
             _fitness = evaluarSolucion(solucion);
+            //Console.Write("\nMejorFinesss" + _fitness);
             MyAlgorithm.EFOs++;
         }
         //Obtiene informacion del problema y su solucion
