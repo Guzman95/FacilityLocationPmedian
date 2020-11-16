@@ -69,9 +69,11 @@ namespace Monografia.Metaheuristicas.Armonicos
                 }
                 //Console.WriteLine(k);
                 //Se debe reparar la solución ya que puede existir una nueva armonia no factible
-                Xnew = BestSolution.repararSolucion(Xnew);
+                Xnew = BestSolution.repararSolucionConocimiento(Xnew);
+                //Xnew = BestSolution.repararSolucionAleatoriamente(Xnew);
                 //Evaluacion de la nueva Armonia
-                double evalXnew = BestSolution.evaluarSolucion(Xnew);
+                BestSolution.Evaluate(Xnew);
+                double evalXnew = BestSolution.Fitness;
 				//Posiscion de la peor armonia
                 posPeor = BestSolution.posPeorSolucion(evalPoblacion);
 
