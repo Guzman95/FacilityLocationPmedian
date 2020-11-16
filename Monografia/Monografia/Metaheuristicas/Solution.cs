@@ -27,7 +27,8 @@ namespace Monografia.Metaheuristicas{
             for (int i = 0; i < tamañoPoblacion; i++)
             {
                 int[] solucion = generarSolucionAleatorio(MyProblem.numVertices, myRandom);
-                poblacion[i] = repararSolucion(solucion);
+                poblacion[i] = repararSolucionAleatoriamente(solucion);
+                //poblacion[i] = repararSolucionConocimiento(solucion);
             }
             return poblacion;
          }
@@ -90,7 +91,8 @@ namespace Monografia.Metaheuristicas{
         public double[] evaluacionPoblacion(int [][] poblacion) {
             double[] evaluaciones = new double[poblacion.Length];
             for (int i = 0; i < poblacion.Length; i++) {
-                evaluaciones[i] = evaluarSolucion(poblacion[i]);
+                Evaluate(poblacion[i]);
+                evaluaciones[i] = _fitness;
             }
             return evaluaciones;
         
@@ -98,25 +100,25 @@ namespace Monografia.Metaheuristicas{
                          /*REPARACION DE SOLUCION DE FORMA ALEATORIA */
 
         //Agrega o elimina instalaciones aleatoriamente hasta que instalaciones igual a P 
-        public int[] repararSolucionAleatoria(int[] solucionX)
+        public int[] repararSolucionAleatoriamente(int[] solucionX)
         {
             int poskX;
             int pMedianas = MyProblem.p_medianas;
             List<int> pInstalaciones = posicionesPinstalaciones(solucionX);
             while (pInstalaciones.Count < pMedianas){
-                poskX = AgregarinstalacionAleatoria(pInstalaciones);
+                poskX = agregarInstalacionAleatoria(pInstalaciones);
                 solucionX[poskX] = 1;
                 pInstalaciones.Add(poskX);
             }
             while (pInstalaciones.Count > pMedianas){
-                poskX = EliminarinstalacionAleatoria(pInstalaciones);
+                poskX = eliminarInstalacionAleatoria(pInstalaciones);
                 solucionX[poskX] = 0;
                 pInstalaciones.Remove(poskX);
             }
             return solucionX;
         }
         //Seleciona aleatoriamente  una posicion de instalacion para ser agregada a la solucion
-        private int AgregarinstalacionAleatoria(List<int> pInstalaciones) { 
+        private int agregarInstalacionAleatoria(List<int> pInstalaciones) { 
             int posAleatoria;
             Random randon = new Random();
             int maxvalue = MyProblem.numVertices; int minvalue = 0;
@@ -127,7 +129,7 @@ namespace Monografia.Metaheuristicas{
           
         }
         //Seleciona aleatoriamente una instalacion de la solucion para ser eliminada
-        private int EliminarinstalacionAleatoria(List<int> pInstalaciones)
+        private int eliminarInstalacionAleatoria(List<int> pInstalaciones)
         {
             int posAleatoria = -1;
             Random randon = new Random();
@@ -147,7 +149,7 @@ namespace Monografia.Metaheuristicas{
                         /*REPARACION CON CONOCIMIENTO*/
 
          //Agrega o elimina instalciones aplicando conocimiento hasta instalaciones igual a P               
-        public int[] repararSolucion(int[] solucionX){
+        public int[] repararSolucionConocimiento(int[] solucionX){
             int poskX;
             int pMedianas = MyProblem.p_medianas;
             List<int> pInstalaciones = posicionesPinstalaciones(solucionX);
@@ -237,15 +239,6 @@ namespace Monografia.Metaheuristicas{
                 sumasGanaciaJX.Add(sumaMin);
             }
             return sumasGanaciaJX;
-        }
-
-                                /*EVALUACION*/
-        //Realaiza la evaluacion de la funcion objetivo para una solucion X
-        public double evaluarSolucion(int[] X){
-            double evaluacion;
-            List<int> pinstalaciones = posicionesPinstalaciones(X);
-            evaluacion = MyProblem.Evaluate(pinstalaciones);
-            return evaluacion;   
         }
 
         //Obtiene las pociones de las instalaciones en una solucion X
@@ -350,9 +343,11 @@ namespace Monografia.Metaheuristicas{
                 Console.WriteLine(" ");
             }
         }
-        //Retorna el valor de elvaluacion de la mejor solucion
+                                /*EVALUACION*/
+        //Realaiza la evaluacion de la funcion objetivo para una solucion X
         public void Evaluate(int [] solucion){
-            _fitness = evaluarSolucion(solucion);
+            List<int> pinstalaciones = posicionesPinstalaciones(solucion);
+            _fitness = MyProblem.Evaluate(pinstalaciones);
             //Console.Write("\nMejorFinesss" + _fitness);
             MyAlgorithm.EFOs++;
         }

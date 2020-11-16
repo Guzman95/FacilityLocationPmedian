@@ -37,8 +37,10 @@ namespace Monografia.Metaheuristicas.Armonicos{
                     b[k] = Xi[k];
                 }
             }
-            b = BestSolution.repararSolucion(b);
-            double evaluacionB = BestSolution.evaluarSolucion(b);
+            //b = BestSolution.repararSolucionConocimiento(b);
+            b = BestSolution.repararSolucionAleatoriamente(b);
+            BestSolution.Evaluate(b);
+            double evaluacionB = BestSolution.Fitness ;
             if (evaluacionB < evalPoblacion[posXi]){
                 poblacion[posXi] = b;
                 evalPoblacion[posXi] = evaluacionB;
@@ -70,8 +72,11 @@ namespace Monografia.Metaheuristicas.Armonicos{
                     b[k] = Xj[k];
                 }
             }
-            b = BestSolution.repararSolucion(b);
-            double evaluacionB = BestSolution.evaluarSolucion(b);
+            //b = BestSolution.repararSolucion(b);
+            
+            b = BestSolution.repararSolucionAleatoriamente(b);
+            BestSolution.Evaluate(b);
+            double evaluacionB = BestSolution.Fitness;
             if (evaluacionB < evalPoblacion[posXj]){
                 poblacion[posXj] = b;
                 evalPoblacion[posXj] = evaluacionB;
@@ -93,8 +98,10 @@ namespace Monografia.Metaheuristicas.Armonicos{
                     d[k] = Xi[k];
                 }
             }
-            d = BestSolution.repararSolucion(d);
-            double evaluacionD = BestSolution.evaluarSolucion(d);
+            //d = BestSolution.repararSolucionConocimiento(d);
+            d = BestSolution.repararSolucionAleatoriamente(d);
+            BestSolution.Evaluate(d);
+            double evaluacionD = BestSolution.Fitness;
             if (evaluacionD < evalPoblacion[posXi]) {
                 poblacion[posXi] = d;
                 evalPoblacion[posXi] = evaluacionD;
@@ -117,8 +124,10 @@ namespace Monografia.Metaheuristicas.Armonicos{
                     vectorParasito[pos] = 1;
                 }
             }
-            vectorParasito = BestSolution.repararSolucion(vectorParasito);
-            double evaluacionParasito = BestSolution.evaluarSolucion(vectorParasito);
+            //vectorParasito = BestSolution.repararSolucionConocimiento(vectorParasito);
+            vectorParasito = BestSolution.repararSolucionAleatoriamente(vectorParasito);
+            BestSolution.Evaluate(vectorParasito);
+            double evaluacionParasito = BestSolution.Fitness;
             if (evaluacionParasito < evalPoblacion[PosXj]) {
                 poblacion[PosXj] = vectorParasito;
                 evalPoblacion[PosXj] = evaluacionParasito;
@@ -150,11 +159,13 @@ namespace Monografia.Metaheuristicas.Armonicos{
                     neko[k] = BestSolution.valorAleatorio(myRamdonL);
                 }
             }
-            neko = BestSolution.repararSolucion(neko);
+            //neko = BestSolution.repararSolucionConocimiento(neko);
+            neko = BestSolution.repararSolucionAleatoriamente(neko);
             posPeor = BestSolution.posPeorSolucion(evalPoblacion);
             double evaluacionXi = evalPoblacion[posXi];
             double evaluacionPeor = evalPoblacion[posPeor];
-            double evaluacionNeko = BestSolution.evaluarSolucion(neko);
+            BestSolution.Evaluate(neko);
+            double evaluacionNeko = BestSolution.Fitness;
             if (evaluacionNeko < evaluacionPeor) {
                 poblacion[posPeor] = neko;
                 evalPoblacion[posPeor] = evaluacionNeko;
@@ -191,7 +202,8 @@ namespace Monografia.Metaheuristicas.Armonicos{
             int iter = 0;
             int itermax = 100;
             //Inicializar la poblacion
-            poblacion = BestSolution.inicializarPoblacionReparada(tamPoblacion, myRandom);
+            //poblacion = BestSolution.inicializarPoblacionReparada(tamPoblacion, myRandom);
+            poblacion = BestSolution.inicilaizarPoblacionControlada(tamPoblacion, myRandom);
             evalPoblacion = BestSolution.evaluacionPoblacion(poblacion);
             //Obtencion del mejor organismo
             int posMejor = BestSolution.posMejorSolucion(evalPoblacion);
