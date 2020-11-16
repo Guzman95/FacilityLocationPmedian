@@ -187,7 +187,7 @@ namespace Monografia.Metaheuristicas.Armonicos{
             BestSolution = new Solution(theProblem, this);
             myRamdonL = myRandom;
             dimensionOrganismo = theProblem.numVertices;
-            tamPoblacion = 5;
+            tamPoblacion = 30;
             int iter = 0;
             int itermax = 100;
             //Inicializar la poblacion

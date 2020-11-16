@@ -28,7 +28,8 @@ namespace Monografia.Metaheuristicas.Armonicos
             double HMCR = 1 - (10 / n);
             int HMS = 30;
             int[][] HM = new int[HMS][];
-            int NI= 100; //numero de iteraciones
+            //int NI= 100; //numero de iteraciones
+            int NI= 5000; //numero de iteraciones
             int posPeor;
             int[] Xnew = new int[n];
             int[] r1 = new int[n];
