@@ -58,7 +58,7 @@ namespace Monografia
                 //new HSOS(),
                 new SBHS(),
                 };
-                const int maxRep = 3;
+                const int maxRep = 30;
 
                 foreach (var theAlgorithm in myAlgorithms)
                 {
