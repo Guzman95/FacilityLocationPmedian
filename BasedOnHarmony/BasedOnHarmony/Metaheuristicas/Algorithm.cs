@@ -15,6 +15,11 @@ namespace BasedOnHarmony.Metaheuristicas
 
         public abstract void Ejecutar(PMediana theProblem, Random myRandom);
 
+        /// <summary>
+        ///  //Inicializa la Population con organismos generados  con un numero p de instacionciones 
+        /// </summary>
+        /// <param name="populationSize"></param>
+        /// <returns></returns>
         public List<Solution> InitializeFixedPopulation(int populationSize)
         {
             var poblacion = new List<Solution>();
@@ -29,9 +34,11 @@ namespace BasedOnHarmony.Metaheuristicas
             }
             return poblacion;
         }
-
-        /*INICIALIZACION ALEATORIA CONTROLADA*/
-        //Inicializa la Population con organismos generados  con un numero p de instacionciones 
+        /// <summary>
+        ///  //Inicializa la Population con organismos generados  con un numero p de instacionciones
+        /// </summary>
+        /// <param name="populationSize"></param>
+        /// <returns></returns>
         public List<Solution> InitializeControlledPopulation(int populationSize)
         {
             var poblacion = new List<Solution>();

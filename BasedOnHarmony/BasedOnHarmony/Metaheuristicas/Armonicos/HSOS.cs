@@ -16,8 +16,8 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos{
             EFOs = 0;
 
             //Inicializar la Population
-            //Population = InitializeFixedPopulation(PopulationSize);
-            Population = InitializeControlledPopulation(PopulationSize);
+            Population = InitializeFixedPopulation(PopulationSize);
+            //Population = InitializeControlledPopulation(PopulationSize);
             Population.Sort((x,y) => x.Fitness.CompareTo(y.Fitness));
             Best = new Solution(Population[0]);
             
@@ -85,8 +85,8 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos{
                 }
             }
             neko.RecalculatePosInstalaciones();
-            //neko = Best.repararSolucionConocimiento(neko);
-            neko.RepairSolutionRandomly();
+            neko.RepararSolutionAwareness();
+            //neko.RepairSolutionRandomly();
             neko.Evaluate();
 
             var worstFitness = Population.Max(x => x.Fitness);
