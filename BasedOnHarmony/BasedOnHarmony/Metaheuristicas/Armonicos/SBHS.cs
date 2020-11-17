@@ -1,17 +1,16 @@
-﻿using Monografia.Funciones;
+﻿/*
 using System;
-using System.Collections.Generic;
-using System.Text;
+using BasedOnHarmony.Funciones;
 
-namespace Monografia.Metaheuristicas.Armonicos
+namespace BasedOnHarmony.Metaheuristicas.Armonicos
 {
     class SBHS : Algorithm
     {
         public double[] evalPoblacion { get; private set; }
 
-        public int posSolucionAleatoria(int tamPoblacion, Random myRandon)
+        public int posSolucionAleatoria(int PopulationSize, Random myRandon)
         {  // mover a solucion
-            int maxvalue = tamPoblacion; int minvalue = 0;
+            int maxvalue = PopulationSize; int minvalue = 0;
             int aleatorio;
 
             aleatorio = myRandon.Next(minvalue, maxvalue);
@@ -19,12 +18,16 @@ namespace Monografia.Metaheuristicas.Armonicos
             return aleatorio;
         }
 
-        public override void Ejecutar(p_mediana theProblem, Random myRandom)
+        public override void Ejecutar(PMediana theProblem, Random myRandom)
         {
+            MyProblem = theProblem;
+            MyRandom = myRandom;
+            EFOs = 0;
+
             //Hereda los metodos que se comparten con diferentes algoritmos implementados
-            //Solution solucion = new Solution(theProblem, this);
-            BestSolution = new Solution(theProblem, this);
-            int n = theProblem.numVertices;
+            //RandomOrganismInitialization solucion = new RandomOrganismInitialization(theProblem, this);
+            Best = new RandomOrganismInitialization(theProblem, this);
+            int n = theProblem.NumVertices;
             double HMCR = 1 - (10 / n);
             int HMS = 30;
             int[][] HM = new int[HMS][];
@@ -38,12 +41,12 @@ namespace Monografia.Metaheuristicas.Armonicos
             int posr1;
             int posr2;
             int posmejor;
-            //Inicializar poblacion
-            HM = BestSolution.inicializarPoblacionReparada(HMS, myRandom);
+            //Inicializar Population
+            HM = Best.InitializeFixedPopulation(HMS, myRandom);
             //Se genera el vector de evaaluaci
-            evalPoblacion = BestSolution.evaluacionPoblacion(HM);
+            evalPoblacion = Best.evaluacionPoblacion(HM);
             //Determina el mejor para la primera interacion
-            posmejor = BestSolution.posMejorSolucion(evalPoblacion);
+            posmejor = Best.posMejorSolucion(evalPoblacion);
             mejor = HM[posmejor];
             int k = 0;
             while (k < NI)
@@ -55,7 +58,7 @@ namespace Monografia.Metaheuristicas.Armonicos
                     {
                         //Console.Write("r1->"+r3);
                         posr1 = posSolucionAleatoria(HMS, myRandom);
-                        posr2 = BestSolution.posSolucionAleatoria(posr1, HMS, myRandom);
+                        posr2 = Best.posSolucionAleatoria(posr1, HMS, myRandom);
                         r1 = HM[posr1];
                         r2 = HM[posr2];
                         //Simplifican la tasa de consideracion de memoria y el pitch adjusment por medio de la formula
@@ -64,18 +67,18 @@ namespace Monografia.Metaheuristicas.Armonicos
                     else
                     {
                         //se crea una nota con un valor al azar para ser diversificado
-                        Xnew[i] = BestSolution.valorAleatorio(myRandom);
+                        Xnew[i] = Best.valorAleatorio(myRandom);
                     }
                 }
                 //Console.WriteLine(k);
                 //Se debe reparar la solución ya que puede existir una nueva armonia no factible
-                Xnew = BestSolution.repararSolucionConocimiento(Xnew);
-                //Xnew = BestSolution.repararSolucionAleatoriamente(Xnew);
+                Xnew = Best.repararSolucionConocimiento(Xnew);
+                //Xnew = Best.RepairSolutionRandomly(Xnew);
                 //Evaluacion de la nueva Armonia
-                BestSolution.Evaluate(Xnew);
-                double evalXnew = BestSolution.Fitness;
+                Best.Evaluate(Xnew);
+                double evalXnew = Best.Fitness;
 				//Posiscion de la peor armonia
-                posPeor = BestSolution.posPeorSolucion(evalPoblacion);
+                posPeor = Best.posPeorSolucion(evalPoblacion);
 
                 //Evalua la evaluacion de la nueva armonia con la evaluacion de la peor solucion de la memoria
                 if (evalXnew < evalPoblacion[posPeor])
@@ -86,15 +89,16 @@ namespace Monografia.Metaheuristicas.Armonicos
                     evalPoblacion[posPeor] = evalXnew;
                 }
                 //Se Determina la mejor armonia para la siguiente iteracion
-                posmejor = BestSolution.posMejorSolucion(evalPoblacion);
+                posmejor = Best.posMejorSolucion(evalPoblacion);
                 mejor = HM[posmejor];
                 //Se actualiza el contador de interaciones 
                 k++;
             }
             //Se envia a evaluar el mejor organismo de la ejecucion 
-            BestSolution.Evaluate(mejor);
+            Best.Evaluate(mejor);
         }
 
     }
 }
 
+*/

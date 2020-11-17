@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{47E3E45A-7C6A-4F04-A611-E16E66DDEF1D}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>BasedOnHarmony</RootNamespace>
+    <AssemblyName>BasedOnHarmony</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Funciones\Arista.cs" />
+    <Compile Include="Funciones\PMediana.cs" />
+    <Compile Include="Metaheuristicas\Algorithm.cs" />
+    <Compile Include="Metaheuristicas\Armonicos\HSOS.cs" />
+    <Compile Include="Metaheuristicas\Solution.HSOS.cs" />
+    <Compile Include="Metaheuristicas\Armonicos\SBHS.cs" />
+    <Compile Include="Metaheuristicas\Utils.cs" />
+    <Compile Include="Metaheuristicas\Solution.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="problemas\pmed1.txt" />
+    <Content Include="problemas\pmed10.txt" />
+    <Content Include="problemas\pmed11.txt" />
+    <Content Include="problemas\pmed12.txt" />
+    <Content Include="problemas\pmed13.txt" />
+    <Content Include="problemas\pmed14.txt" />
+    <Content Include="problemas\pmed15.txt" />
+    <Content Include="problemas\pmed16.txt" />
+    <Content Include="problemas\pmed17.txt" />
+    <Content Include="problemas\pmed18.txt" />
+    <Content Include="problemas\pmed19.txt" />
+    <Content Include="problemas\pmed2.txt" />
+    <Content Include="problemas\pmed20.txt" />
+    <Content Include="problemas\pmed21.txt" />
+    <Content Include="problemas\pmed22.txt" />
+    <Content Include="problemas\pmed23.txt" />
+    <Content Include="problemas\pmed24.txt" />
+    <Content Include="problemas\pmed25.txt" />
+    <Content Include="problemas\pmed26.txt" />
+    <Content Include="problemas\pmed27.txt" />
+    <Content Include="problemas\pmed28.txt" />
+    <Content Include="problemas\pmed29.txt" />
+    <Content Include="problemas\pmed3.txt" />
+    <Content Include="problemas\pmed30.txt" />
+    <Content Include="problemas\pmed31.txt" />
+    <Content Include="problemas\pmed32.txt" />
+    <Content Include="problemas\pmed33.txt" />
+    <Content Include="problemas\pmed34.txt" />
+    <Content Include="problemas\pmed35.txt" />
+    <Content Include="problemas\pmed36.txt" />
+    <Content Include="problemas\pmed37.txt" />
+    <Content Include="problemas\pmed38.txt" />
+    <Content Include="problemas\pmed39.txt" />
+    <Content Include="problemas\pmed4.txt" />
+    <Content Include="problemas\pmed40.txt" />
+    <Content Include="problemas\pmed5.txt" />
+    <Content Include="problemas\pmed6.txt" />
+    <Content Include="problemas\pmed7.txt" />
+    <Content Include="problemas\pmed8.txt" />
+    <Content Include="problemas\pmed9.txt" />
+    <Content Include="problemas\pmedopt.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

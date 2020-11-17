@@ -1,83 +1,141 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Monografia.Funciones;
+﻿using System.Collections.Generic;
 
-namespace Monografia.Metaheuristicas{
-    public class Solution{
+namespace BasedOnHarmony.Metaheuristicas{
+
+    public partial class Solution{
         public Algorithm MyAlgorithm;
-        public p_mediana MyProblem;
-        protected readonly int[] Objects; // {0, 1}
-        protected double Weight;
-        public double _fitness;
-        public double Fitness => _fitness;
-        public Solution(p_mediana theProblem, Algorithm theAlgorithm){
-            MyProblem = theProblem;
-            MyAlgorithm = theAlgorithm;       
-            Objects = new int[MyProblem.totalAristas];
-            Weight = 0; 
-            _fitness = 0;
-        }
-                      /*INICIALIZACION ALEATORIA REPARADA*/
-        public int[][] inicializarPoblacionReparada(int tamañoPoblacion, Random myRandom )
-        {
-            int [][] poblacion = new int[tamañoPoblacion][];
-            //inicializacion de la poblacion
-            for (int i = 0; i < tamañoPoblacion; i++)
-            {
-                int[] solucion = generarSolucionAleatorio(MyProblem.numVertices, myRandom);
-                poblacion[i] = repararSolucionAleatoriamente(solucion);
-                //poblacion[i] = repararSolucionConocimiento(solucion);
-            }
-            return poblacion;
-         }
-        //Genera e inicializa una solucion de forma aleatoria
-        public int[] generarSolucionAleatorio(int n, Random myRandom)
-        {
-            int[] solucion = new int[n];
-            for (int i = 0; i < n; i++)
-            {
-                solucion[i] = valorAleatorio(myRandom);
-            }
-            return solucion;
+
+        public List<int> PosInstalaciones;
+        public int[] Vertices; // {0, 1}
+        public double Fitness { get; set; }
+
+        public Solution(Algorithm theAlgorithm){
+            MyAlgorithm = theAlgorithm;
+
+            PosInstalaciones= new List<int>();
+            Vertices = new int[MyAlgorithm.MyProblem.NumVertices];
+            Fitness = 0;
         }
 
-                           /*INICIALIZACION ALEATORIA CONTROLADA*/
-        //Inicializa la poblacion con organismos generados  con un numero p de instacionciones 
-        public int[][] inicilaizarPoblacionControlada(int tamañoPoblacion, Random myRandom){
-            int[][] poblacion = new int[tamañoPoblacion][];
-            //inicializacion de la poblacion
-            for (int i = 0; i < tamañoPoblacion; i++){
-                int[] solucion = inicializacionAleatoriaOrganismo();
-                poblacion[i] = solucion;
-            }
-            return poblacion;
+        public Solution(Solution origin)
+        {
+            MyAlgorithm = origin.MyAlgorithm;
+            PosInstalaciones = new List<int>();
+            PosInstalaciones.AddRange(origin.PosInstalaciones);
+            Vertices = new int[MyAlgorithm.MyProblem.NumVertices];
+            for (var i = 0; i < MyAlgorithm.MyProblem.NumVertices; i++)
+                Vertices[i] = origin.Vertices[i];
+            Fitness = origin.Fitness;
         }
-        //Inicializa un organismo con el numero de istalaciones selecionadas 
-        private int [] inicializacionAleatoriaOrganismo() {
-            int [] organismo = new int[MyProblem.numVertices];
-            int [] posiciones = posicionesAleatorias();
-            for (int d = 0; d < posiciones.Length; d++) {
-                organismo[posiciones[d]] = 1;
-            }
-            return organismo; 
+
+        public void RecalculatePosInstalaciones()
+        {
+            PosInstalaciones = new List<int>();
+            for (var i=0; i < MyAlgorithm.MyProblem.NumVertices; i++)
+                if (Vertices[i]==1)
+                    PosInstalaciones.Add(i);
         }
+
+        public void Activar(int pos)
+        {
+            if (Vertices[pos] == 1) return;
+            Vertices[pos] = 1;
+            PosInstalaciones.Add(pos);
+            PosInstalaciones.Sort();
+        }
+
+        public void InActivar(int pos)
+        {
+            if (Vertices[pos] == 0) return;
+            Vertices[pos] = 0;
+            PosInstalaciones.Remove(pos);
+        }
+
+        //Genera e inicializa una solucion de forma aleatoria
+        public void RandomInitializationWithoutConstrains()
+        {
+            for (var i = 0; i < MyAlgorithm.MyProblem.NumVertices; i++)
+                if (MyAlgorithm.MyRandom.Next(2) == 0)
+                    InActivar(i);
+                else
+                    Activar(i);
+        }
+
+        //Agrega o elimina instalaciones aleatoriamente hasta que instalaciones igual a P 
+        public void RepairSolutionRandomly()
+        {
+            int poskX;
+            var pMedianas = MyAlgorithm.MyProblem.PMedianas;
+
+            while (PosInstalaciones.Count < pMedianas)
+            {
+                poskX = VerticeValidation(1);
+                Activar(poskX);
+            }
+            while (PosInstalaciones.Count > pMedianas)
+            {
+                poskX = VerticeValidation(0);
+                InActivar(poskX);
+            }
+        }
+
+        /// <summary>
+        /// Seleciona aleatoriamente  una posicion de instalacion para ser agregada a la solucion
+        /// </summary>
+        /// <param name="state"></param>
+        /// <returns></returns>
+        private int VerticeValidation(int state)
+        {
+            int posAleatoria;
+            do
+            {
+                posAleatoria = MyAlgorithm.MyRandom.Next(MyAlgorithm.MyProblem.NumVertices);
+            } while (Vertices[posAleatoria] == state);
+            return posAleatoria;
+        }
+
+        //Inicializa un organismo con el numero de instalaciones selecionadas 
+        public void RandomOrganismInitialization()
+        {
+            var posiciones = Utils.RandomlySelectedExactDimensions(MyAlgorithm.MyRandom,
+                MyAlgorithm.MyProblem.NumVertices, MyAlgorithm.MyProblem.PMedianas);
+            foreach (var pos in posiciones)
+                Activar(pos);
+        }
+
+        //Realiza la evaluacion de la funcion objetivo para una solucion X
+        public void Evaluate()
+        {
+            Fitness = MyAlgorithm.MyProblem.Evaluate(PosInstalaciones);
+            MyAlgorithm.EFOs++;
+        }
+
+        public override string ToString()
+        {
+            var result = "";
+            for (var i = 0; i < PosInstalaciones.Count; i++)
+                result = result + (PosInstalaciones[i] + " ");
+            result = result + " f = " + Fitness;
+            return result;
+        }
+
+        /*
         //Seleciona aleatoriamete un numero p de posiciones en funcion al tamaño de la solucion
         private int[] posicionesAleatorias(){     
-            Random randon = new Random();
-            int maxvalue = MyProblem.numVertices; int minvalue = 0;
-            int[] posicionesP = new int[MyProblem.p_medianas]; //inicializar posiciones en 1
+            int maxvalue = MyProblem.NumVertices; int minvalue = 0;
+            int[] posicionesP = new int[MyProblem.PMedianas]; //inicializar posiciones en 1
             int posAleatoria;
 
             for (int i = 0; i < posicionesP.Length; i++){
                 do {
-                    posAleatoria = randon.Next(minvalue, maxvalue);
+                    
+                    posAleatoria = MyAlgorithm.MyRandom.Next(minvalue, maxvalue);
                 } while(posExistePosicion(posicionesP,posAleatoria));
                 posicionesP[i] = posAleatoria;
             }
             return posicionesP;
         }
+
         //Determina si una posicion ya ha sido selecionada  
         private bool posExistePosicion(int[] posiciones, int pos){
             for (int p = 0; p < posiciones.Length; p++){
@@ -87,71 +145,13 @@ namespace Monografia.Metaheuristicas{
             }
             return false;
         }
-                /*EVALUACION DE LA POBLACION*/
-        public double[] evaluacionPoblacion(int [][] poblacion) {
-            double[] evaluaciones = new double[poblacion.Length];
-            for (int i = 0; i < poblacion.Length; i++) {
-                Evaluate(poblacion[i]);
-                evaluaciones[i] = _fitness;
-            }
-            return evaluaciones;
-        
-        }
-                         /*REPARACION DE SOLUCION DE FORMA ALEATORIA */
-
-        //Agrega o elimina instalaciones aleatoriamente hasta que instalaciones igual a P 
-        public int[] repararSolucionAleatoriamente(int[] solucionX)
-        {
-            int poskX;
-            int pMedianas = MyProblem.p_medianas;
-            List<int> pInstalaciones = posicionesPinstalaciones(solucionX);
-            while (pInstalaciones.Count < pMedianas){
-                poskX = agregarInstalacionAleatoria(pInstalaciones);
-                solucionX[poskX] = 1;
-                pInstalaciones.Add(poskX);
-            }
-            while (pInstalaciones.Count > pMedianas){
-                poskX = eliminarInstalacionAleatoria(pInstalaciones);
-                solucionX[poskX] = 0;
-                pInstalaciones.Remove(poskX);
-            }
-            return solucionX;
-        }
-        //Seleciona aleatoriamente  una posicion de instalacion para ser agregada a la solucion
-        private int agregarInstalacionAleatoria(List<int> pInstalaciones) { 
-            int posAleatoria;
-            Random randon = new Random();
-            int maxvalue = MyProblem.numVertices; int minvalue = 0;
-            do{
-                posAleatoria = randon.Next(minvalue, maxvalue);
-            } while (posExisteInstalacion(pInstalaciones, posAleatoria));
-            return posAleatoria;
-          
-        }
-        //Seleciona aleatoriamente una instalacion de la solucion para ser eliminada
-        private int eliminarInstalacionAleatoria(List<int> pInstalaciones)
-        {
-            int posAleatoria = -1;
-            Random randon = new Random();
-            int maxvalue = pInstalaciones.Count; int minvalue = 0;
-            posAleatoria = randon.Next(minvalue, maxvalue);
-            return pInstalaciones[posAleatoria];
-        }
-        //Determina si una posicion existe en el conjunto de instalaciones de una solución
-        private bool posExisteInstalacion(List<int> instalaciones, int pos){
-            for (int i = 0; i < instalaciones.Count; i++){
-                if (pos == instalaciones[i]){
-                    return true;
-                }
-            }
-            return false;
-        }
+*/
                         /*REPARACION CON CONOCIMIENTO*/
-
+                        /*
          //Agrega o elimina instalciones aplicando conocimiento hasta instalaciones igual a P               
         public int[] repararSolucionConocimiento(int[] solucionX){
             int poskX;
-            int pMedianas = MyProblem.p_medianas;
+            int pMedianas = MyProblem.PMedianas;
             List<int> pInstalaciones = posicionesPinstalaciones(solucionX);
             double[] menoresDistancias = determinarMenoresDistanciasX(solucionX, pInstalaciones);
             while (pInstalaciones.Count< pMedianas) {
@@ -173,7 +173,7 @@ namespace Monografia.Metaheuristicas{
         private double[] determinarMenoresDistanciasX(int [] solucionX, List<int> pInstalaciones) {
             double[] menoresDistancias = new double[solucionX.Length];
             for (int i = 0; i < solucionX.Length; i++){
-                menoresDistancias[i] = MyProblem.distanciaMenorPuntoDemanda(i, pInstalaciones);
+                menoresDistancias[i] = MyProblem.DistanciaMenorPuntoDemanda(i, pInstalaciones);
             }
             return menoresDistancias;
         }
@@ -198,7 +198,7 @@ namespace Monografia.Metaheuristicas{
                 double sumaMin = 0;
                 if (solucionX[j] == 0) {
                     for (int i = 0; i < menoresDistancias.Length; i++){
-                        double distanciaIJ = MyProblem.distanciaFloydArista(i,j);
+                        double distanciaIJ = MyProblem.DistanciaFloydArista(i,j);
                         double dif =  distanciaIJ - menoresDistancias[i];
                         if (dif < 0){
                             sumaMin = sumaMin + dif;
@@ -232,7 +232,7 @@ namespace Monografia.Metaheuristicas{
                 List<int> copiapInstalaciones = new List<int>(pInstalaciones);
                 copiapInstalaciones.RemoveAt(j);                
                 for (int i = 0; i < menoresDistancias.Length; i++) {
-                    double menordistanciaIT = MyProblem.distanciaMenorPuntoDemanda(i, copiapInstalaciones);
+                    double menordistanciaIT = MyProblem.DistanciaMenorPuntoDemanda(i, copiapInstalaciones);
                     double dif = menordistanciaIT - menoresDistancias[i];
                     sumaMin = sumaMin + dif;
                 }
@@ -240,19 +240,11 @@ namespace Monografia.Metaheuristicas{
             }
             return sumasGanaciaJX;
         }
-
-        //Obtiene las pociones de las instalaciones en una solucion X
-        private List<int> posicionesPinstalaciones(int[] X){
-            List<int> pinstalaciones = new List<int>();
-            for (int j = 0; j < X.Length; j++){
-                if (X[j] == 1){
-                    pinstalaciones.Add(j);
-                }
-            }
-            return pinstalaciones;
-        }
+        */
                       /*FUNCIONALIDADES NESESARIAS*/
-        //Obtiene de la poblacion la solucion con mejor valor de funcion objetivo
+        
+        /*
+        //Obtiene de la Population la solucion con mejor valor de funcion objetivo
         public int posMejorSolucion(double [] evaluaciones){
             double mejorEvaluacion = evaluaciones[0];
             int posMejor = 0;
@@ -265,7 +257,7 @@ namespace Monografia.Metaheuristicas{
             }
             return posMejor;
         }
-        //Obtine de la poblacion la poscision de la solucion con peor valor de funcion objetivo 
+        //Obtine de la Population la poscision de la solucion con peor valor de funcion objetivo 
         public int posPeorSolucion(double [] evaluaciones ){
             int posPeor = 0;
             double peorEvaluacion = evaluaciones[0];
@@ -278,7 +270,7 @@ namespace Monografia.Metaheuristicas{
             }
             return posPeor;
         }
-        //Seleciona alatoriamente una posicion de la poblacion 
+        //Seleciona alatoriamente una posicion de la Population 
         public int posSolucionAleatoria(int pos, int tamPoblacion , Random myRandon){  // mover a solucion
             int maxvalue = tamPoblacion; int minvalue = 0;
             int aleatorio;
@@ -300,16 +292,10 @@ namespace Monografia.Metaheuristicas{
             }
             return valor;
         }
+        */
 
                 /*PROCEDIMIENTOS PARA IMPRIMIR POR CONSOLA*/
-
-        //Imprime los valores de una solucion dada
-        public void imprimirSolucion(int[] solucion){
-            for (int i = 0; i < solucion.Length; i++)
-            {
-                Console.Write(" " + solucion[i]);
-            }
-        }
+        /*
         //imprime el conjunto de intalaciones de una solucion X
         private void imprimirPinstalaciones(List<int> pInstalaciones){
             for (int i = 0; i < pInstalaciones.Count; i++)
@@ -317,7 +303,7 @@ namespace Monografia.Metaheuristicas{
                 Console.Write(pInstalaciones[i] + "-");
             }
         }
-        //Imprime toda la poblacion hasta el momento
+        //Imprime toda la Population hasta el momento
         public void imprimirpoblacion(int[][] poblacion, int n)
         {   //mover a solucion
             for (int i = 0; i < poblacion.Length; i++)
@@ -333,7 +319,7 @@ namespace Monografia.Metaheuristicas{
         }
         //Imprime la matriz de distancias de floyd
         public void imprimirdistancias(){
-            int [][] distancias = MyProblem.distanciasFloyd;
+            int [][] distancias = MyProblem.DistanciasFloyd;
             Console.WriteLine("Distancias");
             for (int i = 0; i < distancias.Length; i++){
                 for (int j = 0; j < distancias.Length; j++){
@@ -342,28 +328,13 @@ namespace Monografia.Metaheuristicas{
                 }
                 Console.WriteLine(" ");
             }
-        }
-                                /*EVALUACION*/
-        //Realaiza la evaluacion de la funcion objetivo para una solucion X
-        public void Evaluate(int [] solucion){
-            List<int> pinstalaciones = posicionesPinstalaciones(solucion);
-            _fitness = MyProblem.Evaluate(pinstalaciones);
-            //Console.Write("\nMejorFinesss" + _fitness);
-            MyAlgorithm.EFOs++;
-        }
-        //Obtiene informacion del problema y su solucion
-        public override string ToString(){
-            var result = "";
-            for (var i = 0; i < MyProblem.totalAristas; i++)
-                result = result + (Objects[i] + " ");
-            result = result + " f = " + _fitness +  " w = " + Weight;
-            return result;
-        }
-
+        } 
+        */
+        /*EVALUACION*/
+        /*
         public bool IsOptimalKnown(){
             return Math.Abs(Fitness - MyProblem.OptimalLocation) < 1e-10;
         }
-        
+        */
     }
-       
 }
