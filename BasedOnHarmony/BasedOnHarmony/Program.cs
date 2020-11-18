@@ -11,12 +11,11 @@ namespace BasedOnHarmony
     {
         static void Main(string[] args)
         {
-            const int maxEFOS = 5000;
-            const int maxRep = 30;
+            const int maxEFOS = 1000;
+            const int maxRep = 1;
 
             var myProblems = new List<PMediana>{
                 new PMediana("pmed1.txt"),
-                /*
                 new PMediana("pmed2.txt"),
                 new PMediana("pmed3.txt"),
                 new PMediana("pmed4.txt"),
@@ -56,12 +55,11 @@ namespace BasedOnHarmony
                 new PMediana("pmed38.txt"),
                 new PMediana("pmed39.txt"),
                 new PMediana("pmed40.txt"),
-                */
                 };
 
             var myAlgorithms = new List<Algorithm>{
-                new HSOS(){ MaxEFOs=maxEFOS},
-                //new SBHS() { MaxEFOs=maxEFOS},
+                //new HSOS(){ MaxEFOs=maxEFOS},
+                new SBHS() { MaxEFOs=maxEFOS},
                 };
 
             foreach (var theAlgorithm in myAlgorithms)
