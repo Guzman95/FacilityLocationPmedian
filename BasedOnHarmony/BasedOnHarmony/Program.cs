@@ -60,8 +60,8 @@ namespace BasedOnHarmony
                 };
 
             var myAlgorithms = new List<Algorithm>{
-                new HSOS(){ MaxEFOs=maxEFOS},
-                //new SBHS() { MaxEFOs=maxEFOS},
+                //new HSOS(){ MaxEFOs=maxEFOS},
+                new SBHS() { MaxEFOs=maxEFOS},
                 };
 
             foreach (var theAlgorithm in myAlgorithms)

@@ -85,8 +85,8 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos{
                 }
             }
             neko.RecalculatePosInstalaciones();
-            neko.RepararSolutionAwareness();
-            //neko.RepairSolutionRandomly();
+            //neko.RepararSolutionAwareness();
+            neko.RepairSolutionRandomly();
             neko.Evaluate();
 
             var worstFitness = Population.Max(x => x.Fitness);

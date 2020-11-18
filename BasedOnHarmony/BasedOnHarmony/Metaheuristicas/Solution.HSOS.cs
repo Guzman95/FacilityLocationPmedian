@@ -36,8 +36,8 @@
                 }
             }
             b.RecalculatePosInstalaciones();
-            b.RepararSolutionAwareness();
-            //b.RepairSolutionRandomly();
+            //b.RepararSolutionAwareness();
+            b.RepairSolutionRandomly();
             b.Evaluate();
             return b;
         }
@@ -63,8 +63,8 @@
                 }
             }
             d.RecalculatePosInstalaciones();
-            d.RepararSolutionAwareness();
-            //d.RepairSolutionRandomly();
+            //d.RepararSolutionAwareness();
+            d.RepairSolutionRandomly();
             d.Evaluate();
 
             if (d.Fitness < this.Fitness) return d;
@@ -83,8 +83,8 @@
                 else
                     Activar(pos);
             }
-            parasito.RepararSolutionAwareness();
-            //parasito.RepairSolutionRandomly();
+            //parasito.RepararSolutionAwareness();
+            parasito.RepairSolutionRandomly();
             parasito.Evaluate();
 
             if (parasito.Fitness < xj.Fitness) return parasito;

@@ -7,9 +7,9 @@ namespace BasedOnHarmony.Funciones
     public class PMediana
     {
         //Lee la direccion donde esta el problema
-        private const string RootDirectory = "F://UNIVERSIDAD//TESIS//FacilityLocationPmedian//BasedOnHarmony//BasedOnHarmony//problemas//";
+        //private const string RootDirectory = "F://UNIVERSIDAD//TESIS//FacilityLocationPmedian//BasedOnHarmony//BasedOnHarmony//problemas//";
         //private const string RootDirectory = "C://Users//cobos//Desktop//FacilityLocation//BasedOnHarmony//BasedOnHarmony//problemas//";
-        //private const string RootDirectory = "C://Users//santi//Desktop//FacilityLocationPmedian//BasedOnHarmony//BasedOnHarmony//problemas//";
+        private const string RootDirectory = "C://Users//santi//Desktop//FacilityLocationPmedian//BasedOnHarmony//BasedOnHarmony//problemas//";
 
         //atributos para el dataset
         public int NumVertices;
