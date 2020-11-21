@@ -7,9 +7,9 @@ namespace BasedOnHarmony.Funciones
     public class PMediana
     {
         //Lee la direccion donde esta el problema
-        //private const string RootDirectory = "F://UNIVERSIDAD//TESIS//FacilityLocationPmedian//BasedOnHarmony//BasedOnHarmony//problemas//";
+        private const string RootDirectory = "F://UNIVERSIDAD//TESIS//FacilityLocationPmedian//BasedOnHarmony//BasedOnHarmony//problemas//";
         //private const string RootDirectory = "C://Users//cobos//Desktop//FacilityLocation//BasedOnHarmony//BasedOnHarmony//problemas//";
-        private const string RootDirectory = "C://Users//santi//Desktop//FacilityLocationPmedian//BasedOnHarmony//BasedOnHarmony//problemas//";
+        //private const string RootDirectory = "C://Users//santi//Desktop//FacilityLocationPmedian//BasedOnHarmony//BasedOnHarmony//problemas//";
 
         //atributos para el dataset
         public int NumVertices;
@@ -36,7 +36,7 @@ namespace BasedOnHarmony.Funciones
         /// lee cada dataset para generar las aristas
         /// </summary>
         /// <param name="fullFileName"></param>
-        public void ReadFile(string fullFileName)
+        private void ReadFile(string fullFileName)
         {
             //read the problem
             var lines = File.ReadAllLines(fullFileName);
@@ -63,31 +63,9 @@ namespace BasedOnHarmony.Funciones
         /// </summary>
         /// <param name="pInstalaciones"></param>
         /// <returns></returns>
-        public double Evaluate(List<int> pInstalaciones)
-        {
-            var summ = 0.0; 
-            for (var i = 0; i < NumVertices; i++) {               
-                summ += DistanciaMenorPuntoDemanda(i, pInstalaciones);
-            }
-            return summ;
-        }
-
-        //obtiene la menor distancia de un punto de demanda a los demas nodos
-        public double DistanciaMenorPuntoDemanda(int puntoDemanda, List<int> pInstalaciones ) {
-            double distanciaMenor = DistanciasFloyd[puntoDemanda][pInstalaciones[0]];
-            for (var t = 1; t < pInstalaciones.Count; t++)
-            {
-                double distancia = DistanciasFloyd[puntoDemanda][pInstalaciones[t]];
-                if (distancia < distanciaMenor)
-                {
-                    distanciaMenor = distancia;
-                }
-            }
-            return distanciaMenor;
-        }
 
         //genera la matriz de distancias
-        public void MatrisDistancias() {
+        private void MatrisDistancias() {
              
             DistanciasFloyd = new int[NumVertices][];
             for (var i = 0; i < NumVertices; i++) {
@@ -122,17 +100,43 @@ namespace BasedOnHarmony.Funciones
 
         }
 
-        //retorna la distancia que hay de un punto de demanda a su instalacion
-        public double DistanciaFloydArista(int demanda, int instalacion)
+        /// <summary>
+        /// Evalua la solucion de ir a un punto de demanda i
+        /// </summary>
+        /// <param name="pInstalaciones"></param>
+        /// <returns name="summ"></returns>
+        public double Evaluate(List<int> pInstalaciones)
         {
-            return DistanciasFloyd[demanda][instalacion];
+            var summ = 0.0;
+            if (pInstalaciones.Count > 0)
+            {
+                for (var i = 0; i < NumVertices; i++)
+                {
+                    summ += DistanciaMenorPuntoDemanda(i, pInstalaciones);
+                }
+            }
+            else summ = 9999999;
+            return summ;
         }
-
-        public List<Arista> GetVariables()
+        /// <summary>
+        /// obtiene la menor distancia de un punto de demanda a los demas nodos
+        /// </summary>
+        /// <param name=""></param>
+        /// <returns name="distanciaMenor"></returns
+        public double DistanciaMenorPuntoDemanda(int puntoDemanda, List<int> pInstalaciones)
         {
-            return new List<Arista>(_aristas);
+            double distanciaMenor = DistanciasFloyd[puntoDemanda][pInstalaciones[0]];
+            for (var t = 1; t < pInstalaciones.Count; t++)
+            {
+                double distancia = DistanciasFloyd[puntoDemanda] [pInstalaciones[t]];
+                if (distancia < distanciaMenor)
+                {
+                    distanciaMenor = distancia;
+                }
+            }
+            return distanciaMenor;
         }
-
+        
         public override string ToString()
         {
             var result = "p_medians:" + PMedianas.ToString("##0") + "\n" +

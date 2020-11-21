@@ -13,7 +13,7 @@ namespace BasedOnHarmony
         {
             const int maxEFOS = 1000;
             const int maxRep = 1;
-
+            Console.WriteLine("Cargando Archivos.....");
             var myProblems = new List<PMediana>{
                 new PMediana("pmed1.txt"),
                 new PMediana("pmed2.txt"),
@@ -56,12 +56,12 @@ namespace BasedOnHarmony
                 new PMediana("pmed39.txt"),
                 new PMediana("pmed40.txt"),
                 };
-
+            Console.WriteLine("Cargando Algoritmos.....");
             var myAlgorithms = new List<Algorithm>{
                 //new HSOS(){ MaxEFOs=maxEFOS},
                 new SBHS() { MaxEFOs=maxEFOS},
                 };
-
+            Console.WriteLine("Ejecutando Algoritmos.....");
             foreach (var theAlgorithm in myAlgorithms)
             {
                 Console.WriteLine($"{theAlgorithm,80}");
