@@ -25,29 +25,34 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos{
             while (EFOs < MaxEFOs ){
                 //Recorrido de la poblacon
                 for (var i = 0; i < PopulationSize; i++){
+                    Console.WriteLine("\nEFOs: " + EFOs);
+
                     //Mutualismo
                     var j = myRandom.Next(PopulationSize); while (i==j) j = myRandom.Next(PopulationSize);
-
+                    Console.WriteLine("After Mutualismo");
                     var m1 = Population[i].Mutualism(Population[j], Best);
                     if (m1.Fitness < Population[i].Fitness) Population[i] = m1;
+                    Console.WriteLine("Before Mutualismo");
                     if (EFOs >= MaxEFOs) break;
-
-                    var m2 = Population[j].Mutualism( Population[i], Best);
+                    /*
+                    var m2 = Population[j].Mutualism(Population[i], Best);
                     if (m2.Fitness < Population[j].Fitness) Population[j] = m2;
                     if (EFOs >= MaxEFOs) break;
-
+                    */
                     //Comensalimo
                     j = myRandom.Next(PopulationSize); while (i == j) j = myRandom.Next(PopulationSize);
                     Population[i] = Population[i].Commensalism(Population[j], Best);
+                    Console.WriteLine("Before Comensalismo");
                     if (EFOs >= MaxEFOs) break;
-
+                    
                     //Parasitimo
                     j = myRandom.Next(PopulationSize); while (i == j) j = myRandom.Next(PopulationSize);
                     Population[j] = Population[i].Parasitism(Population[j]);
+                    Console.WriteLine("Before Parasitimos");
                     if (EFOs >= MaxEFOs) break;
-
                     //Improisación de una nueva armonia
                     Improvisation(i);
+                    Console.WriteLine("Before improvisacion");
                     if (EFOs >= MaxEFOs) break;
                 }
 
@@ -70,18 +75,18 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos{
                     var posAleatoria = MyRandom.Next(Population.Count);
                     while (posAleatoria == posXi) posAleatoria = MyRandom.Next(Population.Count);
 
-                    neko.Vertices[k] = Population[posAleatoria].Vertices[k];
+                    neko.Vertices[k] = Population[posAleatoria].Vertices[k];  ///Aqui
                     if (MyRandom.NextDouble() <= par)
                     {
                         if (MyRandom.NextDouble() > 0.5)
-                            neko.Vertices[k] = 0;
+                            neko.Vertices[k] = 0;    //aqui
                         else
                             neko.Vertices[k] = 1;
                     }
                 }
                 else
                 {
-                    neko.Vertices[k] = MyRandom.Next(2);
+                    neko.Vertices[k] = MyRandom.Next(2); //aqui
                 }
             }
             neko.RecalculatePosInstalaciones();

@@ -108,14 +108,10 @@ namespace BasedOnHarmony.Funciones
         public double Evaluate(List<int> pInstalaciones)
         {
             var summ = 0.0;
-            if (pInstalaciones.Count > 0)
+            for (var i = 0; i < NumVertices; i++)
             {
-                for (var i = 0; i < NumVertices; i++)
-                {
-                    summ += DistanciaMenorPuntoDemanda(i, pInstalaciones);
-                }
+                summ += DistanciaMenorPuntoDemanda(i, pInstalaciones);
             }
-            else summ = 9999999;
             return summ;
         }
         /// <summary>

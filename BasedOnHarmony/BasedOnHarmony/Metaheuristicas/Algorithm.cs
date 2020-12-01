@@ -27,8 +27,8 @@ namespace BasedOnHarmony.Metaheuristicas
             {
                 var sol = new Solution(this);
                 sol.RandomInitializationWithoutConstrains();
-                //sol.RepairSolutionRandomly();
-                sol.RepararSolutionAwareness();
+                sol.RepairSolutionRandomly();
+                //sol.RepararSolutionAwareness();
                 sol.Evaluate();
                 poblacion.Add(sol);
             }
