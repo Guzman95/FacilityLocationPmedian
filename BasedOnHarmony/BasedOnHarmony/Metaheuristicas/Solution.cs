@@ -130,17 +130,25 @@ namespace BasedOnHarmony.Metaheuristicas
         /// <returns></returns>             
         public void RepararSolutionAwareness()
         {
+            Console.WriteLine(PosInstalaciones.Count);
             int pMedianas = MyAlgorithm.MyProblem.PMedianas;
             double[] menoresDistancias = DeterminarMenoresDistanciasX();
             while (PosInstalaciones.Count < pMedianas)
             {
+
+                //Console.WriteLine("menor");
                 Activar(DeterminarPosArgMax(menoresDistancias));
                 menoresDistancias = DeterminarMenoresDistanciasX();
             }
             while (PosInstalaciones.Count > pMedianas)
             {
+                //Console.WriteLine("mayor");
                 InActivar(DeterminarPosArgMin(menoresDistancias));
                 menoresDistancias = DeterminarMenoresDistanciasX();
+            }
+            if(PosInstalaciones.Count == pMedianas)
+            {
+                return;
             }
         }
         /// <summary>
