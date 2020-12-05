@@ -25,14 +25,14 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos{
             while (EFOs < MaxEFOs ){
                 //Recorrido de la poblacon
                 for (var i = 0; i < PopulationSize; i++){
-                    Console.WriteLine("\nEFOs: " + EFOs);
+                    //Console.WriteLine("\nEFOs: " + EFOs);
 
                     //Mutualismo
                     var j = myRandom.Next(PopulationSize); while (i==j) j = myRandom.Next(PopulationSize);
-                    Console.WriteLine("After Mutualismo");
+                    //Console.WriteLine("After Mutualismo");
                     var m1 = Population[i].Mutualism(Population[j], Best);
                     if (m1.Fitness < Population[i].Fitness) Population[i] = m1;
-                    Console.WriteLine("Before Mutualismo");
+                    //Console.WriteLine("Before Mutualismo");
                     if (EFOs >= MaxEFOs) break;
                     /*
                     var m2 = Population[j].Mutualism(Population[i], Best);
@@ -42,17 +42,17 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos{
                     //Comensalimo
                     j = myRandom.Next(PopulationSize); while (i == j) j = myRandom.Next(PopulationSize);
                     Population[i] = Population[i].Commensalism(Population[j], Best);
-                    Console.WriteLine("Before Comensalismo");
+                    //Console.WriteLine("Before Comensalismo");
                     if (EFOs >= MaxEFOs) break;
                     
                     //Parasitimo
                     j = myRandom.Next(PopulationSize); while (i == j) j = myRandom.Next(PopulationSize);
                     Population[j] = Population[i].Parasitism(Population[j]);
-                    Console.WriteLine("Before Parasitimos");
+                    //Console.WriteLine("Before Parasitimos");
                     if (EFOs >= MaxEFOs) break;
                     //Improisación de una nueva armonia
                     Improvisation(i);
-                    Console.WriteLine("Before improvisacion");
+                    //Console.WriteLine("Before improvisacion");
                     if (EFOs >= MaxEFOs) break;
                 }
 
@@ -90,8 +90,8 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos{
                 }
             }
             neko.RecalculatePosInstalaciones();
-            //neko.RepararSolutionAwareness();
-            neko.RepairSolutionRandomly();
+            neko.RepararSolutionAwareness();
+            //neko.RepairSolutionRandomly();
             neko.Evaluate();
 
             var worstFitness = Population.Max(x => x.Fitness);

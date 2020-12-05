@@ -45,6 +45,9 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos
                     {
                         //Console.Write("r1->"+r3);
                         var posr1 = myRandom.Next(0, PopulationSize -1);
+                        //r1[i]
+                        //r2[i]
+                        //best[i]
                         var posr2 = MyRandom.Next(PopulationSize); while (posr1 == posr2) posr2 = myRandom.Next(PopulationSize);
                         //Simplifican la tasa de consideracion de memoria y el pitch adjusment por medio de la formula
 
@@ -57,7 +60,8 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos
                         }
                         else
                         {
-                            if(Xnew.PosInstalaciones.Count < Xnew.Vertices.Length / 4) 
+                            //el 25% de las medianas deben estar prendidas
+                            if(Xnew.PosInstalaciones.Count <(int) theProblem.PMedianas * .25) 
                             {
                                 Xnew.Activar(i);
                             }
@@ -69,7 +73,7 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos
                         //se crea una nota con un valor al azar para ser diversificado
                         if (MyRandom.NextDouble() < 0.5)
                         {
-                            if (Xnew.PosInstalaciones.Count < Xnew.Vertices.Length / 4)
+                            if (Xnew.PosInstalaciones.Count < (int) theProblem.PMedianas * .25)
                             {
                                 Xnew.Activar(i);
                             }
@@ -78,8 +82,13 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos
                             Xnew.Activar(i);
                     }
                 }
-                Xnew.RecalculatePosInstalaciones();
+                Console.Write("numero de instalaciones" + Xnew.PosInstalaciones.Count);
+                for(var i = 0; i < Xnew.PosInstalaciones.Count; i++)
+                {
+                    Console.WriteLine(Xnew.PosInstalaciones[i]);
+                }
                 Xnew.RepararSolutionAwareness();
+                //Xnew.RepairSolutionRandomly();
                 Xnew.Evaluate();
                 var worstFitness = Population.Max(x => x.Fitness);
                 var posworstFitness = Population.FindIndex(x => Math.Abs(x.Fitness - worstFitness) < 1e-10);
@@ -89,7 +98,6 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos
                     //Si se cumple la condicion se remplaza la peor armonia por la nueva armonia
                     Population[posworstFitness] = Xnew;
                 }
-                Console.WriteLine(EFOs);
                 Population.Sort((x, y) => x.Fitness.CompareTo(y.Fitness));
                 Best = new Solution(Population[0]);
             } 

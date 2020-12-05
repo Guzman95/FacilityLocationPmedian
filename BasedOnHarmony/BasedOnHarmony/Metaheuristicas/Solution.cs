@@ -38,8 +38,8 @@ namespace BasedOnHarmony.Metaheuristicas
         public void RecalculatePosInstalaciones()
         {
             //PosInstalaciones = new List<int>();
-            for (var i=0; i < MyAlgorithm.MyProblem.NumVertices; i++)
-                if (Vertices[i]==1)
+            for (var i = 0; i < MyAlgorithm.MyProblem.NumVertices; i++)
+                if (Vertices[i] == 1)
                     PosInstalaciones.Add(i);
         }
         /// <summary>
@@ -88,12 +88,10 @@ namespace BasedOnHarmony.Metaheuristicas
             var pMedianas = MyAlgorithm.MyProblem.PMedianas;
             while (PosInstalaciones.Count < pMedianas)
             {
-                //Console.WriteLine("Posinst:"+PosInstalaciones.Count);
                 Activar(VerticeValidation(1));
             }
             while (PosInstalaciones.Count > pMedianas)
             {
-                //Console.WriteLine("posinst:"+PosInstalaciones.Count);
                 InActivar(VerticeValidation(0));
             }
         }
@@ -132,25 +130,22 @@ namespace BasedOnHarmony.Metaheuristicas
         /// <returns></returns>             
         public void RepararSolutionAwareness()
         {
-            Console.WriteLine(PosInstalaciones.Count);
+            Console.WriteLine("\nEstadosen1: " + PosInstalaciones.Count);
             int pMedianas = MyAlgorithm.MyProblem.PMedianas;
             double[] menoresDistancias = DeterminarMenoresDistanciasX();
             while (PosInstalaciones.Count < pMedianas)
             {
-
-                //Console.WriteLine("menor");
+                Console.WriteLine("menor");
                 Activar(DeterminarPosArgMax(menoresDistancias));
                 menoresDistancias = DeterminarMenoresDistanciasX();
+                Console.WriteLine("Estadosen1: " + PosInstalaciones.Count);
             }
             while (PosInstalaciones.Count > pMedianas)
             {
-                //Console.WriteLine("mayor");
+                Console.WriteLine("mayor");
                 InActivar(DeterminarPosArgMin(menoresDistancias));
                 menoresDistancias = DeterminarMenoresDistanciasX();
-            }
-            if(PosInstalaciones.Count == pMedianas)
-            {
-                return;
+                Console.WriteLine("Estadosen1: " + PosInstalaciones.Count);
             }
         }
         /// <summary>

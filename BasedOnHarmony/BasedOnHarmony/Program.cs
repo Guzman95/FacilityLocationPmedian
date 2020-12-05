@@ -25,8 +25,8 @@ namespace BasedOnHarmony
                 new PMediana("pmed7.txt"),
                 new PMediana("pmed8.txt"),
                 new PMediana("pmed9.txt"),
-                new PMediana("pmed10.txt"),
-                new PMediana("pmed11.txt"),
+                new PMediana("pmed10.txt"), /*
+                new PMediana("pmed11.txt"), 
                 new PMediana("pmed12.txt"),
                 new PMediana("pmed13.txt"),
                 new PMediana("pmed14.txt"),
@@ -55,7 +55,7 @@ namespace BasedOnHarmony
                 new PMediana("pmed37.txt"),
                 new PMediana("pmed38.txt"),
                 new PMediana("pmed39.txt"),
-                new PMediana("pmed40.txt"), 
+                new PMediana("pmed40.txt"), */
                 };
             var myAlgorithms = new List<Algorithm>{
                 new HSOS(){ MaxEFOs=maxEFOS},
