@@ -10,7 +10,6 @@ namespace BasedOnHarmony.Metaheuristicas
             {
                 if (MyAlgorithm.MyRandom.NextDouble() > 0.5)
                 {
-
                     mutualvector[k] = this.Vertices[k];
                 }
                 else
@@ -44,7 +43,6 @@ namespace BasedOnHarmony.Metaheuristicas
                     {
                         b.Activar(k);
                     }
-
                 }
             }
             //b.RepararSolutionAwareness();
@@ -71,13 +69,14 @@ namespace BasedOnHarmony.Metaheuristicas
             {
                 if (c.Vertices[k] == this.Vertices[k])
                 {
-                    if (d.PosInstalaciones.Count < d.Vertices.Length * 0.25 && this.Vertices[k] == 1)
+                    if (d.PosInstalaciones.Count > this.Vertices.Length / 4)
                     {
-                        d.Activar(k);
-                    }
-                    else {
                         if (Vertices[k] == 1) d.Activar(k);
                         else d.InActivar(k);
+                    }
+                    else if (this.Vertices[k] == 1)
+                    {
+                        d.Activar(k);
                     }
                 }
             }
@@ -85,7 +84,6 @@ namespace BasedOnHarmony.Metaheuristicas
             //d.RepararSolutionAwareness();
             d.RepairSolutionRandomly();
             d.Evaluate();
-
             if (d.Fitness < this.Fitness) return d;
             return this;
         }
@@ -110,7 +108,6 @@ namespace BasedOnHarmony.Metaheuristicas
             //parasito.RepararSolutionAwareness();
             parasito.RepairSolutionRandomly();
             parasito.Evaluate();
-
             if (parasito.Fitness < xj.Fitness) return parasito;
             return xj;
         }

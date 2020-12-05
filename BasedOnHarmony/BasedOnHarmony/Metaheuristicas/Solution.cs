@@ -73,7 +73,7 @@ namespace BasedOnHarmony.Metaheuristicas
         public void RandomInitializationWithoutConstrains()
         {
             for (var i = 0; i < MyAlgorithm.MyProblem.NumVertices; i++)
-                if (MyAlgorithm.MyRandom.Next(2) == 0)
+                if (MyAlgorithm.MyRandom.NextDouble() < 0.7)
                     InActivar(i);
                 else
                     Activar(i);
@@ -88,10 +88,12 @@ namespace BasedOnHarmony.Metaheuristicas
             var pMedianas = MyAlgorithm.MyProblem.PMedianas;
             while (PosInstalaciones.Count < pMedianas)
             {
+                //Console.WriteLine("Posinst:"+PosInstalaciones.Count);
                 Activar(VerticeValidation(1));
             }
             while (PosInstalaciones.Count > pMedianas)
-            { 
+            {
+                //Console.WriteLine("posinst:"+PosInstalaciones.Count);
                 InActivar(VerticeValidation(0));
             }
         }
