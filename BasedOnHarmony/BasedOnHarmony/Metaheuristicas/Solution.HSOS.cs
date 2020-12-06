@@ -30,13 +30,13 @@ namespace BasedOnHarmony.Metaheuristicas
             var b = new Solution(this.MyAlgorithm);
             b.RandomInitializationWithoutConstrains();
 
-            Console.WriteLine("\nsolucion");
-            b.Imprimir();
-            Console.WriteLine("\nestadosen1: " + b.PosInstalaciones.Count);
-            for (var i = 0; i < b.PosInstalaciones.Count; i++)
-            {
-                Console.Write(b.PosInstalaciones[i]+"-");
-            }
+            //Console.WriteLine("\nsolucion");
+            //b.Imprimir();
+            //Console.WriteLine("\nestadosen1: " + b.PosInstalaciones.Count);
+            //for (var i = 0; i < b.PosInstalaciones.Count; i++)
+            //{
+            //    Console.Write(b.PosInstalaciones[i]+"-");
+            //}
 
             for (var k = 0; k < MyAlgorithm.MyProblem.NumVertices; k++)
             {
@@ -53,13 +53,13 @@ namespace BasedOnHarmony.Metaheuristicas
                     }
                 }
             }
-            Console.WriteLine("\nSolucion");
-            b.Imprimir();
-            Console.WriteLine("\nEstadosen1: " + b.PosInstalaciones.Count);
-            for (var i = 0; i < b.PosInstalaciones.Count; i++)
-            {
-                Console.Write(b.PosInstalaciones[i]+"-");
-            }
+            //Console.WriteLine("\nSolucion");
+            //b.Imprimir();
+            //Console.WriteLine("\nEstadosen1: " + b.PosInstalaciones.Count);
+            //for (var i = 0; i < b.PosInstalaciones.Count; i++)
+            //{
+            //    Console.Write(b.PosInstalaciones[i]+"-");
+            //}
 
             b.RepararSolutionAwareness();
             //b.RepairSolutionRandomly();

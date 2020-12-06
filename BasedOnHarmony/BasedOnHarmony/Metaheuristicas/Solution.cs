@@ -130,22 +130,43 @@ namespace BasedOnHarmony.Metaheuristicas
         /// <returns></returns>             
         public void RepararSolutionAwareness()
         {
-            Console.WriteLine("\nEstadosen1: " + PosInstalaciones.Count);
             int pMedianas = MyAlgorithm.MyProblem.PMedianas;
             double[] menoresDistancias = DeterminarMenoresDistanciasX();
             while (PosInstalaciones.Count < pMedianas)
             {
-                Console.WriteLine("menor");
-                Activar(DeterminarPosArgMax(menoresDistancias));
+                //Console.WriteLine("menor");
+                var pos = DeterminarPosArgMax(menoresDistancias);
+                //Console.WriteLine("pos"+pos);
+                Activar(pos);
                 menoresDistancias = DeterminarMenoresDistanciasX();
-                Console.WriteLine("Estadosen1: " + PosInstalaciones.Count);
+                //Console.WriteLine("\ndiastancias");
+                //for (var i = 0; i < menoresDistancias.Length; i++)
+                //{
+                //    Console.Write(menoresDistancias[i] + "-");
+                //}
+                //Console.WriteLine("\nEstadosen1: " + PosInstalaciones.Count);
+                //for (var i = 0; i < PosInstalaciones.Count; i++)
+                //{
+                //    Console.Write(PosInstalaciones[i] + "-");
+                //}
             }
             while (PosInstalaciones.Count > pMedianas)
             {
-                Console.WriteLine("mayor");
-                InActivar(DeterminarPosArgMin(menoresDistancias));
+                //Console.WriteLine("mayor");
+                var pos = DeterminarPosArgMin(menoresDistancias);
+                InActivar(pos);
+                //Console.WriteLine("pos" + pos);
                 menoresDistancias = DeterminarMenoresDistanciasX();
-                Console.WriteLine("Estadosen1: " + PosInstalaciones.Count);
+                //Console.WriteLine("\ndiastancias");
+                //for (var i = 0; i < menoresDistancias.Length; i++)
+                //{
+                //    Console.Write(menoresDistancias[i] + "-");
+                //}
+                //Console.WriteLine("\nEstadosen1: " + PosInstalaciones.Count);
+                //for (var i = 0; i <PosInstalaciones.Count; i++)
+                //{
+                //    Console.Write(PosInstalaciones[i] + "-");
+                //}
             }
         }
         /// <summary>
@@ -171,12 +192,12 @@ namespace BasedOnHarmony.Metaheuristicas
         {
             int poskX = 0;
             double argMin = 0;
-            double[] sumasPerdidasJX = CalcularAdicionPerdida(menoresDistancias);
-            for (var j = 0; j < sumasPerdidasJX.Length; j++)
+            double[] sumasPerdidasAdicion = CalcularPerdidaDeAdicion(menoresDistancias);
+            for (var j = 0; j < sumasPerdidasAdicion.Length; j++)
             {
-                if (sumasPerdidasJX[j] < argMin)
+                if (sumasPerdidasAdicion[j] > argMin)
                 {
-                    argMin = sumasPerdidasJX[j];
+                    argMin = sumasPerdidasAdicion[j];
                     poskX = j;
                 }
             }
@@ -187,9 +208,9 @@ namespace BasedOnHarmony.Metaheuristicas
         /// </summary>
         /// <param name="menoresDistancias"></param>
         /// <returns name="sumaperdidaJX"></returns>
-        private double[] CalcularAdicionPerdida(double[] menoresDistancias)
+        private double[] CalcularPerdidaDeAdicion(double[] menoresDistancias)
         {
-            double[] sumaperdidaJX = new double[MyAlgorithm.MyProblem.NumVertices];
+            double[] sumasPerdidasAdicion = new double[MyAlgorithm.MyProblem.NumVertices];
             for (var j = 0; j < MyAlgorithm.MyProblem.NumVertices; j++)
             {
                 double sumaMin = 0;
@@ -201,14 +222,14 @@ namespace BasedOnHarmony.Metaheuristicas
                         double dif = distanciaIJ - menoresDistancias[i];
                         if (dif < 0)
                         {
-                            sumaMin += dif;
+                            sumaMin += dif * -1;
                         }
                     }
-                    sumaperdidaJX[j] = sumaMin;
+                    sumasPerdidasAdicion[j] = sumaMin;
                 }
-                sumaperdidaJX[j] = 0;
+                sumasPerdidasAdicion[j] = sumaMin ;
             }
-            return sumaperdidaJX;
+            return sumasPerdidasAdicion;
         }
         /// <summary>
         ///  Determina la instalacion que al agregarla disminuya al maximo el valor la funcion objetivo  
@@ -219,12 +240,12 @@ namespace BasedOnHarmony.Metaheuristicas
         {
             int poskX = 0;
             double argMax = 1000000;
-            List<double> sumasGanaciasJSX = CalcularEliminarGanacia(menoresDistancias);
-            for (int j = 0; j < sumasGanaciasJSX.Count; j++)
+            List<double> sumasGanaciasEliminacion = CalcularGananciasDeEliminacion(menoresDistancias);
+            for (int j = 0; j < sumasGanaciasEliminacion.Count; j++)
             {
-                if (sumasGanaciasJSX[j] < argMax)
+                if (sumasGanaciasEliminacion[j] < argMax)
                 {
-                    argMax = sumasGanaciasJSX[j];
+                    argMax = sumasGanaciasEliminacion[j];
                     poskX = PosInstalaciones[j]; ;
                 }
             }
@@ -235,9 +256,9 @@ namespace BasedOnHarmony.Metaheuristicas
         /// </summary>
         /// <param name="menoresDistancias"></param>
         /// <returns name="sumasGanaciaJX"></returns>
-        private List<double> CalcularEliminarGanacia(double[] menoresDistancias)
+        private List<double> CalcularGananciasDeEliminacion(double[] menoresDistancias)
         {
-            List<double> sumasGanaciaJX = new List<double>();
+            List<double> sumasGanaciasEliminacion = new List<double>();
             for (var j = 0; j < PosInstalaciones.Count; j++)
             {
                 double sumaMin = 0;
@@ -249,9 +270,9 @@ namespace BasedOnHarmony.Metaheuristicas
                     double dif = menordistanciaIT - menoresDistancias[i];
                     sumaMin += dif;
                 }
-                sumasGanaciaJX.Add(sumaMin);
+                sumasGanaciasEliminacion.Add(sumaMin);
             }
-            return sumasGanaciaJX;
+            return sumasGanaciasEliminacion;
         }
         public void Imprimir()
         {

@@ -25,7 +25,7 @@ namespace BasedOnHarmony
                 new PMediana("pmed7.txt"),
                 new PMediana("pmed8.txt"),
                 new PMediana("pmed9.txt"),
-                new PMediana("pmed10.txt"), /*
+                new PMediana("pmed10.txt"), 
                 new PMediana("pmed11.txt"), 
                 new PMediana("pmed12.txt"),
                 new PMediana("pmed13.txt"),
@@ -35,7 +35,7 @@ namespace BasedOnHarmony
                 new PMediana("pmed17.txt"),
                 new PMediana("pmed18.txt"),
                 new PMediana("pmed19.txt"),
-                new PMediana("pmed20.txt"),
+                new PMediana("pmed20.txt"),  /*
                 new PMediana("pmed21.txt"),
                 new PMediana("pmed22.txt"),
                 new PMediana("pmed23.txt"),
@@ -58,8 +58,8 @@ namespace BasedOnHarmony
                 new PMediana("pmed40.txt"), */
                 };
             var myAlgorithms = new List<Algorithm>{
-                new HSOS(){ MaxEFOs=maxEFOS},
-                //new SBHS() { MaxEFOs=maxEFOS},
+                //new HSOS(){ MaxEFOs=maxEFOS},
+                new SBHS() { MaxEFOs=maxEFOS},
                 };
             Console.WriteLine("Ejecutando Algoritmos.....");
             foreach (var theAlgorithm in myAlgorithms)
