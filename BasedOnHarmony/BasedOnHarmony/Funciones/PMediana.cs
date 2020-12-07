@@ -108,30 +108,12 @@ namespace BasedOnHarmony.Funciones
             var summ = 0.0;
             for (var i = 0; i < NumVertices; i++)
             {
-                for (var t = 1; t < pInstalaciones.Count; t++) {
+                for (var t = 0; t < pInstalaciones.Count; t++) {
                     summ = DistanciasFloyd[i][pInstalaciones[t]];
                 }
                    
             }
             return summ;
-        }
-        /// <summary>
-        /// obtiene la menor distancia de un punto de demanda a los demas nodos
-        /// </summary>
-        /// <param name=""></param>
-        /// <returns name="distanciaMenor"></returns
-        public double DistanciaMenorPuntoDemanda(int puntoDemanda, List<int> pInstalaciones)
-        {
-            double distanciaMenor = DistanciasFloyd[puntoDemanda][pInstalaciones[0]];
-            for (var t = 1; t < pInstalaciones.Count; t++)
-            {
-                double distancia = DistanciasFloyd[puntoDemanda][pInstalaciones[t]];
-                if (distancia < distanciaMenor)
-                {
-                    distanciaMenor = distancia;
-                }
-            }
-            return distanciaMenor;
         }
         
         public override string ToString()

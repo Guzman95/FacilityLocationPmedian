@@ -73,6 +73,7 @@ namespace BasedOnHarmony.Metaheuristicas
         public void RandomInitializationWithoutConstrains()
         {
             for (var i = 0; i < MyAlgorithm.MyProblem.NumVertices; i++)
+                //if (MyAlgorithm.MyRandom.NextDouble() < Pmedianas * 0.25)
                 if (MyAlgorithm.MyRandom.NextDouble() < 0.7)
                     InActivar(i);
                 else
@@ -131,18 +132,16 @@ namespace BasedOnHarmony.Metaheuristicas
         public void RepararSolutionAwareness()
         {
             int pMedianas = MyAlgorithm.MyProblem.PMedianas;
-            double[] menoresDistancias = Utils.DeterminarMenoresDistanciasX(MyAlgorithm, PosInstalaciones);
             while (PosInstalaciones.Count < pMedianas)
             {
-                var pos = Utils.DeterminarPosArgMax(menoresDistancias,MyAlgorithm, Vertices);
+                var pos = Utils.DeterminarPosArgMin(MyAlgorithm, Vertices);
                 Activar(pos);
-                menoresDistancias = Utils.DeterminarMenoresDistanciasX(MyAlgorithm, PosInstalaciones);
             }
             while (PosInstalaciones.Count > pMedianas)
             {
-                var pos = Utils.DeterminarPosArgMin(menoresDistancias,PosInstalaciones,MyAlgorithm);
+                var pos = Utils.DeterminarPosArgMax(PosInstalaciones,MyAlgorithm);
                 InActivar(pos);
-                menoresDistancias = Utils.DeterminarMenoresDistanciasX(MyAlgorithm, PosInstalaciones);
+
             }
         }
         /// <summary>
