@@ -131,149 +131,25 @@ namespace BasedOnHarmony.Metaheuristicas
         public void RepararSolutionAwareness()
         {
             int pMedianas = MyAlgorithm.MyProblem.PMedianas;
-            double[] menoresDistancias = DeterminarMenoresDistanciasX();
+            double[] menoresDistancias = Utils.DeterminarMenoresDistanciasX(MyAlgorithm, PosInstalaciones);
             while (PosInstalaciones.Count < pMedianas)
             {
-                //Console.WriteLine("menor");
-                var pos = DeterminarPosArgMax(menoresDistancias);
-                //Console.WriteLine("pos"+pos);
+                var pos = Utils.DeterminarPosArgMax(menoresDistancias,MyAlgorithm, Vertices);
                 Activar(pos);
-                menoresDistancias = DeterminarMenoresDistanciasX();
-                //Console.WriteLine("\ndiastancias");
-                //for (var i = 0; i < menoresDistancias.Length; i++)
-                //{
-                //    Console.Write(menoresDistancias[i] + "-");
-                //}
-                //Console.WriteLine("\nEstadosen1: " + PosInstalaciones.Count);
-                //for (var i = 0; i < PosInstalaciones.Count; i++)
-                //{
-                //    Console.Write(PosInstalaciones[i] + "-");
-                //}
+                menoresDistancias = Utils.DeterminarMenoresDistanciasX(MyAlgorithm, PosInstalaciones);
             }
             while (PosInstalaciones.Count > pMedianas)
             {
-                //Console.WriteLine("mayor");
-                var pos = DeterminarPosArgMin(menoresDistancias);
+                var pos = Utils.DeterminarPosArgMin(menoresDistancias,PosInstalaciones,MyAlgorithm);
                 InActivar(pos);
-                //Console.WriteLine("pos" + pos);
-                menoresDistancias = DeterminarMenoresDistanciasX();
-                //Console.WriteLine("\ndiastancias");
-                //for (var i = 0; i < menoresDistancias.Length; i++)
-                //{
-                //    Console.Write(menoresDistancias[i] + "-");
-                //}
-                //Console.WriteLine("\nEstadosen1: " + PosInstalaciones.Count);
-                //for (var i = 0; i <PosInstalaciones.Count; i++)
-                //{
-                //    Console.Write(PosInstalaciones[i] + "-");
-                //}
+                menoresDistancias = Utils.DeterminarMenoresDistanciasX(MyAlgorithm, PosInstalaciones);
             }
         }
         /// <summary>
-        ///  Determina las menores distancias de cada demanda a su instalacion masa cercana  
+        ///  Imprime los valores de la solucion  
         /// </summary>
         /// <param></param>
-        /// <returns name="menoresDistancias"></returns>
-        private double[] DeterminarMenoresDistanciasX()
-        {
-            double[] menoresDistancias = new double[MyAlgorithm.MyProblem.NumVertices];
-            for (var i = 0; i < MyAlgorithm.MyProblem.NumVertices; i++)
-            {
-                menoresDistancias[i] = MyAlgorithm.MyProblem.DistanciaMenorPuntoDemanda(i, PosInstalaciones);
-            }
-            return menoresDistancias;
-        }
-        /// <summary>
-        ///  Determina la instalacion que al eliminarna aumente en menor valor la funcion objetivo  
-        /// </summary>
-        /// <param name="menoresDistancias"></param>
-        /// <returns name="poskX"></returns>
-        private int DeterminarPosArgMax(double[] menoresDistancias)
-        {
-            int poskX = 0;
-            double argMin = 0;
-            double[] sumasPerdidasAdicion = CalcularPerdidaDeAdicion(menoresDistancias);
-            for (var j = 0; j < sumasPerdidasAdicion.Length; j++)
-            {
-                if (sumasPerdidasAdicion[j] > argMin)
-                {
-                    argMin = sumasPerdidasAdicion[j];
-                    poskX = j;
-                }
-            }
-            return poskX;
-        }
-        /// <summary>
-        ///  Calcula para cada instalacion  su adicion de valor a la funcion objetivo al ser elminada
-        /// </summary>
-        /// <param name="menoresDistancias"></param>
-        /// <returns name="sumaperdidaJX"></returns>
-        private double[] CalcularPerdidaDeAdicion(double[] menoresDistancias)
-        {
-            double[] sumasPerdidasAdicion = new double[MyAlgorithm.MyProblem.NumVertices];
-            for (var j = 0; j < MyAlgorithm.MyProblem.NumVertices; j++)
-            {
-                double sumaMin = 0;
-                if (Vertices[j] == 0)
-                {
-                    for (var i = 0; i < menoresDistancias.Length; i++)
-                    {
-                        double distanciaIJ = MyAlgorithm.MyProblem.DistanciasFloyd[i][j];
-                        double dif = distanciaIJ - menoresDistancias[i];
-                        if (dif < 0)
-                        {
-                            sumaMin += dif * -1;
-                        }
-                    }
-                    sumasPerdidasAdicion[j] = sumaMin;
-                }
-                sumasPerdidasAdicion[j] = sumaMin ;
-            }
-            return sumasPerdidasAdicion;
-        }
-        /// <summary>
-        ///  Determina la instalacion que al agregarla disminuya al maximo el valor la funcion objetivo  
-        /// </summary>
-        /// <param name="menoresDistancias"></param>
-        /// <returns name="poskX"></returns>
-        private int DeterminarPosArgMin(double[] menoresDistancias)
-        {
-            int poskX = 0;
-            double argMax = 1000000;
-            List<double> sumasGanaciasEliminacion = CalcularGananciasDeEliminacion(menoresDistancias);
-            for (int j = 0; j < sumasGanaciasEliminacion.Count; j++)
-            {
-                if (sumasGanaciasEliminacion[j] < argMax)
-                {
-                    argMax = sumasGanaciasEliminacion[j];
-                    poskX = PosInstalaciones[j]; ;
-                }
-            }
-            return poskX;
-        }
-        /// <summary>
-        ///  Calcula para cada instalacion su eliminacion de valor a la funcion objetivo al ser agregada  
-        /// </summary>
-        /// <param name="menoresDistancias"></param>
-        /// <returns name="sumasGanaciaJX"></returns>
-        private List<double> CalcularGananciasDeEliminacion(double[] menoresDistancias)
-        {
-            List<double> sumasGanaciasEliminacion = new List<double>();
-            for (var j = 0; j < PosInstalaciones.Count; j++)
-            {
-                double sumaMin = 0;
-                List<int> copiapInstalaciones = new List<int>(PosInstalaciones);
-                copiapInstalaciones.RemoveAt(j);
-                for (var i = 0; i < menoresDistancias.Length; i++)
-                {
-                    double menordistanciaIT = MyAlgorithm.MyProblem.DistanciaMenorPuntoDemanda(i, copiapInstalaciones);
-                    double dif = menordistanciaIT - menoresDistancias[i];
-                    sumaMin += dif;
-                }
-                sumasGanaciasEliminacion.Add(sumaMin);
-            }
-            return sumasGanaciasEliminacion;
-        }
+        /// <returns></returns>    
         public void Imprimir()
         {
             for (var i = 0; i < MyAlgorithm.MyProblem.NumVertices; i++)

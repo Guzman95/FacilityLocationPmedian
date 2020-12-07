@@ -3,6 +3,12 @@ namespace BasedOnHarmony.Metaheuristicas
 {
     public partial class Solution
     {
+        /// <summary>
+        /// Fase de mutualismo para los organismos
+        /// Cada uno de los organismos se beneficia del su compañero y del mejor de la poblacion 
+        /// </summary>
+        /// <param name="xj,best></param>
+        /// <returns></returns>
         public Solution Mutualism(Solution xj, Solution best)
         {
             var mutualvector = new int[MyAlgorithm.MyProblem.NumVertices];
@@ -29,15 +35,6 @@ namespace BasedOnHarmony.Metaheuristicas
 
             var b = new Solution(this.MyAlgorithm);
             b.RandomInitializationWithoutConstrains();
-
-            //Console.WriteLine("\nsolucion");
-            //b.Imprimir();
-            //Console.WriteLine("\nestadosen1: " + b.PosInstalaciones.Count);
-            //for (var i = 0; i < b.PosInstalaciones.Count; i++)
-            //{
-            //    Console.Write(b.PosInstalaciones[i]+"-");
-            //}
-
             for (var k = 0; k < MyAlgorithm.MyProblem.NumVertices; k++)
             {
                 if (a.Vertices[k] == this.Vertices[k])
@@ -53,20 +50,17 @@ namespace BasedOnHarmony.Metaheuristicas
                     }
                 }
             }
-            //Console.WriteLine("\nSolucion");
-            //b.Imprimir();
-            //Console.WriteLine("\nEstadosen1: " + b.PosInstalaciones.Count);
-            //for (var i = 0; i < b.PosInstalaciones.Count; i++)
-            //{
-            //    Console.Write(b.PosInstalaciones[i]+"-");
-            //}
-
             b.RepararSolutionAwareness();
             //b.RepairSolutionRandomly();
             b.Evaluate();
             return b;
         }
-
+        /// <summary>
+        /// Fase de Comesalismo para los organismos
+        /// Un solo organismo se beneficia del otro y el del mejor de la poblacion
+        /// </summary>
+        /// <param name="xj,best></param>
+        /// <returns></returns>
         public Solution Commensalism(Solution xj, Solution best)
         {
             var c = new Solution(this.MyAlgorithm);
@@ -80,14 +74,6 @@ namespace BasedOnHarmony.Metaheuristicas
             }
             var d = new Solution(this.MyAlgorithm);
             d.RandomInitializationWithoutConstrains();
-
-            //d.Imprimir();
-            //Console.WriteLine(" Possiones de instalaciones");
-            //Console.WriteLine("estados1" + PosInstalaciones.Count);
-            //for (var a = 0; a < d.PosInstalaciones.Count; a++) {
-            //    Console.Write(d.PosInstalaciones[a]+"-");
-            //}
-
             for (var k = 0; k < MyAlgorithm.MyProblem.NumVertices; k++)
             {
                 if (c.Vertices[k] == this.Vertices[k])
@@ -103,21 +89,18 @@ namespace BasedOnHarmony.Metaheuristicas
                     }
                 }
             }
-            //Console.WriteLine("Solucion");
-            //d.Imprimir();
-            //Console.WriteLine("");
-            //for (var a = 0; a < d.PosInstalaciones.Count; a++)
-            //{
-            //    Console.Write(d.PosInstalaciones[a]+"-");
-            //}
-
             d.RepararSolutionAwareness();
             //d.RepairSolutionRandomly();
             d.Evaluate();
             if (d.Fitness < this.Fitness) return d;
             return this;
         }
-
+        /// <summary>
+        /// Fase de Comesalismo para los organismos
+        /// A partir de un organismo se crea un parasito que intentara elimianar la organismo compañero
+        /// </summary>
+        /// <param name="xj,best></param>
+        /// <returns></returns>
         public Solution Parasitism(Solution xj)
         {
             var parasito = new Solution(this);

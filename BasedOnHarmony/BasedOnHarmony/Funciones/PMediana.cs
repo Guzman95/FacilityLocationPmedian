@@ -33,7 +33,7 @@ namespace BasedOnHarmony.Funciones
         }
 
         /// <summary>
-        /// lee cada dataset para generar las aristas
+        /// lee cada dataset para generar las propiedades de un problema
         /// </summary>
         /// <param name="fullFileName"></param>
         private void ReadFile(string fullFileName)
@@ -59,12 +59,11 @@ namespace BasedOnHarmony.Funciones
         }
 
         /// <summary>
-        /// Evalua la solucion de ir a un punto de demanda i
+        ///genera la matriz de distancias para un problema
         /// </summary>
         /// <param name="pInstalaciones"></param>
         /// <returns></returns>
 
-        //genera la matriz de distancias
         private void MatrisDistancias() {
              
             DistanciasFloyd = new int[NumVertices][];
@@ -80,7 +79,6 @@ namespace BasedOnHarmony.Funciones
                     
                 }
             }
-
             for (var i = 0; i < _aristas.Count; i++) {
                 var  art = _aristas[i];
                 DistanciasFloyd[art.VerticeFinal - 1][art.VerticeInicial - 1] = art.DistanciaArista;
@@ -101,7 +99,7 @@ namespace BasedOnHarmony.Funciones
         }
 
         /// <summary>
-        /// Evalua la solucion de ir a un punto de demanda i
+        /// Evalua la solucion de ir a un punto de demanda i a las instalaciones selecionadas
         /// </summary>
         /// <param name="pInstalaciones"></param>
         /// <returns name="summ"></returns>
@@ -110,7 +108,10 @@ namespace BasedOnHarmony.Funciones
             var summ = 0.0;
             for (var i = 0; i < NumVertices; i++)
             {
-                summ += DistanciaMenorPuntoDemanda(i, pInstalaciones);
+                for (var t = 1; t < pInstalaciones.Count; t++) {
+                    summ = DistanciasFloyd[i][pInstalaciones[t]];
+                }
+                   
             }
             return summ;
         }
@@ -124,7 +125,7 @@ namespace BasedOnHarmony.Funciones
             double distanciaMenor = DistanciasFloyd[puntoDemanda][pInstalaciones[0]];
             for (var t = 1; t < pInstalaciones.Count; t++)
             {
-                double distancia = DistanciasFloyd[puntoDemanda] [pInstalaciones[t]];
+                double distancia = DistanciasFloyd[puntoDemanda][pInstalaciones[t]];
                 if (distancia < distanciaMenor)
                 {
                     distanciaMenor = distancia;
@@ -142,8 +143,11 @@ namespace BasedOnHarmony.Funciones
                 result += _aristas[i] + "\n";
             return result;
         }
-
-        //Imprime la matriz de distancias
+        /// <summary>
+        /// Imprime la matriz de distancias
+        /// </summary>
+        /// <param name=""></param>
+        /// <returns></returns
         public void ImprimirMatriz()
         {
             for (var i = 0; i < this.DistanciasFloyd.Length; i++)

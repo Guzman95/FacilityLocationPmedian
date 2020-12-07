@@ -9,6 +9,10 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos{
         public int PopulationSize = 30;
         public List<Solution> Population;
 
+        /// <summary>
+        /// Ejecutart el algoritmo HSOS
+        /// </summary>
+        /// <param name="theProblem, myRandom"></param>
         public override void Ejecutar(PMediana theProblem, Random myRandom)
         {
             MyProblem = theProblem;
@@ -25,20 +29,17 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos{
             while (EFOs < MaxEFOs ){
                 //Recorrido de la poblacon
                 for (var i = 0; i < PopulationSize; i++){
-                    //Console.WriteLine("\nEFOs: " + EFOs);
 
                     //Mutualismo
                     var j = myRandom.Next(PopulationSize); while (i==j) j = myRandom.Next(PopulationSize);
-                    //Console.WriteLine("After Mutualismo");
                     var m1 = Population[i].Mutualism(Population[j], Best);
                     if (m1.Fitness < Population[i].Fitness) Population[i] = m1;
-                    //Console.WriteLine("Before Mutualismo");
                     if (EFOs >= MaxEFOs) break;
-                    /*
+                    
                     var m2 = Population[j].Mutualism(Population[i], Best);
                     if (m2.Fitness < Population[j].Fitness) Population[j] = m2;
                     if (EFOs >= MaxEFOs) break;
-                    */
+                    
                     //Comensalimo
                     j = myRandom.Next(PopulationSize); while (i == j) j = myRandom.Next(PopulationSize);
                     Population[i] = Population[i].Commensalism(Population[j], Best);
@@ -48,20 +49,21 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos{
                     //Parasitimo
                     j = myRandom.Next(PopulationSize); while (i == j) j = myRandom.Next(PopulationSize);
                     Population[j] = Population[i].Parasitism(Population[j]);
-                    //Console.WriteLine("Before Parasitimos");
                     if (EFOs >= MaxEFOs) break;
+
                     //Improisación de una nueva armonia
                     Improvisation(i);
-                    //Console.WriteLine("Before improvisacion");
                     if (EFOs >= MaxEFOs) break;
                 }
 
                 Population.Sort((x, y) => x.Fitness.CompareTo(y.Fitness));
                 Best = new Solution(Population[0]);
             }
-            //Console.WriteLine("EFOS: " + EFOs);
         }
-
+        /// <summary>
+        /// Fase de improvisacion para los organismos
+        /// </summary>
+        /// <param name="posXi"></param>
         public void Improvisation(int posXi)
         {
             const double par = 0.365;
