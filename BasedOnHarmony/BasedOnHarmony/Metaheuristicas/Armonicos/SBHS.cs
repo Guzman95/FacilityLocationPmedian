@@ -61,7 +61,7 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos
                         else
                         {
                             //el 25% de las medianas deben estar prendidas
-                            if(Xnew.PosInstalaciones.Count <(int) theProblem.PMedianas * .25) 
+                            if(Xnew.PosInstalaciones.Count < Math.Floor(theProblem.PMedianas * .25)) 
                             {
                                 Xnew.Activar(i);
                             }
@@ -73,7 +73,7 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos
                         //se crea una nota con un valor al azar para ser diversificado
                         if (MyRandom.NextDouble() < 0.5)
                         {
-                            if (Xnew.PosInstalaciones.Count < (int) theProblem.PMedianas * .25)
+                            if (Xnew.PosInstalaciones.Count < Math.Floor(theProblem.PMedianas * .25))
                             {
                                 Xnew.Activar(i);
                             }
@@ -81,11 +81,6 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos
                         else
                             Xnew.Activar(i);
                     }
-                }
-                Console.Write("numero de instalaciones" + Xnew.PosInstalaciones.Count);
-                for(var i = 0; i < Xnew.PosInstalaciones.Count; i++)
-                {
-                    Console.WriteLine(Xnew.PosInstalaciones[i]);
                 }
                 Xnew.RepararSolutionAwareness();
                 //Xnew.RepairSolutionRandomly();

@@ -39,7 +39,7 @@ namespace BasedOnHarmony.Metaheuristicas
             {
                 if (a.Vertices[k] == this.Vertices[k])
                 {
-                    if (b.PosInstalaciones.Count > (int)MyAlgorithm.MyProblem.PMedianas*0.25)
+                    if (b.PosInstalaciones.Count > Math.Floor(MyAlgorithm.MyProblem.PMedianas * .25))
                     {                    
                         if (Vertices[k] == 1) b.Activar(k);
                         else b.InActivar(k);
@@ -78,7 +78,7 @@ namespace BasedOnHarmony.Metaheuristicas
             {
                 if (c.Vertices[k] == this.Vertices[k])
                 {
-                    if (d.PosInstalaciones.Count > (int)MyAlgorithm.MyProblem.PMedianas * 0.25)
+                    if (d.PosInstalaciones.Count > Math.Floor(MyAlgorithm.MyProblem.PMedianas * .25))
                     {
                         if (Vertices[k] == 1) d.Activar(k);
                         else d.InActivar(k);
@@ -108,7 +108,7 @@ namespace BasedOnHarmony.Metaheuristicas
             var nDimenciones = Utils.RandomlySelectedDimensions(MyAlgorithm.MyRandom, MyAlgorithm.MyProblem.NumVertices);
             foreach (var pos in nDimenciones)
             {
-                if (this.PosInstalaciones.Count > (int)MyAlgorithm.MyProblem.PMedianas * 0.25)
+                if (this.PosInstalaciones.Count > Math.Floor(MyAlgorithm.MyProblem.PMedianas * .25))
                 {
                     if (parasito.Vertices[pos] == 1) InActivar(pos);
                     else Activar(pos);
