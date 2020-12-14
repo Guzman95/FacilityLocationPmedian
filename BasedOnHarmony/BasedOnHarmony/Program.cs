@@ -11,16 +11,17 @@ namespace BasedOnHarmony
     {
         static void Main(string[] args)
         {
-            const int maxEFOS = 10000;
+            const int maxEFOS = 100;
             const int maxRep = 3;
             Console.WriteLine("Iniciando......");
             Console.WriteLine("Cargando Archivos de problemas.....");
-            var myProblems = new List<PMediana>{
+            var myProblems = new List<PMediana> {
+                new PMediana("pmed41.txt"), /*
                 new PMediana("pmed1.txt"),
                 new PMediana("pmed2.txt"),
                 new PMediana("pmed3.txt"),
                 new PMediana("pmed4.txt"),
-                new PMediana("pmed5.txt"),
+                new PMediana("pmed5.txt"), 
                 new PMediana("pmed6.txt"),
                 new PMediana("pmed7.txt"),
                 new PMediana("pmed8.txt"),
@@ -35,7 +36,7 @@ namespace BasedOnHarmony
                 new PMediana("pmed17.txt"),
                 new PMediana("pmed18.txt"),
                 new PMediana("pmed19.txt"),
-                new PMediana("pmed20.txt"),  /*
+                new PMediana("pmed20.txt"),
                 new PMediana("pmed21.txt"),
                 new PMediana("pmed22.txt"),
                 new PMediana("pmed23.txt"),
@@ -65,12 +66,12 @@ namespace BasedOnHarmony
             foreach (var theAlgorithm in myAlgorithms)
             {
                 Console.WriteLine($"{theAlgorithm,80}");
-                Console.Write($"{"Problem",-15} {"Items",6} {"Ideal",10} ");
+                Console.Write($"{"Problem",-15} {"Vertices",6} {"PMedianas",6} {"Ideal",10} ");
                 Console.WriteLine($"{"Avg-Fitness",15} {"SD-Fitness",15} {"Avg-Efos",15} {"Success Rate",15} { "Time",15}");
 
                 foreach (var theProblem in myProblems)
                 {
-                    Console.Write($"{theProblem.FileName,-15} {theProblem.TotalAristas,6} {theProblem.OptimalLocation,10} ");
+                    Console.Write($"{theProblem.FileName,-15} {theProblem.NumVertices,6} {theProblem.PMedianas,10} {theProblem.OptimalLocation,10} ");
 
                     var efos = new List<int>();
                     var mediaF = new List<double>();
@@ -83,6 +84,9 @@ namespace BasedOnHarmony
                         theAlgorithm.Ejecutar(theProblem, myRandom);
 
                         times.Add((DateTime.Now - timeBegin).TotalSeconds);
+                        //Console.WriteLine("\nrep: " + rep);
+                        //theAlgorithm.Best.Imprimir();
+                        //Console.WriteLine("\nfiness: " + theAlgorithm.Best.Fitness);
                         mediaF.Add(theAlgorithm.Best.Fitness);
                         efos.Add(theAlgorithm.EFOs);
                         if (Math.Abs(theAlgorithm.Best.Fitness - theProblem.OptimalLocation) < 1e-10)
@@ -101,7 +105,8 @@ namespace BasedOnHarmony
 
                 }
             }
-
+            Console.WriteLine("Terminado, Precione una tecla para cerrar...");
+            Console.ReadLine();
             Console.ReadKey();
         }
     }

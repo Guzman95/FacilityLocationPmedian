@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace BasedOnHarmony.Funciones
 {
     public class PMediana
     {
         //Lee la direccion donde esta el problema
-        //private const string RootDirectory = "F://UNIVERSIDAD//TESIS//FacilityLocationPmedian//BasedOnHarmony//BasedOnHarmony//problemas//";
+        private const string RootDirectory = "F://UNIVERSIDAD//TESIS//FacilityLocationPmedian//BasedOnHarmony//BasedOnHarmony//problemas//";
         //private const string RootDirectory = "C://Users//cobos//Desktop//FacilityLocation//BasedOnHarmony//BasedOnHarmony//problemas//";
-         const string RootDirectory = "C://Users//santi//Desktop//FacilityLocationPmedian//BasedOnHarmony//BasedOnHarmony//problemas//";
+         //const string RootDirectory = "C://Users//santi//Desktop//FacilityLocationPmedian//BasedOnHarmony//BasedOnHarmony//problemas//";
 
         //atributos para el dataset
         public int NumVertices;
@@ -19,7 +20,7 @@ namespace BasedOnHarmony.Funciones
         private readonly List<Arista> _aristas = new List<Arista>(); //Always should be sort by position
         public string FileName;
         public int[][] DistanciasFloyd;
-        public const int Cst = 9999;
+        public const int Cst = 99999;
 
         /// <summary>
         /// Constructor para leer y generar la matriz de distancias
@@ -105,13 +106,15 @@ namespace BasedOnHarmony.Funciones
         /// <returns name="summ"></returns>
         public double Evaluate(List<int> pInstalaciones)
         {
-            var summ = 0.0;
+            double summ = 0;
             for (var i = 0; i < NumVertices; i++)
             {
+                var distancias = new List<double>();
                 for (var t = 0; t < pInstalaciones.Count; t++) {
-                    summ = DistanciasFloyd[i][pInstalaciones[t]];
+
+                    distancias.Add(DistanciasFloyd[i][pInstalaciones[t]]);
                 }
-                   
+                summ += distancias.Min();
             }
             return summ;
         }

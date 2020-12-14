@@ -86,15 +86,23 @@ namespace BasedOnHarmony.Metaheuristicas
         /// <returns></returns> 
         public void RepairSolutionRandomly()
         {
+            Console.WriteLine("\nSolucion LLega");
+            Imprimir();
+            Console.WriteLine("\nLlegan: " + PosInstalaciones.Count);
             var pMedianas = MyAlgorithm.MyProblem.PMedianas;
             while (PosInstalaciones.Count < pMedianas)
             {
+                Console.WriteLine("Menor: " + PosInstalaciones.Count);
                 Activar(VerticeValidation(1));
             }
             while (PosInstalaciones.Count > pMedianas)
             {
+                Console.WriteLine("Mayor: " + PosInstalaciones.Count);
                 InActivar(VerticeValidation(0));
             }
+            Console.WriteLine("\nSalen: " + PosInstalaciones.Count);
+            Console.WriteLine("\nSolucion Sale");
+            Imprimir();
         }
 
         /// <summary>
@@ -131,18 +139,38 @@ namespace BasedOnHarmony.Metaheuristicas
         /// <returns></returns>             
         public void RepararSolutionAwareness()
         {
+            //Console.WriteLine("\nSolucion LLega");
+            //Imprimir();
+            //Console.WriteLine("\nLlegan: " + PosInstalaciones.Count);
             int pMedianas = MyAlgorithm.MyProblem.PMedianas;
+            //Console.WriteLine("\nINSTALACINES");
+            //for (var b = 0; b < PosInstalaciones.Count; b++)
+            //{
+            //    Console.Write(PosInstalaciones[b] + "-");
+            //}         
+            var menoresDistancias = Utils.DeterminarMenoresDistanciasX(MyAlgorithm, PosInstalaciones);
+            //Console.WriteLine("\nMENORESDISTANCIAS");
+            //for (var a = 0; a < menoresDistancias.Length; a++)
+            //{
+            //    Console.Write(menoresDistancias[a] + "-");
+            //}
             while (PosInstalaciones.Count < pMedianas)
             {
-                var pos = Utils.DeterminarPosArgMin(MyAlgorithm, Vertices);
+                var pos = Utils.DeterminarPosArgMin(menoresDistancias, MyAlgorithm, Vertices);
                 Activar(pos);
+                 menoresDistancias = Utils.DeterminarMenoresDistanciasX(MyAlgorithm, PosInstalaciones);
+                //Console.WriteLine("Menor: " + PosInstalaciones.Count);
             }
             while (PosInstalaciones.Count > pMedianas)
             {
-                var pos = Utils.DeterminarPosArgMax(PosInstalaciones,MyAlgorithm);
+                var pos = Utils.DeterminarPosArgMax(menoresDistancias, PosInstalaciones, MyAlgorithm);
                 InActivar(pos);
-
+                 menoresDistancias = Utils.DeterminarMenoresDistanciasX(MyAlgorithm, PosInstalaciones);
+                //Console.WriteLine("Mayor: " + PosInstalaciones.Count);
             }
+            //Console.WriteLine("\nSalen: " + PosInstalaciones.Count);
+            //Console.WriteLine("\nSolucion Sale");
+            //Imprimir();
         }
         /// <summary>
         ///  Imprime los valores de la solucion  
@@ -151,6 +179,7 @@ namespace BasedOnHarmony.Metaheuristicas
         /// <returns></returns>    
         public void Imprimir()
         {
+            Console.WriteLine("\nSolucion");
             for (var i = 0; i < MyAlgorithm.MyProblem.NumVertices; i++)
             {
                 Console.Write("-" + Vertices[i]);
