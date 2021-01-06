@@ -31,6 +31,7 @@ namespace BasedOnHarmony.Funciones
             FileName = fileName; 
             ReadFile(RootDirectory + fileName);
             MatrisDistancias();
+            //ImprimirMatriz();
         }
 
         /// <summary>

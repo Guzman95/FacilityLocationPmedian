@@ -44,13 +44,13 @@ namespace BasedOnHarmony.Metaheuristicas
         /// <returns name="menoresDistancias"></returns>
         public static double[] DeterminarMenoresDistanciasX(Algorithm MyAlgorithm, List<int> PosInstalaciones)
         {
+            
             double[] menoresDistancias = new double[MyAlgorithm.MyProblem.NumVertices];
             for (var i = 0; i < MyAlgorithm.MyProblem.NumVertices; i++)
             {
-                var distancias = new List<double>();
+                var distancias = new List<double>();              
                 for (var t = 0; t < PosInstalaciones.Count; t++)
                 {
-
                     distancias.Add(MyAlgorithm.MyProblem.DistanciasFloyd[i][PosInstalaciones[t]]);
                 }
                 menoresDistancias[i]= distancias.Min();
@@ -124,6 +124,10 @@ namespace BasedOnHarmony.Metaheuristicas
                 //Console.WriteLine("sumamin: "+PosInstalaciones[j]+":"+ sumaMin);
                 sumasGanaciasEliminacion.Add(new KeyValuePair<int,double>(PosInstalaciones[j],sumaMin));
                 //Console.ReadKey();
+            }
+            if (sumasGanaciasEliminacion.Count == 0) {
+                Console.WriteLine("en cero");
+                Console.ReadKey();
             }
             var min = sumasGanaciasEliminacion.Min(x => x.Value);
             //Console.WriteLine("min:" + min);

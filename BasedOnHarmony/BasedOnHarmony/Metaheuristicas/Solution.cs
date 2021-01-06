@@ -74,7 +74,7 @@ namespace BasedOnHarmony.Metaheuristicas
         {
             for (var i = 0; i < MyAlgorithm.MyProblem.NumVertices; i++)
                 //if (MyAlgorithm.MyRandom.NextDouble() < Pmedianas * 0.25)
-                if (MyAlgorithm.MyRandom.NextDouble() < 0.7)
+                if (MyAlgorithm.MyRandom.NextDouble() < 0.5)
                     InActivar(i);
                 else
                     Activar(i);
@@ -86,23 +86,23 @@ namespace BasedOnHarmony.Metaheuristicas
         /// <returns></returns> 
         public void RepairSolutionRandomly()
         {
-            Console.WriteLine("\nSolucion LLega");
-            Imprimir();
-            Console.WriteLine("\nLlegan: " + PosInstalaciones.Count);
+            //Console.WriteLine("\nSolucion LLega");
+            //Imprimir();
+            //Console.WriteLine("\nLlegan: " + PosInstalaciones.Count);
             var pMedianas = MyAlgorithm.MyProblem.PMedianas;
             while (PosInstalaciones.Count < pMedianas)
             {
-                Console.WriteLine("Menor: " + PosInstalaciones.Count);
+                //Console.WriteLine("Menor: " + PosInstalaciones.Count);
                 Activar(VerticeValidation(1));
             }
             while (PosInstalaciones.Count > pMedianas)
             {
-                Console.WriteLine("Mayor: " + PosInstalaciones.Count);
+                //Console.WriteLine("Mayor: " + PosInstalaciones.Count);
                 InActivar(VerticeValidation(0));
             }
-            Console.WriteLine("\nSalen: " + PosInstalaciones.Count);
-            Console.WriteLine("\nSolucion Sale");
-            Imprimir();
+            //Console.WriteLine("\nSalen: " + PosInstalaciones.Count);
+            //Console.WriteLine("\nSolucion Sale");
+            //Imprimir();
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace BasedOnHarmony.Metaheuristicas
         /// <returns></returns>             
         public void RepararSolutionAwareness()
         {
-            //Console.WriteLine("\nSolucion LLega");
+            Console.WriteLine("\nSolucion LLega");
             //Imprimir();
             //Console.WriteLine("\nLlegan: " + PosInstalaciones.Count);
             int pMedianas = MyAlgorithm.MyProblem.PMedianas;
@@ -158,15 +158,15 @@ namespace BasedOnHarmony.Metaheuristicas
             {
                 var pos = Utils.DeterminarPosArgMin(menoresDistancias, MyAlgorithm, Vertices);
                 Activar(pos);
-                 menoresDistancias = Utils.DeterminarMenoresDistanciasX(MyAlgorithm, PosInstalaciones);
-                //Console.WriteLine("Menor: " + PosInstalaciones.Count);
+                menoresDistancias = Utils.DeterminarMenoresDistanciasX(MyAlgorithm, PosInstalaciones);
+                Console.WriteLine("Menor: " + PosInstalaciones.Count);
             }
             while (PosInstalaciones.Count > pMedianas)
             {
                 var pos = Utils.DeterminarPosArgMax(menoresDistancias, PosInstalaciones, MyAlgorithm);
                 InActivar(pos);
-                 menoresDistancias = Utils.DeterminarMenoresDistanciasX(MyAlgorithm, PosInstalaciones);
-                //Console.WriteLine("Mayor: " + PosInstalaciones.Count);
+                menoresDistancias = Utils.DeterminarMenoresDistanciasX(MyAlgorithm, PosInstalaciones);
+                Console.WriteLine("Mayor: " + PosInstalaciones.Count);
             }
             //Console.WriteLine("\nSalen: " + PosInstalaciones.Count);
             //Console.WriteLine("\nSolucion Sale");
@@ -184,6 +184,7 @@ namespace BasedOnHarmony.Metaheuristicas
             {
                 Console.Write("-" + Vertices[i]);
             }
+            Console.WriteLine("\nFiness: "+Fitness);
         }
 
         /// <summary>

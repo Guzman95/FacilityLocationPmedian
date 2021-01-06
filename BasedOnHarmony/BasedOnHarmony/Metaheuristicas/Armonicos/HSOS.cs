@@ -20,13 +20,13 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos{
             EFOs = 0;
 
             //Inicializar la Population
-            Population = InitializeFixedPopulation(PopulationSize);
-            //Population = InitializeControlledPopulation(PopulationSize);
+            //Population = InitializeFixedPopulation(PopulationSize);
+            Population = InitializeControlledPopulation(PopulationSize);
             Population.Sort((x,y) => x.Fitness.CompareTo(y.Fitness));
             Best = new Solution(Population[0]);
             
            //Iteracion del algoritmo
-            while (EFOs < MaxEFOs ){
+            while (EFOs < MaxEFOs && Best.Fitness > theProblem.OptimalLocation){
                 //Recorrido de la poblacon
                 for (var i = 0; i < PopulationSize; i++){
 
@@ -54,11 +54,10 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos{
                     //Improisación de una nueva armonia
                     Improvisation(i);
                     if (EFOs >= MaxEFOs) break;
-                }
 
+                }
                 Population.Sort((x, y) => x.Fitness.CompareTo(y.Fitness));
                 Best = new Solution(Population[0]);
-                //Best.Imprimir();
             }
         }
         /// <summary>
@@ -89,6 +88,7 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos{
                 }
                 else
                 {
+
                     neko.Vertices[k] = MyRandom.Next(2); //aqui
                 }
             }

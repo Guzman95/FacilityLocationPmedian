@@ -39,14 +39,14 @@ namespace BasedOnHarmony.Metaheuristicas
             {
                 if (a.Vertices[k] == this.Vertices[k])
                 {
-                    if (b.PosInstalaciones.Count > Math.Floor(MyAlgorithm.MyProblem.PMedianas * .25))
+                    if (b.PosInstalaciones.Count > Math.Floor(MyAlgorithm.MyProblem.PMedianas * 0.5))
                     {                    
-                        if (Vertices[k] == 1) b.Activar(k);
+                        if (a.Vertices[k] == 1) b.Activar(k);
                         else b.InActivar(k);
                     }
-                    else if (this.Vertices[k] == 1)
+                    else 
                     {
-                        b.Activar(k);
+                        if (a.Vertices[k] == 1) b.Activar(k);
                     }
                 }
             }
@@ -78,14 +78,14 @@ namespace BasedOnHarmony.Metaheuristicas
             {
                 if (c.Vertices[k] == this.Vertices[k])
                 {
-                    if (d.PosInstalaciones.Count > Math.Floor(MyAlgorithm.MyProblem.PMedianas * .25))
+                    if (d.PosInstalaciones.Count > Math.Floor(MyAlgorithm.MyProblem.PMedianas * 0.5))
                     {
-                        if (Vertices[k] == 1) d.Activar(k);
+                        if (c.Vertices[k] == 1) d.Activar(k);
                         else d.InActivar(k);
                     }
-                    else if (this.Vertices[k] == 1)
+                    else 
                     {
-                        d.Activar(k);
+                        if (c.Vertices[k] == 1) d.Activar(k);
                     }
                 }
             }
@@ -104,25 +104,24 @@ namespace BasedOnHarmony.Metaheuristicas
         public Solution Parasitism(Solution xj)
         {
             var parasito = new Solution(this);
-            
             var nDimenciones = Utils.RandomlySelectedDimensions(MyAlgorithm.MyRandom, MyAlgorithm.MyProblem.NumVertices);
             foreach (var pos in nDimenciones)
             {
-                if (this.PosInstalaciones.Count > Math.Floor(MyAlgorithm.MyProblem.PMedianas * .25))
+                if (parasito.PosInstalaciones.Count > Math.Floor(MyAlgorithm.MyProblem.PMedianas * 0.5))
                 {
-                    if (parasito.Vertices[pos] == 1) InActivar(pos);
-                    else Activar(pos);
+                    if (parasito.Vertices[pos] == 1)  parasito.InActivar(pos); 
+                    else { Activar(pos); }
                 }
-                else if (parasito.Vertices[pos] == 1)
+                else 
                 {
-                    this.Activar(pos);
+                    if (parasito.Vertices[pos] == 0)  parasito.Activar(pos); 
                 }    
             }
             parasito.RepararSolutionAwareness();
             //parasito.RepairSolutionRandomly();
             parasito.Evaluate();
             if (parasito.Fitness < xj.Fitness) return parasito;
-            return xj;
+             return xj;
         }
     }
 }
