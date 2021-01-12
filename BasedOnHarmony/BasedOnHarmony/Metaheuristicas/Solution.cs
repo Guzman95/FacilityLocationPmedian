@@ -139,38 +139,24 @@ namespace BasedOnHarmony.Metaheuristicas
         /// <returns></returns>             
         public void RepararSolutionAwareness()
         {
-            Console.WriteLine("\nSolucion LLega");
-            //Imprimir();
-            //Console.WriteLine("\nLlegan: " + PosInstalaciones.Count);
+
             int pMedianas = MyAlgorithm.MyProblem.PMedianas;
-            //Console.WriteLine("\nINSTALACINES");
-            //for (var b = 0; b < PosInstalaciones.Count; b++)
-            //{
-            //    Console.Write(PosInstalaciones[b] + "-");
-            //}         
+
+            if (PosInstalaciones.Count == 0) { Console.WriteLine("organismo en ceros "); Console.ReadKey();}
             var menoresDistancias = Utils.DeterminarMenoresDistanciasX(MyAlgorithm, PosInstalaciones);
-            //Console.WriteLine("\nMENORESDISTANCIAS");
-            //for (var a = 0; a < menoresDistancias.Length; a++)
-            //{
-            //    Console.Write(menoresDistancias[a] + "-");
-            //}
             while (PosInstalaciones.Count < pMedianas)
             {
                 var pos = Utils.DeterminarPosArgMin(menoresDistancias, MyAlgorithm, Vertices);
                 Activar(pos);
                 menoresDistancias = Utils.DeterminarMenoresDistanciasX(MyAlgorithm, PosInstalaciones);
-                Console.WriteLine("Menor: " + PosInstalaciones.Count);
             }
             while (PosInstalaciones.Count > pMedianas)
             {
                 var pos = Utils.DeterminarPosArgMax(menoresDistancias, PosInstalaciones, MyAlgorithm);
                 InActivar(pos);
                 menoresDistancias = Utils.DeterminarMenoresDistanciasX(MyAlgorithm, PosInstalaciones);
-                Console.WriteLine("Mayor: " + PosInstalaciones.Count);
+                //Console.WriteLine("Mayor: " + PosInstalaciones.Count);
             }
-            //Console.WriteLine("\nSalen: " + PosInstalaciones.Count);
-            //Console.WriteLine("\nSolucion Sale");
-            //Imprimir();
         }
         /// <summary>
         ///  Imprime los valores de la solucion  
@@ -179,7 +165,7 @@ namespace BasedOnHarmony.Metaheuristicas
         /// <returns></returns>    
         public void Imprimir()
         {
-            Console.WriteLine("\nSolucion");
+            Console.WriteLine("Solucion");
             for (var i = 0; i < MyAlgorithm.MyProblem.NumVertices; i++)
             {
                 Console.Write("-" + Vertices[i]);

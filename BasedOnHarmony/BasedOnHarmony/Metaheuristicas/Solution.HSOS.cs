@@ -92,8 +92,7 @@ namespace BasedOnHarmony.Metaheuristicas
             d.RepararSolutionAwareness();
             //d.RepairSolutionRandomly();
             d.Evaluate();
-            if (d.Fitness < this.Fitness) return d;
-            return this;
+            return d;
         }
         /// <summary>
         /// Fase de Comesalismo para los organismos
@@ -101,7 +100,7 @@ namespace BasedOnHarmony.Metaheuristicas
         /// </summary>
         /// <param name="xj,best></param>
         /// <returns></returns>
-        public Solution Parasitism(Solution xj)
+        public Solution Parasitism()
         {
             var parasito = new Solution(this);
             var nDimenciones = Utils.RandomlySelectedDimensions(MyAlgorithm.MyRandom, MyAlgorithm.MyProblem.NumVertices);
@@ -110,7 +109,7 @@ namespace BasedOnHarmony.Metaheuristicas
                 if (parasito.PosInstalaciones.Count > Math.Floor(MyAlgorithm.MyProblem.PMedianas * 0.5))
                 {
                     if (parasito.Vertices[pos] == 1)  parasito.InActivar(pos); 
-                    else { Activar(pos); }
+                    else { parasito.Activar(pos); }
                 }
                 else 
                 {
@@ -120,8 +119,7 @@ namespace BasedOnHarmony.Metaheuristicas
             parasito.RepararSolutionAwareness();
             //parasito.RepairSolutionRandomly();
             parasito.Evaluate();
-            if (parasito.Fitness < xj.Fitness) return parasito;
-             return xj;
+            return parasito;
         }
     }
 }

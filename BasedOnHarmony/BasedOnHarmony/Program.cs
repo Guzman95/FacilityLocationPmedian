@@ -16,9 +16,8 @@ namespace BasedOnHarmony
             Console.WriteLine("Iniciando......");
             Console.WriteLine("Cargando Archivos de problemas.....");
             var myProblems = new List<PMediana> {
-                //new PMediana("pmed41.txt"), 
-                //new PMediana("pmed1.txt"), 
-                new PMediana("pmed2.txt"), /*
+                new PMediana("pmed1.txt"), 
+                new PMediana("pmed2.txt"), 
                 new PMediana("pmed3.txt"),
                 new PMediana("pmed4.txt"),
                 new PMediana("pmed5.txt"), 
@@ -56,11 +55,11 @@ namespace BasedOnHarmony
                 new PMediana("pmed37.txt"),
                 new PMediana("pmed38.txt"),
                 new PMediana("pmed39.txt"),
-                new PMediana("pmed40.txt"),  */
+                new PMediana("pmed40.txt"),  
                 };
             var myAlgorithms = new List<Algorithm>{
                 new HSOS(){ MaxEFOs=maxEFOS},
-                //new SBHS() { MaxEFOs=maxEFOS},
+                new SBHS() { MaxEFOs=maxEFOS},
                 };
             Console.WriteLine("Ejecutando Algoritmos.....");
             foreach (var theAlgorithm in myAlgorithms)
@@ -84,8 +83,8 @@ namespace BasedOnHarmony
                         theAlgorithm.Ejecutar(theProblem, myRandom);
 
                         times.Add((DateTime.Now - timeBegin).TotalSeconds);
-                        Console.WriteLine("\nrep: " + rep);
-                        theAlgorithm.Best.Imprimir();
+                        //Console.WriteLine("\nrep: " + rep);
+                        //theAlgorithm.Best.Imprimir();
                         mediaF.Add(theAlgorithm.Best.Fitness);
                         efos.Add(theAlgorithm.EFOs);
                         if (Math.Abs(theAlgorithm.Best.Fitness - theProblem.OptimalLocation) < 1e-10)
