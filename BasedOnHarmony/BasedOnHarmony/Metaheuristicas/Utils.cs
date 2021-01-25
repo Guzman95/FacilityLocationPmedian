@@ -74,8 +74,8 @@ namespace BasedOnHarmony.Metaheuristicas
                     double sumaMin = 0;
                     for (var i = 0; i < menoresDistancias.Length; i++)
                     {
-                        double distanciaIJ = MyAlgorithm.MyProblem.DistanciasFloyd[i][j];
-                        double dif = distanciaIJ - menoresDistancias[i];
+                        var distanciaIJ = MyAlgorithm.MyProblem.DistanciasFloyd[i][j];
+                        var  dif = distanciaIJ - menoresDistancias[i];
                         if (dif < 0)
                         {
                             sumaMin += dif * -1;
@@ -101,7 +101,6 @@ namespace BasedOnHarmony.Metaheuristicas
             for (var j = 0; j < PosInstalaciones.Count; j++)
             {
                 double sumaMin = 0;
-                //Console.WriteLine("\nints" + PosInstalaciones.Count);
                 List<int> copiapInstalaciones = new List<int>(PosInstalaciones);
                 copiapInstalaciones.RemoveAt(j);
                 for (var i = 0; i < menoresDistancias.Length; i++)
@@ -110,27 +109,13 @@ namespace BasedOnHarmony.Metaheuristicas
                     for (var t = 0; t < copiapInstalaciones.Count; t++)
                     {
                         var dist = MyAlgorithm.MyProblem.DistanciasFloyd[i][copiapInstalaciones[t]];
-                        //Console.WriteLine("dist: "+dist);
                         distancias.Add(dist);
                     }
-                    var mini = distancias.Min();
-                    //Console.WriteLine("mini: " + mini);
-                    //Console.WriteLine("menoresDistancia "+i+": "+ menoresDistancias[i]);
-                    var dif = mini - menoresDistancias[i] ;
-                    //Console.WriteLine("dif: " + dif);
-                    sumaMin += dif;
-                    //Console.ReadKey();
+                    sumaMin += distancias.Min() - menoresDistancias[i] ;
                 }
-                //Console.WriteLine("sumamin: "+PosInstalaciones[j]+":"+ sumaMin);
                 sumasGanaciasEliminacion.Add(new KeyValuePair<int,double>(PosInstalaciones[j],sumaMin));
-                //Console.ReadKey();
-            }
-            if (sumasGanaciasEliminacion.Count == 0) {
-                Console.WriteLine("en cero");
-                Console.ReadKey();
             }
             var min = sumasGanaciasEliminacion.Min(x => x.Value);
-            //Console.WriteLine("min:" + min);
             var poskX = sumasGanaciasEliminacion.Find(x => Math.Abs(x.Value - min) < 1e-10);
             return poskX.Key;
         }

@@ -11,11 +11,12 @@ namespace BasedOnHarmony
     {
         static void Main(string[] args)
         {
-            const int maxEFOS = 5000;
+            const int maxEFOS = 1000;
             const int maxRep = 30;
             Console.WriteLine("Iniciando......");
             Console.WriteLine("Cargando Archivos de problemas.....");
-            var myProblems = new List<PMediana> {
+            var myProblems = new List<PMediana>
+            { 
                 new PMediana("pmed1.txt"), 
                 new PMediana("pmed2.txt"), 
                 new PMediana("pmed3.txt"),
@@ -55,7 +56,9 @@ namespace BasedOnHarmony
                 new PMediana("pmed37.txt"),
                 new PMediana("pmed38.txt"),
                 new PMediana("pmed39.txt"),
-                new PMediana("pmed40.txt"),  
+                new PMediana("pmed40.txt"),
+                new PMediana("pmed41.txt"),
+                
                 };
             var myAlgorithms = new List<Algorithm>{
                 new HSOS(){ MaxEFOs=maxEFOS},
@@ -66,7 +69,7 @@ namespace BasedOnHarmony
             {
                 Console.WriteLine($"{theAlgorithm,80}");
                 Console.Write($"{"Problem",-15} {"Vertices",6} {"PMedianas",6} {"Ideal",10} ");
-                Console.WriteLine($"{"Avg-Fitness",15} {"SD-Fitness",15} {"Avg-Efos",15} {"Success Rate",15} { "Time",15}");
+                Console.WriteLine($"{"Avg-Fitness",15} {"fMRPE-Fitness",15} {"SD-Fitness",15} {"Avg-Efos",15} {"Success Rate",15} { "Time",15}");
 
                 foreach (var theProblem in myProblems)
                 {
@@ -87,15 +90,16 @@ namespace BasedOnHarmony
                         //theAlgorithm.Best.Imprimir();
                         mediaF.Add(theAlgorithm.Best.Fitness);
                         efos.Add(theAlgorithm.EFOs);
-                        if (Math.Abs(theAlgorithm.Best.Fitness - theProblem.OptimalLocation) < 1e-10)
+                        if (theAlgorithm.Best.Fitness <= theProblem.OptimalLocation)
                             succesRate++;
 
                     }
 
                     var avg = mediaF.Average();
                     Console.Write($"{avg,15:0.000} ");
-                    var deviation = mediaF.Sum(d => (d - avg) * (d - avg));
-                    deviation = Math.Sqrt(deviation / maxRep);
+                    var rpe = ((avg - theProblem.OptimalLocation) * 100) / theProblem.OptimalLocation;
+                    Console.Write($"{rpe,15:0.000} ");
+                    var deviation = mediaF.Sum(d => (d - avg) * (d - avg)); 
                     Console.Write($"{deviation,15:0.000} ");
                     Console.Write($"{efos.Average(),15:0.000} ");
                     Console.Write($"{succesRate * 100.0 / maxRep,15:0.00}% ");
@@ -104,7 +108,6 @@ namespace BasedOnHarmony
                 }
             }
             Console.WriteLine("Terminado, Precione una tecla para cerrar...");
-            Console.ReadLine();
             Console.ReadKey();
         }
     }

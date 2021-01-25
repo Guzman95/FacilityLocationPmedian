@@ -7,7 +7,7 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos
 {
     class SBHS : Algorithm
     {
-        public int PopulationSize =30;
+        public int PopulationSize =5;
         public List<Solution> Population;
 
         public int posSolucionAleatoria(int PopulationSize, Random myRandon)
@@ -51,7 +51,7 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos
                         var posr2 = MyRandom.Next(PopulationSize); while (posr1 == posr2) posr2 = myRandom.Next(PopulationSize);
                         //Simplifican la tasa de consideracion de memoria y el pitch adjusment por medio de la formula
 
-                        var state = (int)(Population[posr1].Vertices[posr1] + Math.Pow((-1), (Population[posr1].Vertices[posr1])) * Math.Abs(Best.Vertices[i] - Population[posr2].Vertices[posr2]));
+                        var state = (int)(Population[posr1].Vertices[i] + Math.Pow((-1), (Population[posr1].Vertices[i])) * Math.Abs(Best.Vertices[i] - Population[posr2].Vertices[i]));
                         
                         if(state == 1)
                         {

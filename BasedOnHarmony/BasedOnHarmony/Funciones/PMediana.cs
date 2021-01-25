@@ -20,7 +20,7 @@ namespace BasedOnHarmony.Funciones
         private readonly List<Arista> _aristas = new List<Arista>(); //Always should be sort by position
         public string FileName;
         public int[][] DistanciasFloyd;
-        public const int Cst = 99999;
+        public const int inf = 99999 ;
 
         /// <summary>
         /// Constructor para leer y generar la matriz de distancias
@@ -76,13 +76,13 @@ namespace BasedOnHarmony.Funciones
                         DistanciasFloyd[i][j] = 0;
                     }
                     else {
-                        DistanciasFloyd[i][j]= Cst;
-                    }
-                    
+                        DistanciasFloyd[i][j]= inf;
+                    }                    
                 }
             }
             for (var i = 0; i < _aristas.Count; i++) {
                 var  art = _aristas[i];
+                DistanciasFloyd[art.VerticeInicial - 1][art.VerticeFinal - 1] = art.DistanciaArista;
                 DistanciasFloyd[art.VerticeFinal - 1][art.VerticeInicial - 1] = art.DistanciaArista;
             }
             for(var k = 0; k < NumVertices; ++k)
@@ -92,49 +92,19 @@ namespace BasedOnHarmony.Funciones
                     for (var j = 0; j < NumVertices; ++j)
                     {
                         var sumaIkKj = DistanciasFloyd[i][k] + DistanciasFloyd[k][j];
-                        if (DistanciasFloyd[j][i] > sumaIkKj)
-                            DistanciasFloyd[j][i] = sumaIkKj;
+                        if (DistanciasFloyd[i][j] > sumaIkKj)
+                            DistanciasFloyd[i][j] = sumaIkKj;
                     }
                 }
-            }      
-
-        }
-
-        /// <summary>
-        /// Evalua la solucion de ir a un punto de demanda i a las instalaciones selecionadas
-        /// </summary>
-        /// <param name="pInstalaciones"></param>
-        /// <returns name="summ"></returns>
-        public double Evaluate(List<int> pInstalaciones)
-        {
-            double summ = 0;
-            for (var i = 0; i < NumVertices; i++)
-            {
-                var distancias = new List<double>();
-                for (var t = 0; t < pInstalaciones.Count; t++) {
-
-                    distancias.Add(DistanciasFloyd[i][pInstalaciones[t]]);
-                }
-                summ += distancias.Min();
             }
-            return summ;
         }
-        
-        public override string ToString()
-        {
-            var result = "p_medians:" + PMedianas.ToString("##0") + "\n" +
-                   "OptimalLocation:" + OptimalLocation.ToString("##0.00") + "\n";
 
-            for (var i = 0; i < TotalAristas; i++)
-                result += _aristas[i] + "\n";
-            return result;
-        }
         /// <summary>
         /// Imprime la matriz de distancias
         /// </summary>
         /// <param name=""></param>
         /// <returns></returns
-        public void ImprimirMatriz()
+        private void ImprimirMatriz()
         {
             for (var i = 0; i < this.DistanciasFloyd.Length; i++)
             {
