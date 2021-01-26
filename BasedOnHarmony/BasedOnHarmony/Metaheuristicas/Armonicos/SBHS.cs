@@ -7,7 +7,7 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos
 {
     class SBHS : Algorithm
     {
-        public int PopulationSize =5;
+        public int PopulationSize =30;
         public List<Solution> Population;
 
         public int posSolucionAleatoria(int PopulationSize, Random myRandon)
@@ -35,7 +35,7 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos
             Population.Sort((x, y) => x.Fitness.CompareTo(y.Fitness));
             Best = new Solution(Population[0]);
             
-            while (EFOs < MaxEFOs)
+            while ((EFOs < MaxEFOs) && (Best.Fitness > theProblem.OptimalLocation))
             {
                 var Xnew = new Solution(this);
                 //Se genera la armonia de tamaño NumVertices
@@ -87,10 +87,7 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos
                 Xnew.Evaluate();
                 var worstFitness = Population.Max(x => x.Fitness);
                 var posworstFitness = Population.FindIndex(x => Math.Abs(x.Fitness - worstFitness) < 1e-10);
-                //Population[posworstFitness].Imprimir();
-                //Console.WriteLine("Peor: "+Population[posworstFitness].Fitness);
-                //Xnew.Imprimir();
-                //Console.WriteLine("Xnew: "+Xnew.Fitness);
+
 
                 //Evalua la evaluacion de la nueva armonia con la evaluacion de la peor solucion de la memoria
                 if (Xnew.Fitness < Population[posworstFitness].Fitness)
@@ -99,7 +96,7 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos
                     Population[posworstFitness] = Xnew;
                 }
                 Population.Sort((x, y) => x.Fitness.CompareTo(y.Fitness));
-                //Best = new Solution(Population[0]);
+                Best = new Solution(Population[0]);
                 //Best.Imprimir();
             } 
         }

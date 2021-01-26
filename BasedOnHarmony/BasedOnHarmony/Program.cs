@@ -16,7 +16,7 @@ namespace BasedOnHarmony
             Console.WriteLine("Iniciando......");
             Console.WriteLine("Cargando Archivos de problemas.....");
             var myProblems = new List<PMediana>
-            { 
+            {
                 new PMediana("pmed1.txt"), 
                 new PMediana("pmed2.txt"), 
                 new PMediana("pmed3.txt"),
@@ -61,7 +61,7 @@ namespace BasedOnHarmony
                 
                 };
             var myAlgorithms = new List<Algorithm>{
-                new HSOS(){ MaxEFOs=maxEFOS},
+                //new HSOS(){ MaxEFOs=maxEFOS},
                 new SBHS() { MaxEFOs=maxEFOS},
                 };
             Console.WriteLine("Ejecutando Algoritmos.....");
@@ -84,7 +84,6 @@ namespace BasedOnHarmony
                         var myRandom = new Random(rep);
                         var timeBegin = DateTime.Now;
                         theAlgorithm.Ejecutar(theProblem, myRandom);
-
                         times.Add((DateTime.Now - timeBegin).TotalSeconds);
                         //Console.WriteLine("\nrep: " + rep);
                         //theAlgorithm.Best.Imprimir();
@@ -97,9 +96,10 @@ namespace BasedOnHarmony
 
                     var avg = mediaF.Average();
                     Console.Write($"{avg,15:0.000} ");
-                    var rpe = ((avg - theProblem.OptimalLocation) * 100) / theProblem.OptimalLocation;
+                    var rpe = ((avg - theProblem.OptimalLocation) /theProblem.OptimalLocation) * 100;
                     Console.Write($"{rpe,15:0.000} ");
-                    var deviation = mediaF.Sum(d => (d - avg) * (d - avg)); 
+                    var deviation = mediaF.Sum(d => (d - avg) * (d - avg));
+                    deviation = Math.Sqrt(deviation / 30);
                     Console.Write($"{deviation,15:0.000} ");
                     Console.Write($"{efos.Average(),15:0.000} ");
                     Console.Write($"{succesRate * 100.0 / maxRep,15:0.00}% ");
@@ -107,7 +107,7 @@ namespace BasedOnHarmony
 
                 }
             }
-            Console.WriteLine("Terminado, Precione una tecla para cerrar...");
+            Console.WriteLine("Terminado, Presione una tecla para cerrar...");
             Console.ReadKey();
         }
     }
