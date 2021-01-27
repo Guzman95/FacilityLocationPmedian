@@ -30,7 +30,10 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos{
             //Iteracion del algoritmo
             while (EFOs < MaxEFOs && Best.Fitness > theProblem.OptimalLocation){
                 //Recorrido de la poblacon
+                //Console.Write("\n");
                 for (var i = 0; i < PopulationSize; i++) {
+                   // Console.Write("-" + i);
+                    
                     //MutualismoJ
                     var j = myRandom.Next(PopulationSize); while (i == j) j = myRandom.Next(PopulationSize);
                     var m1 = Population[i].Mutualism(Population[j], Best);
@@ -52,9 +55,9 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos{
                     //Parasitimo
                     j = myRandom.Next(PopulationSize); while (i == j) j = myRandom.Next(PopulationSize);
                     var m4 = Population[i].Parasitism();
-                    if (m4.Fitness < Population[i].Fitness){Population[i] = m4;}
+                    if (m4.Fitness < Population[i].Fitness) Population[i] = m4;
                     if (EFOs >= MaxEFOs) break;
-
+                    
                     //Improisación de una nueva armonia
                     var m5 = Improvisation(i);
                     var worstFitness = Population.Max(x => x.Fitness);
@@ -69,7 +72,7 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos{
                 }
                 Population.Sort((x, y) => x.Fitness.CompareTo(y.Fitness));
                 Best = new Solution(Population[0]);
-                //Console.WriteLine("\nBest");
+                //Console.WriteLine("\nBest");<
                 //Best.Imprimir();
             }
         }

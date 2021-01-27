@@ -8,7 +8,7 @@ namespace BasedOnHarmony.Metaheuristicas
         /// Cada uno de los organismos se beneficia del su compañero y del mejor de la poblacion 
         /// </summary>
         /// <param name="xj,best></param>
-        /// <returns></returns>
+        /// <returns>b</returns>
         public Solution Mutualism(Solution xj, Solution best)
         {
             var mutualvector = new int[MyAlgorithm.MyProblem.NumVertices];
@@ -35,19 +35,17 @@ namespace BasedOnHarmony.Metaheuristicas
 
             var b = new Solution(this.MyAlgorithm);
             b.RandomInitializationWithoutConstrains();
+            var indicador = MyAlgorithm.MyProblem.PMedianas * 0.5;
             for (var k = 0; k < MyAlgorithm.MyProblem.NumVertices; k++)
             {
                 if (a.Vertices[k] == this.Vertices[k])
                 {
-                    if (b.PosInstalaciones.Count > Math.Floor(MyAlgorithm.MyProblem.PMedianas * 0.5))
+                    if (b.PosInstalaciones.Count > Math.Floor(indicador))
                     {                    
                         if (a.Vertices[k] == 1) b.Activar(k);
                         else b.InActivar(k);
                     }
-                    else 
-                    {
-                        if (a.Vertices[k] == 1) b.Activar(k);
-                    }
+                    else if (a.Vertices[k] == 1) b.Activar(k);
                 }
             }
             b.RepararSolutionAwareness();
@@ -60,7 +58,7 @@ namespace BasedOnHarmony.Metaheuristicas
         /// Un solo organismo se beneficia del otro y el del mejor de la poblacion
         /// </summary>
         /// <param name="xj,best></param>
-        /// <returns></returns>
+        /// <returns>d</returns>
         public Solution Commensalism(Solution xj, Solution best)
         {
             var c = new Solution(this.MyAlgorithm);
@@ -74,19 +72,17 @@ namespace BasedOnHarmony.Metaheuristicas
             }
             var d = new Solution(this.MyAlgorithm);
             d.RandomInitializationWithoutConstrains();
+            var indicador = MyAlgorithm.MyProblem.PMedianas * 0.5;
             for (var k = 0; k < MyAlgorithm.MyProblem.NumVertices; k++)
             {
                 if (c.Vertices[k] == this.Vertices[k])
                 {
-                    if (d.PosInstalaciones.Count > Math.Floor(MyAlgorithm.MyProblem.PMedianas * 0.5))
+                    if (d.PosInstalaciones.Count > Math.Floor(indicador))
                     {
                         if (c.Vertices[k] == 1) d.Activar(k);
                         else d.InActivar(k);
                     }
-                    else 
-                    {
-                        if (c.Vertices[k] == 1) d.Activar(k);
-                    }
+                    else if (c.Vertices[k] == 1) d.Activar(k);
                 }
             }
             d.RepararSolutionAwareness();
@@ -99,22 +95,20 @@ namespace BasedOnHarmony.Metaheuristicas
         /// A partir de un organismo se crea un parasito que intentara elimianar la organismo compañero
         /// </summary>
         /// <param name="xj,best></param>
-        /// <returns></returns>
+        /// <returns>parasito</returns>
         public Solution Parasitism()
         {
             var parasito = new Solution(this);
             var nDimenciones = Utils.RandomlySelectedDimensions(MyAlgorithm.MyRandom, MyAlgorithm.MyProblem.NumVertices);
+            var indicador = MyAlgorithm.MyProblem.PMedianas * 0.5;
             foreach (var pos in nDimenciones)
             {
-                if (parasito.PosInstalaciones.Count > Math.Floor(MyAlgorithm.MyProblem.PMedianas * 0.5))
+                if (parasito.PosInstalaciones.Count > Math.Floor(indicador))
                 {
-                    if (parasito.Vertices[pos] == 1)  parasito.InActivar(pos); 
-                    else { parasito.Activar(pos); }
+                    if (parasito.Vertices[pos] == 1) parasito.InActivar(pos);
+                    else parasito.Activar(pos);
                 }
-                else 
-                {
-                    if (parasito.Vertices[pos] == 0)  parasito.Activar(pos); 
-                }    
+                else if (parasito.Vertices[pos] == 0) parasito.Activar(pos);  
             }
             parasito.RepararSolutionAwareness();
             //parasito.RepairSolutionRandomly();
