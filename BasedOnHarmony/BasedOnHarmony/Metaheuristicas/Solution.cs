@@ -133,30 +133,28 @@ namespace BasedOnHarmony.Metaheuristicas
         public void RepararSolutionAwareness()
         {
             int pMedianas = MyAlgorithm.MyProblem.PMedianas;
-
             var menoresDistancias = Utils.DeterminarMenoresDistanciasX(MyAlgorithm, PosInstalaciones);
-            //Console.WriteLine("\nCantidad:");
+
             while (PosInstalaciones.Count < pMedianas)
             {
-                //Console.Write("-"+PosInstalaciones.Count());
                 var pos = Utils.DeterminarPosArgMin(menoresDistancias, MyAlgorithm, Vertices);
                 Activar(pos);
                 menoresDistancias = Utils.ActualizarMenoresDistanciasAgregacion(MyAlgorithm, pos, menoresDistancias);
             }
             while (PosInstalaciones.Count > pMedianas)
             {
-                //Console.Write("-"+PosInstalaciones.Count());
+               
                 var pos = Utils.DeterminarPosArgMax(menoresDistancias, PosInstalaciones, MyAlgorithm);
                 InActivar(pos);
-                //menoresDistancias = Utils.ActualizarMenoresDistanciasEliminacion(MyAlgorithm, pos, menoresDistancias, PosInstalaciones);
-                menoresDistancias = Utils.DeterminarMenoresDistanciasX(MyAlgorithm, PosInstalaciones);
+                menoresDistancias = Utils.ActualizarMenoresDistanciasEliminacion(MyAlgorithm, pos, menoresDistancias, PosInstalaciones);
+               
             }
         }
         /// <summary>
         ///  Imprime los valores de la solucion  
         /// </summary>
         /// <param></param>
-        /// <returns></returns>    
+        /// <returns></returns>   
         public void Imprimir()
         {
             Console.WriteLine("Solucion");

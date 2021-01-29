@@ -6,9 +6,9 @@ namespace BasedOnHarmony.Metaheuristicas
 {
     class Utils
     {
-        //Obtiena una conjunto de posiones aleatorias de acuerdo a la solucion
+
         /// <summary>
-        ///  Determina las menores distancias de cada demanda a su instalacion masa cercana  
+        /// Obtiene una conjunto aleatorio de posiones aleatorias de acuerdo a la solucion 
         /// </summary>
         /// <param name="myRandom"></param>
         /// <param name="numVertices"></param>
@@ -19,7 +19,7 @@ namespace BasedOnHarmony.Metaheuristicas
             return RandomlySelectedExactDimensions(myRandom, numVertices, numerodimencionesN);
         }
         /// <summary>
-        ///  Determina las menores distancias de cada demanda a su instalacion masa cercana  
+        /// Obtiena una conjunto determinado de posiones aleatorias de acuerdo a la solucion  
         /// </summary>
         /// <param name="myRandom"></param>
         /// <param name="numVertices"></param>
@@ -36,110 +36,14 @@ namespace BasedOnHarmony.Metaheuristicas
             }
             return dimencionesN;
         }
+
+
         /// <summary>
-        ///  Determina las menores distancias de cada demanda a su instalacion masa cercana  
+        ///  Determina las menor distancia de cada demanda a  una instalacion mas cercana  
         /// </summary>
         /// <param name="PosInstalaciones"></param>
         /// <param name="MyAlgorithm"></param>
         /// <returns name="menoresDistancias"></returns>
-        public static double[] DeterminarMenoresDistanciasX(Algorithm MyAlgorithm, List<int> PosInstalaciones)
-        {
-
-            double[] menoresDistancias = new double[MyAlgorithm.MyProblem.NumVertices];
-            for (var i = 0; i < MyAlgorithm.MyProblem.NumVertices; i++)
-            {
-                var distancias = new List<double>();
-                for (var t = 0; t < PosInstalaciones.Count; t++)
-                {
-                    distancias.Add(MyAlgorithm.MyProblem.DistanciasFloyd[i][PosInstalaciones[t]]);
-                }
-                menoresDistancias[i] = distancias.Min();
-            }
-            return menoresDistancias;
-        }
-      
-        /// <summary>
-        ///  Determina las menores distancias de cada demanda a su instalacion masa cercana  
-        /// </summary>
-        /// <param name="PosInstalaciones"></param>
-        /// <param name="MyAlgorithm"></param>
-        /// <returns name="menoresDistancias"></returns>
-        public static double[] ActualizarMenoresDistanciasAgregacion(Algorithm myalgorithm, int posk, double[] menoresdistancias)
-        {
-            for (var i = 0; i < myalgorithm.MyProblem.NumVertices; i++)
-            {
-                var dist = myalgorithm.MyProblem.DistanciasFloyd[i][posk];
-                if (dist < menoresdistancias[i]) menoresdistancias[i] = dist;
-            }
-            return menoresdistancias;
-        }
-
-        /// <summary>
-        ///  Determina la instalacion que al agregarla disminuya al maximo el valor la funcion objetivo  
-        /// </summary>
-        /// <param name="menoresDistancias"></param>
-        /// <param name="MyAlgorithm"></param>
-        /// <param name="Vertices"></param>
-        /// <returns name="poskX"></returns>
-        public static int DeterminarPosArgMin(double[] menoresDistancias, Algorithm MyAlgorithm, int[] Vertices)
-        {
-            var sumasPerdidasAdicion = new List<KeyValuePair<int, double>>();
-            for (var j = 0; j < MyAlgorithm.MyProblem.NumVertices; j++)
-            {
-                if (Vertices[j] == 0)
-                {
-                    double sumaMin = 0;
-                    for (var i = 0; i < menoresDistancias.Length; i++)
-                    {
-                        var distanciaIJ = MyAlgorithm.MyProblem.DistanciasFloyd[i][j];
-                        var dif = distanciaIJ - menoresDistancias[i];
-                        if (dif < 0)
-                        {
-                            sumaMin += dif * -1;
-                        }
-                    }
-                    sumasPerdidasAdicion.Add(new KeyValuePair<int, double>(j, sumaMin));
-                }
-            }
-            var max = sumasPerdidasAdicion.Max(x => x.Value);
-            var poskX = sumasPerdidasAdicion.Find(x => Math.Abs(x.Value - max) < 1e-10);
-            return poskX.Key;
-        }
-        /// <summary>
-        ///  Determina la instalacion que al eliminarna aumente al mimimo el  valor la funcion objetivo  
-        /// </summary>
-        /// <param name="menoresDistancias"></param>
-        /// <param name="PosInstalaciones"></param>
-        /// <param name="MyAlgorithm"></param>
-        /// <returns name="poskX"></returns>
-        public static int DeterminarPosArgMax(double[] menoresdistancias, List<int> posInstalaciones, Algorithm myalgorithm)
-        {
-            var sumasganaciaseliminacion = new List<KeyValuePair<int, double>>();
-            for (var j = 0; j < posInstalaciones.Count; j++)
-            {
-                double sumamin = 0;
-                List<int> copiapinstalaciones = new List<int>(posInstalaciones);
-                copiapinstalaciones.RemoveAt(j);
-                for (var i = 0; i < menoresdistancias.Length; i++)
-                {
-                    var distancias = new List<double>();
-                    for (var t = 0; t < copiapinstalaciones.Count; t++)
-                    {
-                        var dist = myalgorithm.MyProblem.DistanciasFloyd[i][copiapinstalaciones[t]];
-                        distancias.Add(dist);
-                    }
-                    sumamin += distancias.Min() - menoresdistancias[i];
-                }
-                sumasganaciaseliminacion.Add(new KeyValuePair<int, double>(posInstalaciones[j], sumamin));
-            }
-            var min = sumasganaciaseliminacion.Min(x => x.Value);
-            var poskx = sumasganaciaseliminacion.Find(x => Math.Abs(x.Value - min) < 1e-10);
-            return poskx.Key;
-        }
-
-
-        ///Metodos para calculo de otra forma lo estoy probando 
-        /*
         public static List<KeyValuePair<int, double>> DeterminarMenoresDistanciasX(Algorithm MyAlgorithm, List<int> PosInstalaciones)
         {
 
@@ -159,6 +63,12 @@ namespace BasedOnHarmony.Metaheuristicas
             return menoresDistancias;
         }
 
+        /// <summary>
+        ///  Actualiza la menor distancia de cada una de las demandas con la nueva  instalacion  
+        /// </summary>
+        /// <param name="PosInstalaciones"></param>
+        /// <param name="MyAlgorithm"></param>
+        /// <returns name="menoresDistancias"></returns>
         public static List<KeyValuePair<int, double>> ActualizarMenoresDistanciasAgregacion(Algorithm myalgorithm, int posk, List<KeyValuePair<int, double>> menoresdistancias)
         {
             for (var i = 0; i < myalgorithm.MyProblem.NumVertices; i++)
@@ -168,26 +78,41 @@ namespace BasedOnHarmony.Metaheuristicas
             }
             return menoresdistancias;
         }
+        /// <summary>
+        ///  Actualiza  la menor distancia de las  demandas de la instalacion eliminada   
+        /// </summary>
+        /// <param name="PosInstalaciones"></param>
+        /// <param name="MyAlgorithm"></param>
+        /// <returns name="menoresDistancias"></returns>
 
         public static List<KeyValuePair<int, double>> ActualizarMenoresDistanciasEliminacion(Algorithm MyAlgorithm, int posk, List<KeyValuePair<int, double>> menoresDistancias, List<int> PosInstalaciones)
         {
-
             for (var i = 0; i < MyAlgorithm.MyProblem.NumVertices; i++)
             {
                 if (menoresDistancias[i].Key == posk)
                 {
-                    var distancias = new List<double>();
+                    var distancias = new List<KeyValuePair<int, double>>();
                     for (var t = 0; t < PosInstalaciones.Count; t++)
                     {
-                        distancias.Add(MyAlgorithm.MyProblem.DistanciasFloyd[i][PosInstalaciones[t]]);
+                        var dist = MyAlgorithm.MyProblem.DistanciasFloyd[i][PosInstalaciones[t]];
+                        distancias.Add(new KeyValuePair<int, double>(PosInstalaciones[t], dist));
                     }
-                    menoresDistancias[i] = new KeyValuePair<int, double>(i, distancias.Min());
+                    var min = distancias.Min(x => x.Value);
+                    var post = distancias.Find(x => Math.Abs(x.Value - min) < 1e-10);
+                    menoresDistancias[i] = new KeyValuePair<int, double>(post.Key, min);
                 }
             }
             return menoresDistancias;
         }
 
-        public static int determinarposargmin(List<KeyValuePair<int, double>> menoresdistancias, Algorithm myalgorithm, int[] vertices)
+        /// <summary>
+        ///  Determina la instalacion que al agregarla disminuya al maximo el valor la funcion objetivo  
+        /// </summary>
+        /// <param name="menoresDistancias"></param>
+        /// <param name="MyAlgorithm"></param>
+        /// <param name="Vertices"></param>
+        /// <returns name="poskX"></returns>
+        public static int DeterminarPosArgMin(List<KeyValuePair<int, double>> menoresdistancias, Algorithm myalgorithm, int[] vertices)
         {
             var sumasperdidasadicion = new List<KeyValuePair<int, double>>();
             for (var j = 0; j < myalgorithm.MyProblem.NumVertices; j++)
@@ -212,6 +137,13 @@ namespace BasedOnHarmony.Metaheuristicas
             return poskx.Key;
         }
 
+        /// <summary>
+        ///  Determina la instalacion que al eliminarna aumente al mimimo el  valor la funcion objetivo  
+        /// </summary>
+        /// <param name="menoresDistancias"></param>
+        /// <param name="PosInstalaciones"></param>
+        /// <param name="MyAlgorithm"></param>
+        /// <returns name="poskX"></returns>
         public static int DeterminarPosArgMax(List<KeyValuePair<int, double>> menoresDistancias, List<int> PosInstalaciones, Algorithm MyAlgorithm)
         {
             var sumasGanaciasEliminacion = new List<KeyValuePair<int, double>>();
@@ -235,6 +167,6 @@ namespace BasedOnHarmony.Metaheuristicas
             var min = sumasGanaciasEliminacion.Min(x => x.Value);
             var poskX = sumasGanaciasEliminacion.Find(x => Math.Abs(x.Value - min) < 1e-10);
             return poskX.Key;
-        } */
+        } 
     }
 }

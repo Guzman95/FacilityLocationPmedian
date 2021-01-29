@@ -61,10 +61,10 @@ namespace BasedOnHarmony
                 
                 };
             var myAlgorithms = new List<Algorithm>{
-                //new HSOS(){ MaxEFOs=maxEFOS},
-                new SBHS() { MaxEFOs=maxEFOS},
+                new HSOS(){ MaxEFOs=maxEFOS},
+                //new SBHS() { MaxEFOs=maxEFOS},
                 };
-            Console.WriteLine("Ejecutando Algoritmos.....");
+            Console.WriteLine("\nEjecutando Algoritmos.....");
             foreach (var theAlgorithm in myAlgorithms)
             {
                 Console.WriteLine($"{theAlgorithm,80}");
