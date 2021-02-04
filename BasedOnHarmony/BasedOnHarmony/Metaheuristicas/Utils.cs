@@ -36,7 +36,22 @@ namespace BasedOnHarmony.Metaheuristicas
             }
             return dimencionesN;
         }
+        
 
+        /// <summary>
+        /// Seleciona aleatoriamente  una posicion de instalacion para ser agregada a la solucion
+        /// </summary>
+        /// <param name="state"></param>
+        /// <returns name="posAleatoria"></returns>
+        public static int VerticeValidation(int[] Vertices, Algorithm MyAlgorithm, int state)
+        {
+            int posAleatoria;
+            do
+            {
+                posAleatoria = MyAlgorithm.MyRandom.Next(MyAlgorithm.MyProblem.NumVertices);
+            } while (Vertices[posAleatoria] == state);
+            return posAleatoria;
+        }
 
         /// <summary>
         ///  Determina las menor distancia de cada demanda a  una instalacion mas cercana  
@@ -55,6 +70,7 @@ namespace BasedOnHarmony.Metaheuristicas
                 {
                     var dist = MyAlgorithm.MyProblem.DistanciasFloyd[i][PosInstalaciones[t]];
                     distancias.Add(new KeyValuePair<int, double>(PosInstalaciones[t], dist));
+
                 }
                 var min = distancias.Min(x => x.Value);
                 var post = distancias.Find(x => Math.Abs(x.Value - min) < 1e-10);

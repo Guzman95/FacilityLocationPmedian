@@ -79,39 +79,7 @@ namespace BasedOnHarmony.Metaheuristicas
                 else
                     Activar(i);
         }
-        /// <summary>
-        /// Agrega o elimina instalaciones aleatoriamente hasta que instalaciones igual a P 
-        /// </summary>
-        /// <param ></param>
-        /// <returns></returns> 
-        public void RepairSolutionRandomly()
-        {
-            var pMedianas = MyAlgorithm.MyProblem.PMedianas;
-            while (PosInstalaciones.Count < pMedianas)
-            {
-                Activar(VerticeValidation(1));
-            }
-            while (PosInstalaciones.Count > pMedianas)
-            {
 
-                InActivar(VerticeValidation(0));
-            }
-        }
-
-        /// <summary>
-        /// Seleciona aleatoriamente  una posicion de instalacion para ser agregada a la solucion
-        /// </summary>
-        /// <param name="state"></param>
-        /// <returns name="posAleatoria"></returns>
-        private int VerticeValidation(int state)
-        {
-            int posAleatoria;
-            do
-            {
-                posAleatoria = MyAlgorithm.MyRandom.Next(MyAlgorithm.MyProblem.NumVertices);
-            } while (Vertices[posAleatoria] == state);
-            return posAleatoria;
-        }
         /// <summary>
         ///  Inicializa un organismo con el numero de instalaciones selecionadas 
         /// </summary>
@@ -123,6 +91,24 @@ namespace BasedOnHarmony.Metaheuristicas
                 MyAlgorithm.MyProblem.NumVertices, MyAlgorithm.MyProblem.PMedianas);
             foreach (var pos in posiciones)
                 Activar(pos);
+        }
+        /// <summary>
+        /// Agrega o elimina instalaciones aleatoriamente hasta que instalaciones igual a P 
+        /// </summary>
+        /// <param ></param>
+        /// <returns></returns> 
+        public void RepairSolutionRandomly()
+        {
+            var pMedianas = MyAlgorithm.MyProblem.PMedianas;
+            while (PosInstalaciones.Count < pMedianas)
+            {
+                Activar(Utils.VerticeValidation(Vertices,MyAlgorithm, 1));
+            }
+            while (PosInstalaciones.Count > pMedianas)
+            {
+
+                InActivar(Utils.VerticeValidation(Vertices, MyAlgorithm, 0));
+            }
         }
 
         /// <summary>
@@ -193,8 +179,6 @@ namespace BasedOnHarmony.Metaheuristicas
                 result += (PosInstalaciones[i] + " ");
             result = result + " f = " + Fitness;
             return result;
-        }
-        
-       
+        }       
     }
 }

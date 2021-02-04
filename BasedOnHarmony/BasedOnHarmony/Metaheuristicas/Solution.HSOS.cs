@@ -40,12 +40,14 @@ namespace BasedOnHarmony.Metaheuristicas
             {
                 if (a.Vertices[k] == this.Vertices[k])
                 {
+                    
                     if (b.PosInstalaciones.Count > Math.Floor(indicador))
                     {                    
                         if (a.Vertices[k] == 1) b.Activar(k);
                         else b.InActivar(k);
                     }
                     else if (a.Vertices[k] == 1) b.Activar(k);
+                    
                 }
             }
             b.RepararSolutionAwareness();
@@ -75,8 +77,9 @@ namespace BasedOnHarmony.Metaheuristicas
             var indicador = MyAlgorithm.MyProblem.PMedianas * 0.5;
             for (var k = 0; k < MyAlgorithm.MyProblem.NumVertices; k++)
             {
-                if (c.Vertices[k] == this.Vertices[k])
-                {
+                if (c.Vertices[k] == this.Vertices[k]) 
+                { 
+                    
                     if (d.PosInstalaciones.Count > Math.Floor(indicador))
                     {
                         if (c.Vertices[k] == 1) d.Activar(k);
@@ -103,12 +106,14 @@ namespace BasedOnHarmony.Metaheuristicas
             var indicador = MyAlgorithm.MyProblem.PMedianas * 0.5;
             foreach (var pos in nDimenciones)
             {
+                
                 if (parasito.PosInstalaciones.Count > Math.Floor(indicador))
                 {
                     if (parasito.Vertices[pos] == 1) parasito.InActivar(pos);
                     else parasito.Activar(pos);
                 }
                 else if (parasito.Vertices[pos] == 0) parasito.Activar(pos);  
+               
             }
             parasito.RepararSolutionAwareness();
             //parasito.RepairSolutionRandomly();

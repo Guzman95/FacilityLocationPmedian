@@ -115,5 +115,10 @@ namespace BasedOnHarmony.Funciones
                 Console.WriteLine("\n");
             }
         }
+
+        public override string ToString()
+        {
+            return FileName;
+        }
     }
 }

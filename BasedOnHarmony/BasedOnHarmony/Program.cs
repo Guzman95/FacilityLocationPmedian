@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using BasedOnHarmony.Funciones;
 using BasedOnHarmony.Metaheuristicas;
 using BasedOnHarmony.Metaheuristicas.Armonicos;
@@ -17,6 +20,7 @@ namespace BasedOnHarmony
             Console.WriteLine("Cargando Archivos de problemas.....");
             var myProblems = new List<PMediana>
             {
+                
                 new PMediana("pmed1.txt"), 
                 new PMediana("pmed2.txt"), 
                 new PMediana("pmed3.txt"),
@@ -57,19 +61,18 @@ namespace BasedOnHarmony
                 new PMediana("pmed38.txt"),
                 new PMediana("pmed39.txt"),
                 new PMediana("pmed40.txt"),
-                new PMediana("pmed41.txt"),
-                
+                new PMediana("pmed41.txt")            
                 };
-            var myAlgorithms = new List<Algorithm>{
-                new HSOS(){ MaxEFOs=maxEFOS},
-                //new SBHS() { MaxEFOs=maxEFOS},
-                };
+            var myAlgorithms = new List<string>();
+            
+                myAlgorithms.Add("HSOS");
+                myAlgorithms.Add("SBHS");
             Console.WriteLine("\nEjecutando Algoritmos.....");
-            foreach (var theAlgorithm in myAlgorithms)
+            foreach (var nameAlgorithm in myAlgorithms)
             {
-                Console.WriteLine($"{theAlgorithm,80}");
+                Console.WriteLine($"{nameAlgorithm,80}");
                 Console.Write($"{"Problem",-15} {"Vertices",6} {"PMedianas",6} {"Ideal",10} ");
-                Console.WriteLine($"{"Avg-Fitness",15} {"fMRPE-Fitness",15} {"SD-Fitness",15} {"Avg-Efos",15} {"Success Rate",15} { "Time",15}");
+                Console.WriteLine($"{"Avg-Fitness",15} {"fMRPE-Fitness",15} {"SD-Fitness",15} {"Avg-Efos",15} {"Success Rate",15} { "TimeAVG",15} { "TimeTotal",15}");
 
                 foreach (var theProblem in myProblems)
                 {
@@ -79,20 +82,32 @@ namespace BasedOnHarmony
                     var mediaF = new List<double>();
                     var times = new List<double>();
                     var succesRate = 0;
-                    for (var rep = 0; rep < maxRep; rep++)
-                    {
+                    var timeStart = DateTime.Now;
+                    Parallel.For(0, maxRep, rep =>
+                    { 
+                        Debug.WriteLine("HILO :" + Thread.CurrentThread.ManagedThreadId + " Problema " + theProblem);
+                        Algorithm theAlgorithm = null;
+                        switch (nameAlgorithm)
+                        {
+                            case "HSOS":
+                                theAlgorithm = new HSOS();
+                                break;
+                            case "SBHS":
+                                theAlgorithm = new SBHS();
+                                break;
+                        }
                         var myRandom = new Random(rep);
                         var timeBegin = DateTime.Now;
+                        theAlgorithm.MaxEFOs = maxEFOS;
                         theAlgorithm.Ejecutar(theProblem, myRandom);
                         times.Add((DateTime.Now - timeBegin).TotalSeconds);
                         //Console.WriteLine("\nrep: " + rep);
                         //theAlgorithm.Best.Imprimir();
                         mediaF.Add(theAlgorithm.Best.Fitness);
                         efos.Add(theAlgorithm.EFOs);
-                        if (theAlgorithm.Best.Fitness <= theProblem.OptimalLocation)
-                            succesRate++;
+                        if (theAlgorithm.Best.Fitness <= theProblem.OptimalLocation) succesRate++;
 
-                    }
+                    });//End ParallelFor
 
                     var avg = mediaF.Average();
                     Console.Write($"{avg,15:0.000} ");
@@ -104,6 +119,7 @@ namespace BasedOnHarmony
                     Console.Write($"{efos.Average(),15:0.000} ");
                     Console.Write($"{succesRate * 100.0 / maxRep,15:0.00}% ");
                     Console.WriteLine($"{times.Average(),15:0.000000} ");
+                    Console.WriteLine($"{(DateTime.Now-timeStart).TotalSeconds,15:0.000000} ");
 
                 }
             }

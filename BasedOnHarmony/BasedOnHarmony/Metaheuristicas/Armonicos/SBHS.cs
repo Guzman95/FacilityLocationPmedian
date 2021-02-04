@@ -98,7 +98,7 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos
                 Population.Sort((x, y) => x.Fitness.CompareTo(y.Fitness));
                 Best = new Solution(Population[0]);
                 //Best.Imprimir();
-            } 
+            }
         }
 
     }
