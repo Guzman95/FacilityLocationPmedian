@@ -65,16 +65,14 @@ namespace BasedOnHarmony.Metaheuristicas
             var menoresDistancias = new List<KeyValuePair<int, double>>();
             for (var i = 0; i < MyAlgorithm.MyProblem.NumVertices; i++)
             {
-                var distancias = new List<KeyValuePair<int, double>>();
+                var disMin = 99999999;
+                var PosInst = -1;
                 for (var t = 0; t < PosInstalaciones.Count; t++)
                 {
                     var dist = MyAlgorithm.MyProblem.DistanciasFloyd[i][PosInstalaciones[t]];
-                    distancias.Add(new KeyValuePair<int, double>(PosInstalaciones[t], dist));
-
+                    if (dist < disMin) disMin = dist; PosInst = PosInstalaciones[t];
                 }
-                var min = distancias.Min(x => x.Value);
-                var post = distancias.Find(x => Math.Abs(x.Value - min) < 1e-10);
-                menoresDistancias.Add(new KeyValuePair<int, double>(post.Key, min));
+                menoresDistancias.Add(new KeyValuePair<int, double>(PosInst, disMin));
             }
             return menoresDistancias;
         }
@@ -107,15 +105,14 @@ namespace BasedOnHarmony.Metaheuristicas
             {
                 if (menoresDistancias[i].Key == posk)
                 {
-                    var distancias = new List<KeyValuePair<int, double>>();
+                    var disMin = 99999999; 
+                    var PosInst = -1; 
                     for (var t = 0; t < PosInstalaciones.Count; t++)
                     {
                         var dist = MyAlgorithm.MyProblem.DistanciasFloyd[i][PosInstalaciones[t]];
-                        distancias.Add(new KeyValuePair<int, double>(PosInstalaciones[t], dist));
+                        if (dist < disMin) disMin = dist; PosInst = PosInstalaciones[t];
                     }
-                    var min = distancias.Min(x => x.Value);
-                    var post = distancias.Find(x => Math.Abs(x.Value - min) < 1e-10);
-                    menoresDistancias[i] = new KeyValuePair<int, double>(post.Key, min);
+                    menoresDistancias[i] = new KeyValuePair<int, double>(PosInst, disMin);
                 }
             }
             return menoresDistancias;
