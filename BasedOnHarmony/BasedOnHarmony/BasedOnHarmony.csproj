@@ -44,7 +44,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Funciones\Arista.cs" />
     <Compile Include="Funciones\PMediana.cs" />
     <Compile Include="Metaheuristicas\Algorithm.cs" />
     <Compile Include="Metaheuristicas\Armonicos\HSOS.cs" />

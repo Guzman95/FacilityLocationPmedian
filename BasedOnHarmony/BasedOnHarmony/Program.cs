@@ -63,7 +63,6 @@ namespace BasedOnHarmony
                 new PMediana("pmed40.txt"),
                 new PMediana("pmed41.txt")            
                 };
-            Console.ReadKey();
             var myAlgorithms = new List<string>();
             
                 myAlgorithms.Add("HSOS");
@@ -73,7 +72,7 @@ namespace BasedOnHarmony
             {
                 Console.WriteLine($"{nameAlgorithm,80}");
                 Console.Write($"{"Problem",-15} {"Vertices",6} {"PMedianas",6} {"Ideal",10} ");
-                Console.WriteLine($"{"Avg-Fitness",15} {"fMRPE-Fitness",15} {"SD-Fitness",12} {"Avg-Efos",12} {"Success Rate",12} { "TimeAVG",12} { "TimeTotal",12}");
+                Console.WriteLine($"{"Avg-Fitness",15} {"fMRPE-Fitness",15} {"SD-Fitness",15} {"Avg-Efos",15} {"Success Rate",15} { "TimeAVG",15} { "TimeTotal",15}");
 
                 foreach (var theProblem in myProblems)
                 {
@@ -116,11 +115,11 @@ namespace BasedOnHarmony
                     Console.Write($"{rpe,15:0.000} ");
                     var deviation = mediaF.Sum(d => (d - avg) * (d - avg));
                     deviation = Math.Sqrt(deviation / 30);
-                    Console.Write($"{deviation,12:0.000} ");
-                    Console.Write($"{efos.Average(),12:0.000} ");
-                    Console.Write($"{succesRate * 100.0 / maxRep,112:0.00}% ");
-                    Console.WriteLine($"{times.Average(),12:0.000000} ");
-                    Console.WriteLine($"{(DateTime.Now-timeStart).TotalSeconds,12:0.000000} ");
+                    Console.Write($"{deviation,15:0.000} ");
+                    Console.Write($"{efos.Average(),15:0.000} ");
+                    Console.Write($"{succesRate * 100.0 / maxRep,15:0.00}% ");
+                    Console.WriteLine($"{times.Average(),15:0.000000} ");
+                    Console.WriteLine($"{(DateTime.Now-timeStart).TotalSeconds,15:0.000000} ");
 
                 }
             }
