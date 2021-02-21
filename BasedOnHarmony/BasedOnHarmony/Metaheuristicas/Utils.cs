@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace BasedOnHarmony.Metaheuristicas
@@ -36,7 +37,7 @@ namespace BasedOnHarmony.Metaheuristicas
             }
             return dimencionesN;
         }
-        
+
 
         /// <summary>
         /// Seleciona aleatoriamente  una posicion de instalacion para ser agregada a la solucion
@@ -105,8 +106,8 @@ namespace BasedOnHarmony.Metaheuristicas
             {
                 if (menoresDistancias[i].Key == posk)
                 {
-                    var disMin = 99999999; 
-                    var PosInst = -1; 
+                    var disMin = 99999999;
+                    var PosInst = -1;
                     for (var t = 0; t < PosInstalaciones.Count; t++)
                     {
                         var dist = MyAlgorithm.MyProblem.DistanciasFloyd[i][PosInstalaciones[t]];
@@ -180,6 +181,46 @@ namespace BasedOnHarmony.Metaheuristicas
             var min = sumasGanaciasEliminacion.Min(x => x.Value);
             var poskX = sumasGanaciasEliminacion.Find(x => Math.Abs(x.Value - min) < 1e-10);
             return poskX.Key;
-        } 
+        }
+
+        public static void PersistirSolucionProblema(List<double> data)
+        {
+            var RootDirectorData = Path.GetFullPath("..\\..\\data_persistence\\");
+            if (!Directory.Exists(RootDirectorData))
+            {
+                DirectoryInfo di = Directory.CreateDirectory(RootDirectorData);
+            }
+            using (StreamWriter writer = new StreamWriter(RootDirectorData+"solution.txt", false))
+            {
+                var linea = "";
+                for (var c = 0; c < data.Count; c++)
+                {
+                    linea = linea + data[c] + ",";
+                }
+                writer.WriteLine(linea);
+            }
+        }
+
+        public static void PersistirEjecusionProblema(List<Array> data, String problemName)
+        {
+            var RootDirectorData = Path.GetFullPath("..\\..\\data_persistence\\");
+            if (!Directory.Exists(RootDirectorData))
+            {
+                DirectoryInfo di = Directory.CreateDirectory(RootDirectorData);
+            }
+            using (StreamWriter writer = new StreamWriter(RootDirectorData + "Ejecusiones"+problemName+".txt", false))
+            {
+                var linea = "";
+                for (var c = 0; c < data.Count; c++)
+                {
+                    var basearray = data[c];
+                    for (var d = 0; d < basearray.Length; d++)
+                    {
+                        linea = linea + basearray.GetValue(d) + ",";
+                    }                  
+                }
+                writer.WriteLine(linea);
+            }
+        }
     }
 }

@@ -20,18 +20,18 @@ namespace BasedOnHarmony
             Console.WriteLine("Cargando Archivos de problemas.....");
             var myProblems = new List<PMediana>
             {
-                
-                new PMediana("pmed1.txt"), 
-                new PMediana("pmed2.txt"), 
+
+                new PMediana("pmed1.txt"),
+                new PMediana("pmed2.txt"),
                 new PMediana("pmed3.txt"),
                 new PMediana("pmed4.txt"),
-                new PMediana("pmed5.txt"), 
+                new PMediana("pmed5.txt"),
                 new PMediana("pmed6.txt"),
                 new PMediana("pmed7.txt"),
                 new PMediana("pmed8.txt"),
                 new PMediana("pmed9.txt"),
-                new PMediana("pmed10.txt"), 
-                new PMediana("pmed11.txt"), 
+                new PMediana("pmed10.txt"),
+                new PMediana("pmed11.txt"),
                 new PMediana("pmed12.txt"),
                 new PMediana("pmed13.txt"),
                 new PMediana("pmed14.txt"),
@@ -61,8 +61,10 @@ namespace BasedOnHarmony
                 new PMediana("pmed38.txt"),
                 new PMediana("pmed39.txt"),
                 new PMediana("pmed40.txt"),
-                new PMediana("pmed41.txt")            
+                new PMediana("pmed41.txt")
+              
                 };
+            Console.ReadKey();
             var myAlgorithms = new List<string>();
             
                 myAlgorithms.Add("HSOS");
@@ -84,7 +86,9 @@ namespace BasedOnHarmony
                     var succesRate = 0;
                     var timeStart = DateTime.Now;
                     Parallel.For(0, maxRep, rep =>
-                    { 
+                    {
+                        List<Array> dataEjecusion = new List <Array>();
+
                         Debug.WriteLine("HILO :" + Thread.CurrentThread.ManagedThreadId + " Problema " + theProblem);
                         Algorithm theAlgorithm = null;
                         switch (nameAlgorithm)
@@ -107,19 +111,34 @@ namespace BasedOnHarmony
                         efos.Add(theAlgorithm.EFOs);
                         if (theAlgorithm.Best.Fitness <= theProblem.OptimalLocation) succesRate++;
 
-                    });//End ParallelFor
+                        //dataEjecusion.Add(mediaF);                     
+                        //Utils.PersistirEjecusionProblema(dataEjecusion, theProblem.ToString());
 
+                    });//End ParallelFor
+                    List<double> data = new  List<double>();
                     var avg = mediaF.Average();
+                    data.Add(avg);
                     Console.Write($"{avg,15:0.000} ");
                     var rpe = ((avg - theProblem.OptimalLocation) /theProblem.OptimalLocation) * 100;
+                    data.Add(rpe);
                     Console.Write($"{rpe,15:0.000} ");
                     var deviation = mediaF.Sum(d => (d - avg) * (d - avg));
                     deviation = Math.Sqrt(deviation / 30);
+                    data.Add(deviation);
                     Console.Write($"{deviation,15:0.000} ");
-                    Console.Write($"{efos.Average(),15:0.000} ");
-                    Console.Write($"{succesRate * 100.0 / maxRep,15:0.00}% ");
-                    Console.WriteLine($"{times.Average(),15:0.000000} ");
-                    Console.WriteLine($"{(DateTime.Now-timeStart).TotalSeconds,15:0.000000} ");
+                    var efosAvg = efos.Average();
+                    data.Add(efosAvg);
+                    Console.Write($"{efosAvg,15:0.000} ");
+                    var porSucces = succesRate * 100.0 / maxRep;
+                    data.Add(porSucces);
+                    Console.Write($"{porSucces,15:0.00}% ");
+                    var timeAvg = times.Average();
+                    data.Add(timeAvg);
+                    Console.WriteLine($"{timeAvg,15:0.000000} ");
+                    var timeReal = (DateTime.Now - timeStart).TotalSeconds;
+                    data.Add(timeReal);
+                    Console.WriteLine($"{timeReal,15:0.000000} ");
+                    Utils.PersistirSolucionProblema(data);
 
                 }
             }

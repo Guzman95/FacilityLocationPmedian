@@ -143,7 +143,7 @@ namespace BasedOnHarmony.Metaheuristicas
         /// <returns></returns>   
         public void Imprimir()
         {
-            Console.WriteLine("Solucion");
+            Console.WriteLine("\nSolucion");
             for (var i = 0; i < MyAlgorithm.MyProblem.NumVertices; i++)
             {
                 Console.Write("-" + Vertices[i]);
