@@ -52,6 +52,8 @@
     <Compile Include="Metaheuristicas\Armonicos\SBHS.cs" />
     <Compile Include="Metaheuristicas\Utils.cs" />
     <Compile Include="Metaheuristicas\Solution.cs" />
+    <Compile Include="Persistence\PersistenceExecution.cs" />
+    <Compile Include="Persistence\PersistenceProblem.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

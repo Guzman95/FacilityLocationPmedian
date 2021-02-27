@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BasedOnHarmony.Funciones;
+using BasedOnHarmony.Persistence;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -183,44 +185,31 @@ namespace BasedOnHarmony.Metaheuristicas
             return poskX.Key;
         }
 
-        public static void PersistirSolucionProblema(List<double> data)
+        public static List<PersistenceProblem> LoadPersistenceProblem()
         {
-            var RootDirectorData = Path.GetFullPath("..\\..\\data_persistence\\");
-            if (!Directory.Exists(RootDirectorData))
+            List<PersistenceProblem> dataPersistence = new List<PersistenceProblem>();
+
+            var RootDirectorData = Path.GetFullPath("..\\..\\data_persistence\\solution.txt");
+            if (File.Exists(RootDirectorData))
             {
-                DirectoryInfo di = Directory.CreateDirectory(RootDirectorData);
-            }
-            using (StreamWriter writer = new StreamWriter(RootDirectorData+"solution.txt", false))
-            {
-                var linea = "";
-                for (var c = 0; c < data.Count; c++)
+                var lines = File.ReadAllLines(RootDirectorData);
+                foreach (var line in lines)
                 {
-                    linea = linea + data[c] + ",";
+                    var ArrayLine = line.Split(';');
+                    var FileName = ArrayLine[0] ;
+                    var Avg = double.Parse(ArrayLine[1]);
+                    var Rpe = double.Parse(ArrayLine[2]);
+                    var EfosAvg = double.Parse(ArrayLine[3]);
+                    var Desviation = double.Parse(ArrayLine[4]);
+                    var PorcSucces = double.Parse(ArrayLine[5]);
+                    var TimeAvg = double.Parse(ArrayLine[6]);
+                    var TimeReal = double.Parse(ArrayLine[7]);
+                    var PersProblem =  new PersistenceProblem(FileName, Avg, Rpe, Desviation, EfosAvg, PorcSucces, TimeAvg, TimeReal);
+                    dataPersistence.Add(PersProblem);
                 }
-                writer.WriteLine(linea);
             }
+            return dataPersistence;
         }
 
-        public static void PersistirEjecusionProblema(List<Array> data, String problemName)
-        {
-            var RootDirectorData = Path.GetFullPath("..\\..\\data_persistence\\");
-            if (!Directory.Exists(RootDirectorData))
-            {
-                DirectoryInfo di = Directory.CreateDirectory(RootDirectorData);
-            }
-            using (StreamWriter writer = new StreamWriter(RootDirectorData + "Ejecusiones"+problemName+".txt", false))
-            {
-                var linea = "";
-                for (var c = 0; c < data.Count; c++)
-                {
-                    var basearray = data[c];
-                    for (var d = 0; d < basearray.Length; d++)
-                    {
-                        linea = linea + basearray.GetValue(d) + ",";
-                    }                  
-                }
-                writer.WriteLine(linea);
-            }
-        }
     }
 }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using BasedOnHarmony.Funciones;
 using BasedOnHarmony.Metaheuristicas;
 using BasedOnHarmony.Metaheuristicas.Armonicos;
+using BasedOnHarmony.Persistence;
 
 namespace BasedOnHarmony
 {
@@ -76,70 +77,121 @@ namespace BasedOnHarmony
                 Console.Write($"{"Problem",-15} {"Vertices",6} {"PMedianas",6} {"Ideal",10} ");
                 Console.WriteLine($"{"Avg-Fitness",15} {"fMRPE-Fitness",15} {"SD-Fitness",15} {"Avg-Efos",15} {"Success Rate",15} { "TimeAVG",15} { "TimeTotal",15}");
 
+                var persistence = Utils.LoadPersistenceProblem();
+               // if (persistence.Count > 0 ) persistence[0].printObjet();
                 foreach (var theProblem in myProblems)
                 {
                     Console.Write($"{theProblem.FileName,-15} {theProblem.NumVertices,6} {theProblem.PMedianas,10} {theProblem.OptimalLocation,10} ");
-
-                    var efos = new List<int>();
-                    var mediaF = new List<double>();
-                    var times = new List<double>();
-                    var succesRate = 0;
-                    var timeStart = DateTime.Now;
-                    Parallel.For(0, maxRep, rep =>
+                    if (persistence.Exists(x => x.FileProblem.Equals(theProblem.FileName)))
+                    {                    
+                        var perProblem = persistence.Find(x => x.FileProblem.Equals(theProblem.ToString()));
+                        Console.Write($"{perProblem.Avg,15:0.000} ");
+                        Console.Write($"{perProblem.Rpe,15:0.000} ");
+                        Console.Write($"{perProblem.Desviation,15:0.000} ");
+                        Console.Write($"{perProblem.EfosAvg,15:0.000} ");
+                        Console.Write($"{perProblem.PorcSucces,15:0.00}% ");
+                        Console.WriteLine($"{perProblem.TimeAvg,15:0.000000} ");
+                        Console.WriteLine($"{perProblem.TimeReal,15:0.000000} "); 
+                    }
+                    else
                     {
-                        List<Array> dataEjecusion = new List <Array>();
+                        var PersExecute = new PersistenceExecution(0);
+                        PersExecute.LoadPersistenceExecute();
+                        var efos = new List<int>();
+                        var mediaF = new List<double>();
+                        var times = new List<double>();
+                        var succesRate = 0;
+                        var timeStart = DateTime.Now;
+                        var initRep = 0;
 
-                        Debug.WriteLine("HILO :" + Thread.CurrentThread.ManagedThreadId + " Problema " + theProblem);
-                        Algorithm theAlgorithm = null;
-                        switch (nameAlgorithm)
+                        if (PersExecute.NumRep > 0 && PersExecute.NumRep < maxRep )
                         {
-                            case "HSOS":
-                                theAlgorithm = new HSOS();
-                                break;
-                            case "SBHS":
-                                theAlgorithm = new SBHS();
-                                break;
+                            efos = PersExecute.Efos;
+                            mediaF = PersExecute.MediaF;
+                            times = PersExecute.Times;
+                            succesRate = PersExecute.SuccesRate;
+                            initRep = PersExecute.NumRep;
                         }
-                        var myRandom = new Random(rep);
-                        var timeBegin = DateTime.Now;
-                        theAlgorithm.MaxEFOs = maxEFOS;
-                        theAlgorithm.Ejecutar(theProblem, myRandom);
-                        times.Add((DateTime.Now - timeBegin).TotalSeconds);
-                        //Console.WriteLine("\nrep: " + rep);
-                        //theAlgorithm.Best.Imprimir();
-                        mediaF.Add(theAlgorithm.Best.Fitness);
-                        efos.Add(theAlgorithm.EFOs);
-                        if (theAlgorithm.Best.Fitness <= theProblem.OptimalLocation) succesRate++;
 
-                        //dataEjecusion.Add(mediaF);                     
-                        //Utils.PersistirEjecusionProblema(dataEjecusion, theProblem.ToString());
+                        //LO dejo comentado por si algo 
+                        /*
+                        Parallel.For(initRep, maxRep, rep =>
+                        {
 
-                    });//End ParallelFor
-                    List<double> data = new  List<double>();
-                    var avg = mediaF.Average();
-                    data.Add(avg);
-                    Console.Write($"{avg,15:0.000} ");
-                    var rpe = ((avg - theProblem.OptimalLocation) /theProblem.OptimalLocation) * 100;
-                    data.Add(rpe);
-                    Console.Write($"{rpe,15:0.000} ");
-                    var deviation = mediaF.Sum(d => (d - avg) * (d - avg));
-                    deviation = Math.Sqrt(deviation / 30);
-                    data.Add(deviation);
-                    Console.Write($"{deviation,15:0.000} ");
-                    var efosAvg = efos.Average();
-                    data.Add(efosAvg);
-                    Console.Write($"{efosAvg,15:0.000} ");
-                    var porSucces = succesRate * 100.0 / maxRep;
-                    data.Add(porSucces);
-                    Console.Write($"{porSucces,15:0.00}% ");
-                    var timeAvg = times.Average();
-                    data.Add(timeAvg);
-                    Console.WriteLine($"{timeAvg,15:0.000000} ");
-                    var timeReal = (DateTime.Now - timeStart).TotalSeconds;
-                    data.Add(timeReal);
-                    Console.WriteLine($"{timeReal,15:0.000000} ");
-                    Utils.PersistirSolucionProblema(data);
+                            Debug.WriteLine("HILO :" + Thread.CurrentThread.ManagedThreadId + " Problema " + theProblem);
+                            Algorithm theAlgorithm = null;
+                            switch (nameAlgorithm)
+                            {
+                                case "HSOS":
+                                    theAlgorithm = new HSOS();
+                                    break;
+                                case "SBHS":
+                                    theAlgorithm = new SBHS();
+                                    break;
+                            }
+                            var myRandom = new Random(rep);
+                            var timeBegin = DateTime.Now;
+                            theAlgorithm.MaxEFOs = maxEFOS;
+                            theAlgorithm.Ejecutar(theProblem, myRandom);
+                            times.Add((DateTime.Now - timeBegin).TotalSeconds);
+                            //Console.WriteLine("\nrep: " + rep);
+                            //theAlgorithm.Best.Imprimir();
+                            mediaF.Add(theAlgorithm.Best.Fitness);
+                            efos.Add(theAlgorithm.EFOs);
+                            if (theAlgorithm.Best.Fitness <= theProblem.OptimalLocation) succesRate++;
 
+                            var PersExecuts = new PersistenceExecution(rep, efos, mediaF, times, succesRate);
+                            PersExecuts.PersistirEjecusionProblema();
+
+                        });*/
+                        //End ParallelFor
+
+                        for (var rep = initRep; rep < maxRep; rep++)
+                        {
+                            Algorithm theAlgorithm = null;
+                            switch (nameAlgorithm)
+                            {
+                                case "HSOS":
+                                    theAlgorithm = new HSOS();
+                                    break;
+                                case "SBHS":
+                                    theAlgorithm = new SBHS();
+                                    break;
+                            }
+                            var myRandom = new Random(rep);
+                            var timeBegin = DateTime.Now;
+                            theAlgorithm.MaxEFOs = maxEFOS;
+                            theAlgorithm.Ejecutar(theProblem, myRandom);
+                            times.Add((DateTime.Now - timeBegin).TotalSeconds);
+                            //Console.WriteLine("\nrep: " + rep);
+                            //theAlgorithm.Best.Imprimir();
+                            mediaF.Add(theAlgorithm.Best.Fitness);
+                            efos.Add(theAlgorithm.EFOs);
+                            if (theAlgorithm.Best.Fitness <= theProblem.OptimalLocation) succesRate++;
+
+                            var PersExecuts = new PersistenceExecution(rep, efos, mediaF, times, succesRate);
+                            PersExecuts.PersistirEjecusionProblema();
+                        }
+
+                        var avg = mediaF.Average();
+                        Console.Write($"{avg,15:0.000} ");
+                        var rpe = ((avg - theProblem.OptimalLocation) / theProblem.OptimalLocation) * 100;
+                        Console.Write($"{rpe,15:0.000} ");
+                        var deviation = mediaF.Sum(d => (d - avg) * (d - avg));
+                        deviation = Math.Sqrt(deviation / 30);
+                        Console.Write($"{deviation,15:0.000} ");
+                        var efosAvg = efos.Average();
+                        Console.Write($"{efosAvg,15:0.000} ");
+                        var porSucces = succesRate * 100.0 / maxRep;
+                        Console.Write($"{porSucces,15:0.00}% ");
+                        var timeAvg = times.Average();
+                        Console.WriteLine($"{timeAvg,15:0.000000} ");
+                        var timeReal = (DateTime.Now - timeStart).TotalSeconds;
+                        Console.WriteLine($"{timeReal,15:0.000000} ");
+                        var PersProblem  = new PersistenceProblem(theProblem.FileName, avg, rpe, deviation, efosAvg, porSucces, timeAvg, timeReal);
+                        PersProblem.PersistirSolucionProblema();
+                    }
+                    
                 }
             }
             Console.WriteLine("Terminado, Presione una tecla para cerrar...");
