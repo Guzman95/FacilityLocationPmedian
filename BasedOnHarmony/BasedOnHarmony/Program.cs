@@ -8,6 +8,7 @@ using BasedOnHarmony.Funciones;
 using BasedOnHarmony.Metaheuristicas;
 using BasedOnHarmony.Metaheuristicas.Armonicos;
 using BasedOnHarmony.Persistence;
+using BasedOnHarmony.Servidor;
 
 namespace BasedOnHarmony
 {
@@ -63,14 +64,15 @@ namespace BasedOnHarmony
                 new PMediana("pmed39.txt"),
                 new PMediana("pmed40.txt"),
                 new PMediana("pmed41.txt")
-              
+
                 };
             Console.ReadKey();
             var myAlgorithms = new List<string>();
-            
-                myAlgorithms.Add("HSOS");
-                myAlgorithms.Add("SBHS");
+
+            myAlgorithms.Add("HSOS");
+            myAlgorithms.Add("SBHS");
             Console.WriteLine("\nEjecutando Algoritmos.....");
+            /*
             foreach (var nameAlgorithm in myAlgorithms)
             {
                 Console.WriteLine($"{nameAlgorithm,80}");
@@ -113,38 +115,7 @@ namespace BasedOnHarmony
                             initRep = PersExecute.NumRep;
                         }
 
-                        //LO dejo comentado por si algo 
-                        /*
-                        Parallel.For(initRep, maxRep, rep =>
-                        {
 
-                            Debug.WriteLine("HILO :" + Thread.CurrentThread.ManagedThreadId + " Problema " + theProblem);
-                            Algorithm theAlgorithm = null;
-                            switch (nameAlgorithm)
-                            {
-                                case "HSOS":
-                                    theAlgorithm = new HSOS();
-                                    break;
-                                case "SBHS":
-                                    theAlgorithm = new SBHS();
-                                    break;
-                            }
-                            var myRandom = new Random(rep);
-                            var timeBegin = DateTime.Now;
-                            theAlgorithm.MaxEFOs = maxEFOS;
-                            theAlgorithm.Ejecutar(theProblem, myRandom);
-                            times.Add((DateTime.Now - timeBegin).TotalSeconds);
-                            //Console.WriteLine("\nrep: " + rep);
-                            //theAlgorithm.Best.Imprimir();
-                            mediaF.Add(theAlgorithm.Best.Fitness);
-                            efos.Add(theAlgorithm.EFOs);
-                            if (theAlgorithm.Best.Fitness <= theProblem.OptimalLocation) succesRate++;
-
-                            var PersExecuts = new PersistenceExecution(rep, efos, mediaF, times, succesRate);
-                            PersExecuts.PersistirEjecusionProblema();
-
-                        });*/
-                        //End ParallelFor
 
                         for (var rep = initRep; rep < maxRep; rep++)
                         {
@@ -195,7 +166,48 @@ namespace BasedOnHarmony
                 }
             }
             Console.WriteLine("Terminado, Presione una tecla para cerrar...");
-            Console.ReadKey();
+            Console.ReadKey();*/
+
+            while (true)
+            {
+                try
+                {
+                    var myService = new ServiceClient();
+                    var myDistributedTask = myService.GetTask();
+                    myService.Close();
+
+                    if (myDistributedTask is null)
+                        return; // There is no tasks to be processed
+
+                    Console.WriteLine(myDistributedTask.Problem + " " + myDistributedTask.Algorithm);
+                    Algorithm theAlgorithm = null;
+                    
+                    switch (myDistributedTask.Algorithm)
+                    {
+                        case "HSOS":
+                            theAlgorithm = new HSOS();
+                            break;
+                        case "SBHS":
+                            theAlgorithm = new SBHS();
+                            break;
+                    }
+                    var the_problem  = new PMediana(myDistributedTask.Problem);
+                    //var the_problem = myProblems.Find(x => x.FileName.Equals(nameProblem));
+                    var myRandom = new Random(myDistributedTask.Seed);
+                    theAlgorithm.Ejecutar(the_problem ,myRandom);
+                    myDistributedTask.Result_Best =  theAlgorithm.Best.Fitness;
+                    myDistributedTask.Status = "S";
+
+                    var miServicio2 = new ServiceClient();
+                    miServicio2.SaveResults(myDistributedTask);
+                    //
+                    miServicio2.Close();
+                }
+                catch (Exception e1)
+                {
+                    Console.WriteLine(e1.Message);
+                }
+            }
         }
     }
 }
