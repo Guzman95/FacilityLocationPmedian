@@ -16,6 +16,7 @@ namespace BasedOnHarmony
     {
         static void Main(string[] args)
         {
+            /*
             const int maxEFOS = 1000;
             const int maxRep = 30;
             Console.WriteLine("Iniciando......");
@@ -72,7 +73,7 @@ namespace BasedOnHarmony
             myAlgorithms.Add("HSOS");
             myAlgorithms.Add("SBHS");
             Console.WriteLine("\nEjecutando Algoritmos.....");
-            /*
+            
             foreach (var nameAlgorithm in myAlgorithms)
             {
                 Console.WriteLine($"{nameAlgorithm,80}");
@@ -191,14 +192,16 @@ namespace BasedOnHarmony
                             theAlgorithm = new SBHS();
                             break;
                     }
-                    var the_problem  = new PMediana(myDistributedTask.Problem);
-                    //var the_problem = myProblems.Find(x => x.FileName.Equals(nameProblem));
+                    var the_problem  = new PMediana(myDistributedTask.Problem+".txt");
                     var myRandom = new Random(myDistributedTask.Seed);
-                    theAlgorithm.Ejecutar(the_problem ,myRandom);
+                    Console.WriteLine("\nEjecutando algoritmo..... ");
+                    theAlgorithm.Ejecutar(the_problem ,myRandom);                
                     myDistributedTask.Result_Best =  theAlgorithm.Best.Fitness;
+                    Console.WriteLine("\nResultado ", myDistributedTask.Result_Best);
                     myDistributedTask.Status = "S";
 
                     var miServicio2 = new ServiceClient();
+                    Console.WriteLine("\nGuardando resultados.....");
                     miServicio2.SaveResults(myDistributedTask);
                     //
                     miServicio2.Close();
