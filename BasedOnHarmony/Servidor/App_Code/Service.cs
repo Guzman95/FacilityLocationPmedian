@@ -3,7 +3,7 @@ using System.Data.SqlClient;
 
 public class Service : IService
 {
-    private const string StrCon = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=""F:\UNIVERSIDAD\TESIS\FacilityLocationPmedian\BasedOnHarmony\Servidor\App_Data\BDTareas.mdf"";Integrated Security=True";
+    private const string StrCon = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=""C:\Users\santi\Desktop\FacilityLocationPmedian\BasedOnHarmony\Servidor\App_Data\BDTareas.mdf"";Integrated Security=True";
 
     /// <summary>
     /// Return only one Distributed task to be executed for one client (status N),
@@ -34,8 +34,7 @@ public class Service : IService
             Id = thisRow["Dt_Id"].ToString(),
             Problem = thisRow["Dt_Problem"].ToString(),
             Algorithm = thisRow["Dt_Algorithm"].ToString(),
-            Seed = int.Parse(thisRow["Dt_Seed"].ToString()),
-            Result_Best = double.Parse(thisRow["Dt_Result_Best"].ToString())
+            Seed = int.Parse(thisRow["Dt_Seed"].ToString())
         };
         mySql = "UPDATE DistributeTask " +
                 "SET    Dt_Status ='P' " +

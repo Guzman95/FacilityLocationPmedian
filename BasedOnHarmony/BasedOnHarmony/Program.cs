@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using BasedOnHarmony.Funciones;
 using BasedOnHarmony.Metaheuristicas;
 using BasedOnHarmony.Metaheuristicas.Armonicos;
-using BasedOnHarmony.Persistence;
 using BasedOnHarmony.Servidor;
 
 namespace BasedOnHarmony
@@ -169,6 +168,7 @@ namespace BasedOnHarmony
             Console.WriteLine("Terminado, Presione una tecla para cerrar...");
             Console.ReadKey();*/
 
+            const int maxEFOS = 1000;
             while (true)
             {
                 try
@@ -186,10 +186,10 @@ namespace BasedOnHarmony
                     switch (myDistributedTask.Algorithm)
                     {
                         case "HSOS":
-                            theAlgorithm = new HSOS();
+                            theAlgorithm = new HSOS() { MaxEFOs = maxEFOS };
                             break;
                         case "SBHS":
-                            theAlgorithm = new SBHS();
+                            theAlgorithm = new SBHS() { MaxEFOs = maxEFOS };
                             break;
                     }
                     var the_problem  = new PMediana(myDistributedTask.Problem+".txt");

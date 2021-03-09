@@ -4,6 +4,7 @@
     <xs:sequence>
       <xs:element minOccurs="0" name="Algorithm" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Id" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Optimal" type="xs:int" />
       <xs:element minOccurs="0" name="Parameters" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Problem" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Result_Best" type="xs:double" />

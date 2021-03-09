@@ -34,4 +34,8 @@ public class DistributeTask
 
     [DataMember]
     public double Result_Best { get; set; }
+
+    [DataMember]
+    public int Optimal { get; set; }
+
 }

@@ -29,6 +29,9 @@ namespace BasedOnHarmony.Servidor {
         private string IdField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int OptimalField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string ParametersField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -75,6 +78,19 @@ namespace BasedOnHarmony.Servidor {
                 if ((object.ReferenceEquals(this.IdField, value) != true)) {
                     this.IdField = value;
                     this.RaisePropertyChanged("Id");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Optimal {
+            get {
+                return this.OptimalField;
+            }
+            set {
+                if ((this.OptimalField.Equals(value) != true)) {
+                    this.OptimalField = value;
+                    this.RaisePropertyChanged("Optimal");
                 }
             }
         }
