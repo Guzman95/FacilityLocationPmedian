@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="6f58f30b-f874-4645-893b-ecf8e03d139f" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="844be14c-4a87-48de-89bf-e9c3ba1db176" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
@@ -19,14 +19,14 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://localhost:49702/Service.svc" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://santiagoguzman-001-site1.etempurl.com/Service.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="Service.xsd" MetadataType="Schema" ID="44dacf98-02bd-4a44-8173-62f87b5f44f5" SourceId="1" SourceUrl="http://localhost:49702/Service.svc?xsd=xsd0" />
-    <MetadataFile FileName="Service.disco" MetadataType="Disco" ID="7f3d4f1d-87af-4038-8d14-76568597d9e4" SourceId="1" SourceUrl="http://localhost:49702/Service.svc?disco" />
-    <MetadataFile FileName="Service1.xsd" MetadataType="Schema" ID="e56e53a2-87e9-420f-95f1-83287126432e" SourceId="1" SourceUrl="http://localhost:49702/Service.svc?xsd=xsd1" />
-    <MetadataFile FileName="Service2.xsd" MetadataType="Schema" ID="c33f4172-4359-4395-8825-9bb71d93b975" SourceId="1" SourceUrl="http://localhost:49702/Service.svc?xsd=xsd2" />
-    <MetadataFile FileName="Service.wsdl" MetadataType="Wsdl" ID="c6bd03aa-ca4b-4b62-998f-314b038fb622" SourceId="1" SourceUrl="http://localhost:49702/Service.svc?wsdl" />
+    <MetadataFile FileName="Service.wsdl" MetadataType="Wsdl" ID="bf492f99-6135-4e45-ab0f-4d3b29bb3eaa" SourceId="1" SourceUrl="http://santiagoguzman-001-site1.etempurl.com/Service.svc?wsdl" />
+    <MetadataFile FileName="Service.xsd" MetadataType="Schema" ID="758d4d00-512f-4b43-93bb-897a39792285" SourceId="1" SourceUrl="http://santiagoguzman-001-site1.etempurl.com/Service.svc?xsd=xsd1" />
+    <MetadataFile FileName="Service1.xsd" MetadataType="Schema" ID="fdcd3e16-411d-4fd5-9568-377d9b944c17" SourceId="1" SourceUrl="http://santiagoguzman-001-site1.etempurl.com/Service.svc?xsd=xsd2" />
+    <MetadataFile FileName="Service2.xsd" MetadataType="Schema" ID="fbc646f2-47ae-4387-a3ea-2414dcb42b5f" SourceId="1" SourceUrl="http://santiagoguzman-001-site1.etempurl.com/Service.svc?xsd=xsd0" />
+    <MetadataFile FileName="Service.disco" MetadataType="Disco" ID="c6d43435-b2da-407b-b301-bba418f592cf" SourceId="1" SourceUrl="http://santiagoguzman-001-site1.etempurl.com/Service.svc?disco" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
