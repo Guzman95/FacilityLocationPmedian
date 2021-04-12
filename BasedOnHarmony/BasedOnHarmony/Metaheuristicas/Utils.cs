@@ -128,7 +128,7 @@ namespace BasedOnHarmony.Metaheuristicas
         /// <param name="MyAlgorithm"></param>
         /// <param name="Vertices"></param>
         /// <returns name="poskX"></returns>
-        public static int DeterminarPosArgMin(List<KeyValuePair<int, double>> menoresdistancias, Algorithm myalgorithm, int[] vertices)
+        public static int DeterminarPosArgMax(List<KeyValuePair<int, double>> menoresdistancias, Algorithm myalgorithm, int[] vertices)
         {
             var sumasperdidasadicion = new List<KeyValuePair<int, double>>();
             for (var j = 0; j < myalgorithm.MyProblem.NumVertices; j++)
@@ -160,7 +160,7 @@ namespace BasedOnHarmony.Metaheuristicas
         /// <param name="PosInstalaciones"></param>
         /// <param name="MyAlgorithm"></param>
         /// <returns name="poskX"></returns>
-        public static int DeterminarPosArgMax(List<KeyValuePair<int, double>> menoresDistancias, List<int> PosInstalaciones, Algorithm MyAlgorithm)
+        public static int DeterminarPosArgMin(List<KeyValuePair<int, double>> menoresDistancias, List<int> PosInstalaciones, Algorithm MyAlgorithm)
         {
             var sumasGanaciasEliminacion = new List<KeyValuePair<int, double>>();
             for (var j = 0; j < PosInstalaciones.Count; j++)

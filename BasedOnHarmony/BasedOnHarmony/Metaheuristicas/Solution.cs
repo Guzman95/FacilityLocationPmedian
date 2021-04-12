@@ -123,14 +123,14 @@ namespace BasedOnHarmony.Metaheuristicas
 
             while (PosInstalaciones.Count < pMedianas)
             {
-                var pos = Utils.DeterminarPosArgMin(menoresDistancias, MyAlgorithm, Vertices);
+                var pos = Utils.DeterminarPosArgMax(menoresDistancias, MyAlgorithm, Vertices);
                 Activar(pos);
                 menoresDistancias = Utils.ActualizarMenoresDistanciasAgregacion(MyAlgorithm, pos, menoresDistancias);
             }
             while (PosInstalaciones.Count > pMedianas)
             {
                
-                var pos = Utils.DeterminarPosArgMax(menoresDistancias, PosInstalaciones, MyAlgorithm);
+                var pos = Utils.DeterminarPosArgMin(menoresDistancias, PosInstalaciones, MyAlgorithm);
                 InActivar(pos);
                 menoresDistancias = Utils.ActualizarMenoresDistanciasEliminacion(MyAlgorithm, pos, menoresDistancias, PosInstalaciones);
                
