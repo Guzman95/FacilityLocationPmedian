@@ -19,14 +19,14 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://santiagoguzman-001-site1.etempurl.com/Service.svc" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://tesispmedianflp-001-site1.gtempurl.com/Service.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="Service.wsdl" MetadataType="Wsdl" ID="bf492f99-6135-4e45-ab0f-4d3b29bb3eaa" SourceId="1" SourceUrl="http://santiagoguzman-001-site1.etempurl.com/Service.svc?wsdl" />
-    <MetadataFile FileName="Service.xsd" MetadataType="Schema" ID="758d4d00-512f-4b43-93bb-897a39792285" SourceId="1" SourceUrl="http://santiagoguzman-001-site1.etempurl.com/Service.svc?xsd=xsd1" />
-    <MetadataFile FileName="Service1.xsd" MetadataType="Schema" ID="fdcd3e16-411d-4fd5-9568-377d9b944c17" SourceId="1" SourceUrl="http://santiagoguzman-001-site1.etempurl.com/Service.svc?xsd=xsd2" />
-    <MetadataFile FileName="Service2.xsd" MetadataType="Schema" ID="fbc646f2-47ae-4387-a3ea-2414dcb42b5f" SourceId="1" SourceUrl="http://santiagoguzman-001-site1.etempurl.com/Service.svc?xsd=xsd0" />
-    <MetadataFile FileName="Service.disco" MetadataType="Disco" ID="c6d43435-b2da-407b-b301-bba418f592cf" SourceId="1" SourceUrl="http://santiagoguzman-001-site1.etempurl.com/Service.svc?disco" />
+    <MetadataFile FileName="Service3.xsd" MetadataType="Schema" ID="341404b6-1116-42f0-81cc-4da11f242748" SourceId="1" SourceUrl="http://tesispmedianflp-001-site1.gtempurl.com/Service.svc?xsd=xsd0" />
+    <MetadataFile FileName="Service1.wsdl" MetadataType="Wsdl" ID="b0e9ecd9-54aa-4270-acbf-dae9ad9a3c01" SourceId="1" SourceUrl="http://tesispmedianflp-001-site1.gtempurl.com/Service.svc?wsdl" />
+    <MetadataFile FileName="Service31.xsd" MetadataType="Schema" ID="126f2f41-d2dd-45da-98fd-4234f742a75d" SourceId="1" SourceUrl="http://tesispmedianflp-001-site1.gtempurl.com/Service.svc?xsd=xsd1" />
+    <MetadataFile FileName="Service32.xsd" MetadataType="Schema" ID="2f79f23c-d11b-4a90-a336-8c3e0b5b8971" SourceId="1" SourceUrl="http://tesispmedianflp-001-site1.gtempurl.com/Service.svc?xsd=xsd2" />
+    <MetadataFile FileName="Service1.disco" MetadataType="Disco" ID="f33f327c-6a08-441c-8838-55ce3fb75212" SourceId="1" SourceUrl="http://tesispmedianflp-001-site1.gtempurl.com/Service.svc?disco" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

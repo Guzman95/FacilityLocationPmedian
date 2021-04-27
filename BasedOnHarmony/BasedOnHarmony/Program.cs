@@ -179,8 +179,8 @@ namespace BasedOnHarmony
 
                     if (myDistributedTask is null)
                         return; // There is no tasks to be processed
-
-                    Console.WriteLine(myDistributedTask.Problem + " " + myDistributedTask.Algorithm);
+                    Console.WriteLine("\nTarea en proceso:");
+                    Console.WriteLine(myDistributedTask.Problem + "-" + myDistributedTask.Seed + "-" + myDistributedTask.Algorithm);
                     Algorithm theAlgorithm = null;
                     
                     switch (myDistributedTask.Algorithm)
@@ -197,7 +197,7 @@ namespace BasedOnHarmony
                     Console.WriteLine("\nEjecutando algoritmo..... ");
                     theAlgorithm.Ejecutar(the_problem ,myRandom);                
                     myDistributedTask.Result_Best =  theAlgorithm.Best.Fitness;
-                    Console.WriteLine("\nResultado ", myDistributedTask.Result_Best);
+                    Console.WriteLine("\nResultado:  "+theAlgorithm.Best.Fitness);
                     myDistributedTask.Status = "S";
 
                     var miServicio2 = new ServiceClient();
