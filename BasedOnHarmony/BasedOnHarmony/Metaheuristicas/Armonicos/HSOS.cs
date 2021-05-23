@@ -38,29 +38,34 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos{
                     //MutualismoJ
                     var j = myRandom.Next(PopulationSize); while (i == j) j = myRandom.Next(PopulationSize);
                     var m1 = Population[i].Mutualism(Population[j], Best);
+                    if (m1.MyAlgorithm.MyRandom.NextDouble() < 0.3) m1 = Utils.LocalSearch(m1,3);
                     if (m1.Fitness < Population[i].Fitness) Population[i] = m1;                
                     if (EFOs >= MaxEFOs) break;
                     
                     
                     //MutualismoI
                     var m2 = Population[j].Mutualism(Population[i], Best);
+                    if (m2.MyAlgorithm.MyRandom.NextDouble() < 0.3)  m2 = Utils.LocalSearch(m2,3);
                     if (m2.Fitness < Population[j].Fitness)Population[j] = m2;
                     if (EFOs >= MaxEFOs) break;
                    
                     //Comensalimo
                     j = myRandom.Next(PopulationSize); while (i == j) j = myRandom.Next(PopulationSize);
                     var m3 = Population[i].Commensalism(Population[j], Best);
+                    if (m3.MyAlgorithm.MyRandom.NextDouble() < 0.3) m3 = Utils.LocalSearch(m3,3);
                     if (m3.Fitness < Population[i].Fitness)Population[i] = m3;
                     if (EFOs >= MaxEFOs) break;
                     
                     //Parasitimo
                     j = myRandom.Next(PopulationSize); while (i == j) j = myRandom.Next(PopulationSize);
                     var m4 = Population[i].Parasitism();
+                    if (m4.MyAlgorithm.MyRandom.NextDouble() < 0.3) m4 = Utils.LocalSearch(m4,3);
                     if (m4.Fitness < Population[i].Fitness) Population[i] = m4;
                     if (EFOs >= MaxEFOs) break;
                     
                     //Improisación de una nueva armonia
                     var m5 = Improvisation(i);
+                    if (m5.MyAlgorithm.MyRandom.NextDouble() < 0.3) m5 = Utils.LocalSearch(m5,3);
                     var worstFitness = Population.Max(x => x.Fitness);
                     var posworstFitness = Population.FindIndex(x => Math.Abs(x.Fitness - worstFitness) < 1e-10);
                     if (m5.Fitness < Population[posworstFitness].Fitness)Population[posworstFitness] = m5;
@@ -76,19 +81,7 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos{
                 //Console.WriteLine("\nBest");<
                 //Best.Imprimir();
             }
-            /* Busqueda Local 
-            var Neighbors = 2;
-            var rand = new Random();
-            for (int v = 0; v < Neighbors; v++) 
-            {
-                Solution NeighborBest = new Solution(Best);
-                var indexer = rand.Next(Best.PosInstalaciones.Count);
-                var pos = Best.PosInstalaciones[indexer];
-                NeighborBest.InActivar(pos);
-                NeighborBest.RepararSolutionAwareness();
-                NeighborBest.Evaluate();
-                if (NeighborBest.Fitness > Best.Fitness) Best = NeighborBest;
-            } */
+           
         }
         /// <summary>
         /// Fase de improvisacion para los organismos

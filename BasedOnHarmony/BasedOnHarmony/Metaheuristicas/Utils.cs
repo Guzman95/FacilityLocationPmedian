@@ -210,6 +210,74 @@ namespace BasedOnHarmony.Metaheuristicas
             }
             return dataPersistence;
         }
+        public static Solution LocalSearch(Solution solution, int valor) { 
+            var newSolution = CopySolution(solution);
+            List<int> unviableNeighbors = new List<int>();
+            for (var k = 0; k < valor; k++)
+            {
+                var a = selectInstalacion(unviableNeighbors, solution);   // aleatorio controlado para no repetir o seleccion de valor distancia mayor controlado
+                var b = NearestNeighbor(unviableNeighbors, solution, a);  //isntalacion apagada mas cercana a A
+                newSolution.InActivar(a);
+                newSolution.Activar(b);
+                newSolution.Evaluate();
+                if (newSolution.Fitness < solution.Fitness)
+                {
+                    Console.WriteLine("\n*********** MEJORA DE SOLUCION ***************");
+                    Console.WriteLine(">>>>> Original <<<<<<< ");
+                    solution.Imprimir();
+                    Console.WriteLine(">>>>>> Mejora <<<<<<<");
+                    newSolution.Imprimir();
+                    solution.InActivar(a);
+                    solution.Activar(b);
+                    solution.Evaluate();
+                }
+                else
+                {
+                    unviableNeighbors.Add(a);
+                    unviableNeighbors.Add(b);
+                    newSolution.InActivar(b);
+                    newSolution.Activar(a);
+                }
+            }
+            return solution;
+        }
 
+        public static int NearestNeighbor(List<int> unviableNeighbors, Solution solution, int a)
+        {
+            var distancias = new List<KeyValuePair<int, double>>();
+
+            for (var i = 0; i < solution.MyAlgorithm.MyProblem.NumVertices; i++) 
+            {
+
+                if (solution.PosInstalaciones.Contains(i) == false  && unviableNeighbors.Contains(i)==false)
+                {
+                    var dist = solution.MyAlgorithm.MyProblem.DistanciasFloyd[a][i];
+                    distancias.Add(new KeyValuePair<int, double>(i,dist));
+                }        
+            }
+            var min = distancias.Min(x => x.Value);
+            var posk = distancias.Find(x => Math.Abs(x.Value - min) < 1e-10);
+            return posk.Key;
+        }
+
+        public static int selectInstalacion(List<int> unviableNeighbors, Solution solution)      
+        {
+            int pos=-1;
+            do
+            {
+                pos = VerticeValidation(solution.Vertices, solution.MyAlgorithm, 0);
+            }
+            while (unviableNeighbors.Contains(pos));
+            return pos;
+        }
+
+        public static Solution CopySolution(Solution solution) {
+            var solutionCopy = new Solution(solution.MyAlgorithm);
+            for (var i = 0; i < solution.PosInstalaciones.Count; i++)
+            {
+                solutionCopy.Activar(solution.PosInstalaciones[i]);
+            }
+            return solutionCopy;
+        }
     }
 }

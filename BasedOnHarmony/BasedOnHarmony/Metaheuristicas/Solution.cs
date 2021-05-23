@@ -143,13 +143,19 @@ namespace BasedOnHarmony.Metaheuristicas
         /// <returns></returns>   
         public void Imprimir()
         {
-            Console.WriteLine("\nSolucion");
+            Console.WriteLine("Solucion");
             for (var i = 0; i < MyAlgorithm.MyProblem.NumVertices; i++)
             {
                 Console.Write("-" + Vertices[i]);
             }
+            Console.WriteLine("\nPinstalaciones");
+            for (var k = 0; k < PosInstalaciones.Count; k++)
+            {
+                Console.Write("-" + PosInstalaciones[k]);
+            }
             Console.WriteLine("\nFiness: "+Fitness);
         }
+
 
         /// <summary>
         ///  Realiza la evaluacion de la funcion objetivo para la solucion 

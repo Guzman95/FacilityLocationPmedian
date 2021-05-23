@@ -88,12 +88,12 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos
                 var worstFitness = Population.Max(x => x.Fitness);
                 var posworstFitness = Population.FindIndex(x => Math.Abs(x.Fitness - worstFitness) < 1e-10);
 
-
+                var NewSolution = Utils.LocalSearch(Xnew,5);
                 //Evalua la evaluacion de la nueva armonia con la evaluacion de la peor solucion de la memoria
-                if (Xnew.Fitness < Population[posworstFitness].Fitness)
+                if (NewSolution.Fitness < Population[posworstFitness].Fitness)
                 {
                     //Si se cumple la condicion se remplaza la peor armonia por la nueva armonia
-                    Population[posworstFitness] = Xnew;
+                    Population[posworstFitness] = NewSolution;
                 }
                 Population.Sort((x, y) => x.Fitness.CompareTo(y.Fitness));
                 Best = new Solution(Population[0]);
