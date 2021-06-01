@@ -7,7 +7,7 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos
 {
     class SBHS : Algorithm
     {
-        public int PopulationSize =30;
+        public int PopulationSize =25;
         public List<Solution> Population;
 
         public int posSolucionAleatoria(int PopulationSize, Random myRandon)
@@ -26,7 +26,7 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos
             MyRandom = myRandom;
             
             //Ajuste de los parametros
-            double HMCR = 1 - (10 / theProblem.NumVertices);
+            double HMCR = 0.95;
             EFOs = 0;
             //Inicializar la Poblacion
             Population = InitializeFixedPopulation(PopulationSize);

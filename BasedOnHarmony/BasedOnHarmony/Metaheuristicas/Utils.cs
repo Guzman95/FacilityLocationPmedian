@@ -196,7 +196,7 @@ namespace BasedOnHarmony.Metaheuristicas
                 foreach (var line in lines)
                 {
                     var ArrayLine = line.Split(';');
-                    var FileName = ArrayLine[0] ;
+                    var FileName = ArrayLine[0];
                     var Avg = double.Parse(ArrayLine[1]);
                     var Rpe = double.Parse(ArrayLine[2]);
                     var EfosAvg = double.Parse(ArrayLine[3]);
@@ -204,32 +204,28 @@ namespace BasedOnHarmony.Metaheuristicas
                     var PorcSucces = double.Parse(ArrayLine[5]);
                     var TimeAvg = double.Parse(ArrayLine[6]);
                     var TimeReal = double.Parse(ArrayLine[7]);
-                    var PersProblem =  new PersistenceProblem(FileName, Avg, Rpe, Desviation, EfosAvg, PorcSucces, TimeAvg, TimeReal);
+                    var PersProblem = new PersistenceProblem(FileName, Avg, Rpe, Desviation, EfosAvg, PorcSucces, TimeAvg, TimeReal);
                     dataPersistence.Add(PersProblem);
                 }
             }
             return dataPersistence;
         }
-        public static Solution LocalSearch(Solution solution, int valor) { 
+        public static Solution LocalSearch(Solution solution, int valor) {
             var newSolution = CopySolution(solution);
             List<int> unviableNeighbors = new List<int>();
             for (var k = 0; k < valor; k++)
             {
-                var a = selectInstalacion(unviableNeighbors, solution);   // aleatorio controlado para no repetir o seleccion de valor distancia mayor controlado
-                var b = NearestNeighbor(unviableNeighbors, solution, a);  //isntalacion apagada mas cercana a A
+                var a = SelectOffIstalation(unviableNeighbors,solution);   // Aleatorio controlado para no repetir
+                var b = NearestNeighbor(unviableNeighbors, solution, a);// Aleatorio controlado para no repetir
                 newSolution.InActivar(a);
                 newSolution.Activar(b);
                 newSolution.Evaluate();
                 if (newSolution.Fitness < solution.Fitness)
                 {
-                    Console.WriteLine("\n*********** MEJORA DE SOLUCION ***************");
-                    Console.WriteLine(">>>>> Original <<<<<<< ");
-                    solution.Imprimir();
-                    Console.WriteLine(">>>>>> Mejora <<<<<<<");
-                    newSolution.Imprimir();
                     solution.InActivar(a);
                     solution.Activar(b);
                     solution.Evaluate();
+                    unviableNeighbors.Add(a);
                 }
                 else
                 {
@@ -246,29 +242,47 @@ namespace BasedOnHarmony.Metaheuristicas
         {
             var distancias = new List<KeyValuePair<int, double>>();
 
-            for (var i = 0; i < solution.MyAlgorithm.MyProblem.NumVertices; i++) 
+            for (var i = 0; i < solution.MyAlgorithm.MyProblem.NumVertices; i++)
             {
 
-                if (solution.PosInstalaciones.Contains(i) == false  && unviableNeighbors.Contains(i)==false)
+                if (solution.PosInstalaciones.Contains(i) == false && unviableNeighbors.Contains(i) == false)
                 {
                     var dist = solution.MyAlgorithm.MyProblem.DistanciasFloyd[a][i];
-                    distancias.Add(new KeyValuePair<int, double>(i,dist));
-                }        
+                    distancias.Add(new KeyValuePair<int, double>(i, dist));
+                }
             }
             var min = distancias.Min(x => x.Value);
             var posk = distancias.Find(x => Math.Abs(x.Value - min) < 1e-10);
             return posk.Key;
         }
 
-        public static int selectInstalacion(List<int> unviableNeighbors, Solution solution)      
+        public static int selectInstalacion(List<int> unviableNeighbors, Solution solution, int state)
         {
-            int pos=-1;
+            int pos;
             do
             {
-                pos = VerticeValidation(solution.Vertices, solution.MyAlgorithm, 0);
-            }
-            while (unviableNeighbors.Contains(pos));
+                pos = solution.MyAlgorithm.MyRandom.Next(solution.MyAlgorithm.MyProblem.NumVertices);
+            } while ((solution.Vertices[pos] == state) || (unviableNeighbors.Contains(pos)));
             return pos;
+        }
+        public static int SelectOffIstalation(List<int> unviableNeighbors, Solution solution) { 
+            var distancias = new List<KeyValuePair<int, double>>();
+            for (var t = 0; t < solution.PosInstalaciones.Count; t++)
+            {
+                if (unviableNeighbors.Contains(solution.PosInstalaciones[t]) == false)
+                {
+                    var summ = 0;
+                    for (var i = 0; i < solution.MyAlgorithm.MyProblem.NumVertices; i++)
+                    {
+
+                        summ += solution.MyAlgorithm.MyProblem.DistanciasFloyd[i][solution.PosInstalaciones[t]];
+                    }
+                    distancias.Add(new KeyValuePair<int, double>(solution.PosInstalaciones[t], summ));
+                }
+            }
+            var mas = distancias.Max(x => x.Value);
+            var posk = distancias.Find(x => Math.Abs(x.Value - mas) < 1e-10);
+            return posk.Key;
         }
 
         public static Solution CopySolution(Solution solution) {
@@ -277,6 +291,7 @@ namespace BasedOnHarmony.Metaheuristicas
             {
                 solutionCopy.Activar(solution.PosInstalaciones[i]);
             }
+
             return solutionCopy;
         }
     }

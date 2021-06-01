@@ -19,14 +19,14 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://localhost:49702/Service.svc" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://tesispmedianflp-001-site1.gtempurl.com/Service.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="Service.xsd" MetadataType="Schema" ID="61a69cf4-5c1f-4ea0-b4e1-6b7cddbb8d96" SourceId="1" SourceUrl="http://localhost:49702/Service.svc?xsd=xsd0" />
-    <MetadataFile FileName="Service.disco" MetadataType="Disco" ID="0665ca5a-92fa-4264-b4f3-061e60369363" SourceId="1" SourceUrl="http://localhost:49702/Service.svc?disco" />
-    <MetadataFile FileName="Service1.xsd" MetadataType="Schema" ID="6c8021b7-9d83-4c9d-92f7-71e3c4942610" SourceId="1" SourceUrl="http://localhost:49702/Service.svc?xsd=xsd1" />
-    <MetadataFile FileName="Service2.xsd" MetadataType="Schema" ID="749bf41a-a870-4fd2-841a-3befbb02697a" SourceId="1" SourceUrl="http://localhost:49702/Service.svc?xsd=xsd2" />
-    <MetadataFile FileName="Service.wsdl" MetadataType="Wsdl" ID="78a06f38-07ac-46be-b4de-46a8598e2d5b" SourceId="1" SourceUrl="http://localhost:49702/Service.svc?wsdl" />
+    <MetadataFile FileName="Service3.xsd" MetadataType="Schema" ID="bf383167-cdb3-43c8-ab91-aeaa183c00b9" SourceId="1" SourceUrl="http://tesispmedianflp-001-site1.gtempurl.com/Service.svc?xsd=xsd0" />
+    <MetadataFile FileName="Service1.wsdl" MetadataType="Wsdl" ID="0b858ebc-3f1a-4a14-bbf1-81a17b57625c" SourceId="1" SourceUrl="http://tesispmedianflp-001-site1.gtempurl.com/Service.svc?wsdl" />
+    <MetadataFile FileName="Service31.xsd" MetadataType="Schema" ID="e4a2edae-2cc4-4bbf-974d-a47875ed50b2" SourceId="1" SourceUrl="http://tesispmedianflp-001-site1.gtempurl.com/Service.svc?xsd=xsd1" />
+    <MetadataFile FileName="Service32.xsd" MetadataType="Schema" ID="b42d81d8-fc0e-4a1f-b6f6-ae67e548eb5e" SourceId="1" SourceUrl="http://tesispmedianflp-001-site1.gtempurl.com/Service.svc?xsd=xsd2" />
+    <MetadataFile FileName="Service1.disco" MetadataType="Disco" ID="531bfd45-2b3f-44c8-b28c-4cf1e77ef8ec" SourceId="1" SourceUrl="http://tesispmedianflp-001-site1.gtempurl.com/Service.svc?disco" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

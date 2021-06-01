@@ -179,7 +179,7 @@ namespace BasedOnHarmony
 
                     if (myDistributedTask is null)
                         return; // There is no tasks to be processed
-                    Console.WriteLine("\nTarea en proceso:");
+                    Console.WriteLine("\nAleatorio LS offmax-onNearest  Tarea en proceso:");
                     Console.WriteLine(myDistributedTask.Problem + "-" + myDistributedTask.Seed + "-" + myDistributedTask.Algorithm);
                     Algorithm theAlgorithm = null;
                     

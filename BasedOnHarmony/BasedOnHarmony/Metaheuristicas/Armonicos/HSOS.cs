@@ -6,7 +6,7 @@ using BasedOnHarmony.Funciones;
 namespace BasedOnHarmony.Metaheuristicas.Armonicos{
     class HSOS : Algorithm{
 
-        public int PopulationSize = 30;
+        public int PopulationSize = 25;
         public List<Solution> Population;
 
         /// <summary>
@@ -89,8 +89,8 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos{
         /// <param name="posXi"></param>
         public Solution Improvisation(int posXi)
         {
-            const double par = 0.365;
-            var hmcr = 1.0 - (10.0 / MyProblem.NumVertices);
+            const double par = 0.5;
+            var hmcr = 0.95;
 
             var neko = new Solution(this);
             for (var k = 0; k < MyProblem.NumVertices; k++)
