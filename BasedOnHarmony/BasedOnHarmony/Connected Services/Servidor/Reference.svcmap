@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="2fc7af5a-7de3-49df-9dee-074346670013" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="8c90ed37-71f3-4ca2-9497-3fcf7559cf84" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
@@ -19,14 +19,14 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://tesispmedianflp-001-site1.gtempurl.com/Service.svc" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://pmedian-001-site1.ctempurl.com/Service.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="Service3.xsd" MetadataType="Schema" ID="bf383167-cdb3-43c8-ab91-aeaa183c00b9" SourceId="1" SourceUrl="http://tesispmedianflp-001-site1.gtempurl.com/Service.svc?xsd=xsd0" />
-    <MetadataFile FileName="Service1.wsdl" MetadataType="Wsdl" ID="0b858ebc-3f1a-4a14-bbf1-81a17b57625c" SourceId="1" SourceUrl="http://tesispmedianflp-001-site1.gtempurl.com/Service.svc?wsdl" />
-    <MetadataFile FileName="Service31.xsd" MetadataType="Schema" ID="e4a2edae-2cc4-4bbf-974d-a47875ed50b2" SourceId="1" SourceUrl="http://tesispmedianflp-001-site1.gtempurl.com/Service.svc?xsd=xsd1" />
-    <MetadataFile FileName="Service32.xsd" MetadataType="Schema" ID="b42d81d8-fc0e-4a1f-b6f6-ae67e548eb5e" SourceId="1" SourceUrl="http://tesispmedianflp-001-site1.gtempurl.com/Service.svc?xsd=xsd2" />
-    <MetadataFile FileName="Service1.disco" MetadataType="Disco" ID="531bfd45-2b3f-44c8-b28c-4cf1e77ef8ec" SourceId="1" SourceUrl="http://tesispmedianflp-001-site1.gtempurl.com/Service.svc?disco" />
+    <MetadataFile FileName="Service.xsd" MetadataType="Schema" ID="eb3516a8-8478-40db-8a8e-c568f399ab16" SourceId="1" SourceUrl="http://pmedian-001-site1.ctempurl.com/Service.svc?xsd=xsd0" />
+    <MetadataFile FileName="Service1.xsd" MetadataType="Schema" ID="178c28c8-6862-4048-8fbb-54a4fd2a2683" SourceId="1" SourceUrl="http://pmedian-001-site1.ctempurl.com/Service.svc?xsd=xsd1" />
+    <MetadataFile FileName="Service.disco" MetadataType="Disco" ID="e6d57872-d3d2-4743-8851-b8fe0d423a21" SourceId="1" SourceUrl="http://pmedian-001-site1.ctempurl.com/Service.svc?disco" />
+    <MetadataFile FileName="Service2.xsd" MetadataType="Schema" ID="57f8accc-2d68-4bd1-a91c-dc48a32a3e20" SourceId="1" SourceUrl="http://pmedian-001-site1.ctempurl.com/Service.svc?xsd=xsd2" />
+    <MetadataFile FileName="Service.wsdl" MetadataType="Wsdl" ID="ed2dda9d-023c-4173-ab4e-332137eefd64" SourceId="1" SourceUrl="http://pmedian-001-site1.ctempurl.com/Service.svc?wsdl" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

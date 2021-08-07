@@ -45,9 +45,6 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos
                     {
                         //Console.Write("r1->"+r3);
                         var posr1 = myRandom.Next(0, PopulationSize -1);
-                        //r1[i]
-                        //r2[i]
-                        //best[i]
                         var posr2 = MyRandom.Next(PopulationSize); while (posr1 == posr2) posr2 = myRandom.Next(PopulationSize);
                         //Simplifican la tasa de consideracion de memoria y el pitch adjusment por medio de la formula
 
@@ -88,12 +85,13 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos
                 var worstFitness = Population.Max(x => x.Fitness);
                 var posworstFitness = Population.FindIndex(x => Math.Abs(x.Fitness - worstFitness) < 1e-10);
 
-                var NewSolution = Utils.LocalSearch(Xnew,5);
+                if (Xnew.MyAlgorithm.MyRandom.NextDouble() < 0.1) {Xnew = Utils.LocalSearchGen(Xnew, Best); }
+
                 //Evalua la evaluacion de la nueva armonia con la evaluacion de la peor solucion de la memoria
-                if (NewSolution.Fitness < Population[posworstFitness].Fitness)
+                if (Xnew.Fitness < Population[posworstFitness].Fitness)
                 {
                     //Si se cumple la condicion se remplaza la peor armonia por la nueva armonia
-                    Population[posworstFitness] = NewSolution;
+                    Population[posworstFitness] = Xnew;
                 }
                 Population.Sort((x, y) => x.Fitness.CompareTo(y.Fitness));
                 Best = new Solution(Population[0]);

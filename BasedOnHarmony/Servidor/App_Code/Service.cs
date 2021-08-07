@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 public class Service : IService
 {
     //private const string StrCon = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=""F:\UNIVERSIDAD\TESIS\FacilityLocationPmedian\BasedOnHarmony\Servidor\App_Data\BDTareas.mdf"";Integrated Security=True";
-    private const string StrCon = "Server=sql5104.site4now.net;Database=db_a736a3_tesispmedian;User ID=db_a736a3_tesispmedian_admin;Password=tesis123;Trusted_Connection=False;MultipleActiveResultSets=true";
+    private const string StrCon = "Server=sql5105.site4now.net;Database=db_a77411_pmedian;User ID=db_a77411_pmedian_admin;Password=1234tesis;Trusted_Connection=False;MultipleActiveResultSets=true";
     /// <summary>
     /// Return only one Distributed task to be executed for one client (status N),
     /// The assigned task change its status to P for Processing, thus preventing
