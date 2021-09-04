@@ -29,8 +29,8 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos
             double HMCR = 0.95;
             EFOs = 0;
             //Inicializar la Poblacion
-            Population = InitializeFixedPopulation(PopulationSize);
-            //Population = InitializeControlledPopulation(PopulationSize);
+            //Population = InitializeFixedPopulation(PopulationSize);
+            Population = InitializeControlledPopulation(PopulationSize);
 
             Population.Sort((x, y) => x.Fitness.CompareTo(y.Fitness));
             Best = new Solution(Population[0]);
@@ -79,13 +79,13 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos
                             Xnew.Activar(i);
                     }
                 }
-                Xnew.RepararSolutionAwareness();
-                //Xnew.RepairSolutionRandomly();
+                //Xnew.RepararSolutionAwareness();
+                Xnew.RepairSolutionRandomly();
                 Xnew.Evaluate();
                 var worstFitness = Population.Max(x => x.Fitness);
                 var posworstFitness = Population.FindIndex(x => Math.Abs(x.Fitness - worstFitness) < 1e-10);
 
-                if (Xnew.MyAlgorithm.MyRandom.NextDouble() < 0.1) {Xnew = Utils.LocalSearchGen(Xnew, Best); }
+                //if (Xnew.MyAlgorithm.MyRandom.NextDouble() < 0.1) {Xnew = Utils.LocalSearchGen(Xnew, Best); }
 
                 //Evalua la evaluacion de la nueva armonia con la evaluacion de la peor solucion de la memoria
                 if (Xnew.Fitness < Population[posworstFitness].Fitness)

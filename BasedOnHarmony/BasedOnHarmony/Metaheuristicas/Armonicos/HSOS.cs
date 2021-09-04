@@ -19,58 +19,52 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos{
             MyRandom = myRandom;
             EFOs = 0;
             //Inicializar la Population
-            Population = InitializeFixedPopulation(PopulationSize);
-            //Population = InitializeControlledPopulation(PopulationSize);
-            Population.Sort((x,y) => x.Fitness.CompareTo(y.Fitness));
-            Best = new Solution(Population[0]);
-
+            //Population = InitializeFixedPopulation(PopulationSize);
+            Best = Utils.Getbest(Population);
             //Iteracion del algoritmo
             while (EFOs < MaxEFOs && Best.Fitness > theProblem.OptimalLocation)
             {
                 //Recorrido de la poblacon
                 for (var i = 0; i < PopulationSize; i++) {
-                   // Console.Write("-" + i);
-                    
+                  
                     //MutualismoJ
                     var j = myRandom.Next(PopulationSize); while (i == j) j = myRandom.Next(PopulationSize);
                     var m1 = Population[i].Mutualism(Population[j], Best);
-                    if (m1.MyAlgorithm.MyRandom.NextDouble() < 0.1) m1 = Utils.LocalSearchGen(m1, Best);
+                   // if (m1.MyAlgorithm.MyRandom.NextDouble() < 0.1) m1 = Utils.LocalSearchGen(m1, Best);
                     if (m1.Fitness < Population[i].Fitness) Population[i] = m1;                
                     if (EFOs >= MaxEFOs) break;
                     
                     
                     //MutualismoI
                     var m2 = Population[j].Mutualism(Population[i], Best);
-                    if (m2.MyAlgorithm.MyRandom.NextDouble() < 0.1)  m2 = Utils.LocalSearchGen(m2, Best);
+                   // if (m2.MyAlgorithm.MyRandom.NextDouble() < 0.1)  m2 = Utils.LocalSearchGen(m2, Best);
                     if (m2.Fitness < Population[j].Fitness)Population[j] = m2;
                     if (EFOs >= MaxEFOs) break;
                    
                     //Comensalimo
                     j = myRandom.Next(PopulationSize); while (i == j) j = myRandom.Next(PopulationSize);
                     var m3 = Population[i].Commensalism(Population[j], Best);
-                    if (m3.MyAlgorithm.MyRandom.NextDouble() < 0.1) m3 = Utils.LocalSearchGen(m3, Best);
+                    //if (m3.MyAlgorithm.MyRandom.NextDouble() < 0.1) m3 = Utils.LocalSearchGen(m3, Best);
                     if (m3.Fitness < Population[i].Fitness)Population[i] = m3;
                     if (EFOs >= MaxEFOs) break;
                     
                     //Parasitimo
                     j = myRandom.Next(PopulationSize); while (i == j) j = myRandom.Next(PopulationSize);
                     var m4 = Population[i].Parasitism();
-                    if (m4.MyAlgorithm.MyRandom.NextDouble() < 0.1) m4 = Utils.LocalSearchGen(m4, Best);
-                    if (m4.Fitness < Population[i].Fitness) Population[i] = m4;
+                    // if (m4.MyAlgorithm.MyRandom.NextDouble() < 0.1) m4 = Utils.LocalSearchGen(m4, Best);
+                    if (m4.Fitness < Population[j].Fitness) Population[j] = m4;
                     if (EFOs >= MaxEFOs) break;
                     
                     //Improisación de una nueva armonia
                     var m5 = Improvisation(i);
-                    if (m5.MyAlgorithm.MyRandom.NextDouble() < 0.1) m5 = Utils.LocalSearchGen(m5, Best); ;
+                    //if (m5.MyAlgorithm.MyRandom.NextDouble() < 0.1) m5 = Utils.LocalSearchGen(m5, Best); ;
                     var worstFitness = Population.Max(x => x.Fitness);
                     var posworstFitness = Population.FindIndex(x => Math.Abs(x.Fitness - worstFitness) < 1e-10);
                     if (m5.Fitness < Population[posworstFitness].Fitness)Population[posworstFitness] = m5;
                     if (m5.Fitness < Population[i].Fitness) Population[i] = m5;
-                    if (EFOs >= MaxEFOs) break;
-                    
+                    if (EFOs >= MaxEFOs) break;            
                 }
-                Population.Sort((x, y) => x.Fitness.CompareTo(y.Fitness));
-                Best = new Solution(Population[0]);
+                Best = Utils.Getbest(Population);
             }
            
         }
@@ -106,8 +100,8 @@ namespace BasedOnHarmony.Metaheuristicas.Armonicos{
                 }
             }
             neko.RecalculatePosInstalaciones();
-            neko.RepararSolutionAwareness();
-            //neko.RepairSolutionRandomly();
+            //neko.RepararSolutionAwareness();
+            neko.RepairSolutionRandomly();
             neko.Evaluate();
             return neko;
         }

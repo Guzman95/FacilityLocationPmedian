@@ -53,8 +53,8 @@ namespace BasedOnHarmony.Metaheuristicas
                 }
             }
             //b.Imprimir();
-            b.RepararSolutionAwareness();
-            //b.RepairSolutionRandomly();
+            //b.RepararSolutionAwareness();
+            b.RepairSolutionRandomly();
             b.Evaluate();
             return b;
         }
@@ -93,8 +93,8 @@ namespace BasedOnHarmony.Metaheuristicas
                 }
             }
             //d.Imprimir();
-            d.RepararSolutionAwareness();
-            //d.RepairSolutionRandomly();
+            //d.RepararSolutionAwareness();
+            d.RepairSolutionRandomly();
             d.Evaluate();
             return d;
         }
@@ -122,8 +122,8 @@ namespace BasedOnHarmony.Metaheuristicas
                    
             }
             //parasito.Imprimir();
-            parasito.RepararSolutionAwareness();
-            //parasito.RepairSolutionRandomly();
+            //parasito.RepararSolutionAwareness();
+            parasito.RepairSolutionRandomly();
             parasito.Evaluate();
             return parasito;
         }
